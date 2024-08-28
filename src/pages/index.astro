@@ -1,10 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+// import Card from '../components/Card.astro';
 ---
 
 <Layout title="Dan Glorioso">
-	<main>
+	<header
+		class="antialiased max-w-screen-sm mx-auto"
+	>
+		<a href="https://linkedin.com/in/dan-glorioso" aria-label="LinkedIn">
+			<img src="/icons/linkedin.svg" alt="LinkedIn"/>
+		</a>
+		<a href="https://github.com/danglorioso" aria-label="GitHub">
+			<img src="/icons/github.svg" alt="GitHub"/>
+		</a>
+	</header>
+
+	<main
+		class="antialiased text-white max-w-screen-sm mx-auto px-6 pt-16 sm:pt-24 pb-40"
+	>
 		<svg
 			class="astro-a"
 			width="495"
@@ -33,33 +46,13 @@ import Card from '../components/Card.astro';
 				</linearGradient>
 			</defs>
 		</svg>
-		<h1>Hey! I'm <span class="text-gradient">Dan Glorioso</span>, a CS Student at Tufts.</h1>
+		<h1>Hey! I'm <span class="text-gradient">Dan Glorioso</span>,</h1>
+		<h2> a CS Student at Tufts.</h2>
+
 		<p class="instructions">
 			Here you’ll find my portfolio of academic and personal projects.<br />
 			<strong>This site is a work in progress and is not yet fully deployed.</strong> Enter your email address below to get notified when the site is launched.
 		</p>
-		<!-- <ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul> -->
 	</main>
 </Layout>
 
@@ -85,6 +78,13 @@ import Card from '../components/Card.astro';
 	h1 {
 		font-size: 4rem;
 		font-weight: 700;
+		line-height: 1;
+		text-align: center;
+		margin-bottom: .25em;
+	}
+	h2 {
+		font-size: 3rem;
+		font-weight: 600;
 		line-height: 1;
 		text-align: center;
 		margin-bottom: 1em;
@@ -114,10 +114,18 @@ import Card from '../components/Card.astro';
 	.instructions strong {
 		color: rgb(var(--accent-light));
 	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 2rem;
-		padding: 0;
+	header {
+		display: flex;
+		justify-content: flex-end; /* Align icons right */
+		align-items: center; /* Vertically centered */
+		padding: 1rem;
+		background-color: transparent;
+	}
+	header a {
+		margin-left: 1rem; /* Space between icons */
+	}
+	header img {
+		width: 32px; /* Larger size for better visibility */
+		height: 32px;
 	}
 </style>
