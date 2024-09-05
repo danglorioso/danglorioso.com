@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-// import Card from '../components/Card.astro';
+import MailchimpForm from "../components/Mailchimp.astro";
 ---
 
 <Layout title="Dan Glorioso">
@@ -55,7 +55,11 @@ import Layout from '../layouts/Layout.astro';
 		<p class="instructions">
 			Here you’ll find my portfolio of academic and personal projects.</br><br>
 			<strong>This site is a work in progress and is not yet fully deployed.</strong> Enter your email address below to get notified when the site is launched.
+			
+			<MailchimpForm />
 		</p>
+
+		
 	</main>
 </Layout>
 
@@ -140,4 +144,5 @@ import Layout from '../layouts/Layout.astro';
 		width: 32px; /* Larger size for better visibility */
 		height: 32px;
 	}
+
 </style>
