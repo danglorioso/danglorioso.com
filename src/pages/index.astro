@@ -49,14 +49,14 @@ import MailchimpForm from "../components/Mailchimp.astro";
 			</g>
 		</svg>
 
-		<h1>Hey! I'm <span class="text-gradient">Dan Glorioso</span>,</h1>
+		<h1 class="pulse-on-load">Hey! I'm <span class="text-gradient">Dan Glorioso</span>,</h1>
 		<h2> a CS Student at Tufts.</h2>
 
 		<p class="instructions">
 			Here you’ll find my portfolio of academic and personal projects.</br><br>
 			<strong>This site is a work in progress and is not yet fully deployed.</strong> Enter your email address below to get notified when the site is launched.
 			
-			<MailchimpForm />
+			<MailchimpForm/>
 		</p>
 
 		
@@ -145,4 +145,19 @@ import MailchimpForm from "../components/Mailchimp.astro";
 		height: 32px;
 	}
 
+	/* Pulse animation */
+	@keyframes pulse {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.1);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+	.pulse-on-load {
+		animation: pulse 1s ease-in-out;
+	}
 </style>
