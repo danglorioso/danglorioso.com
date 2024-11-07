@@ -1,5 +1,4 @@
-# Astro Starter Kit: Basics
-
+Run with: 
 ```sh
-npm create astro@latest -- --template basics
+vercel dev
 ```
