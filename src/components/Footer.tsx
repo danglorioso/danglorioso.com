@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-<footer className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-lg text-center py-3 border-t border-gray-800 z-50">
+<footer className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-lg text-center py-3 border-t border-gray-800 z-50">
       <p className="text-md text-gray-400">
         Copyright © {new Date().getFullYear()}. Created by{" "}
         <a
