@@ -6,7 +6,7 @@ import Footer from "../components/Footer.tsx";
 import Monogram from '../components/Monogram.astro';
 ---
 
-<Layout title="Dan Glorioso">
+<Layout title="Dan Glorioso" description="CS Student at Tufts">
 	<Header />
 
 	<main
@@ -38,33 +38,6 @@ import Monogram from '../components/Monogram.astro';
 		color: white;
 		font-size: 20px;
 		line-height: 1.6;
-	}
-	.monogram {
-		position: relative;
-		/* top: 95px; */
-		left: 50%;
-		transform: translatex(-50%);
-		width: 128px;
-		height: 86px;
-		display: inline-block;
-		margin-top: 25px;
-		margin-bottom: 25px;
-	}
-	.monogram .path-body {
-		animation: fillBlue 2.5s ease-out forwards;
-	}
-	.monogram .path-shadow {
-		animation: fillBlueShadow 2.5s ease-out forwards;
-	}
-	.monogram:hover path#body {
-		animation: none;
-		transition: fill 0.4s ease-in;
-		fill: #0404e3 !important;
-	}
-	.monogram:hover path#shadow {
-		animation: none;
-		transition: fill 0.4s ease-in;
-		fill: #04048d !important;
 	}
 	h1 {
 		font-size: 4rem;
