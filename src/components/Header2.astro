@@ -3,11 +3,11 @@ import Monogram from './Monogram.astro';
 
 const navItems = [
   { href: '/demo', label: 'Home' },
-  { href: '/', label: 'About' },
-  { href: '/', label: 'Projects' },
-  { href: '/', label: 'Hobbies' },
-  { href: '/', label: 'Posts' },
-  { href: '/', label: 'Contact' },
+  { href: '#about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/hobbies', label: 'Hobbies' },
+  { href: '/posts', label: 'Posts' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const pathname = Astro.url.pathname;
@@ -35,14 +35,14 @@ const isActive = (href: string) => {
 
   <!-- Desktop Navigation -->
   <nav class="relative z-10 flex-grow flex justify-center">
-    <div class="hidden md:flex items-center space-x-2 bg-slate-950/70 rounded-2xl px-4 py-3 backdrop-blur-xl border border-slate-700/30 shadow-lg">
+    <div class="hidden md:flex items-center space-x-2 bg-slate-950/70 rounded-2xl px-4 py-2 backdrop-blur-xl border border-slate-700/30 shadow-lg">
       {navItems.map((item) => (
         <a
           href={item.href}
           class={`group relative px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-out flex items-center justify-center overflow-hidden ${
             isActive(item.href)
-              ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25'
-              : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
+              ? 'text-blue-500 hover:bg-blue-700/50 hover:text-white'
+              : 'text-gray-300 hover:text-white hover:bg-blue-700/50'
           }`}
         >
           {!isActive(item.href) && (
@@ -57,16 +57,17 @@ const isActive = (href: string) => {
     </div>
   </nav>
 
-  <!-- Desktop Icons -->
-  <div class="relative z-10 hidden md:flex justify-end items-center">
-    <div class="flex items-center space-x-3 bg-slate-950/50 rounded-xl px-4 py-3 backdrop-blur-xl border border-slate-700/30">
+  <!-- Social Icons (visible on all screen sizes) -->
+  <div class="relative z-10 flex justify-end items-center">
+    <!-- Desktop: fancy container -->
+    <div class="hidden md:flex items-center space-x-3 rounded-xl px-4 py-1.5 backdrop-blur-xl border border-slate-700/30">
       <a
         href="https://linkedin.com/in/dan-glorioso"
         target="LinkedIn"
         aria-label="LinkedIn"
         class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-blue-500/10"
       >
-        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-7 h-7 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
         <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </a>
       <div class="w-px h-6 bg-slate-600/50"></div>
@@ -76,8 +77,28 @@ const isActive = (href: string) => {
         aria-label="GitHub"
         class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-slate-500/10"
       >
-        <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <img src="/icons/github.svg" alt="GitHub" class="w-7 h-7 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
         <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-slate-300/20 to-slate-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </a>
+    </div>
+    
+    <!-- Mobile: plain icons -->
+    <div class="flex md:hidden items-center space-x-3">
+      <a
+        href="https://linkedin.com/in/dan-glorioso"
+        target="LinkedIn"
+        aria-label="LinkedIn"
+        class="p-3 transition-all duration-300 hover:scale-110"
+      >
+        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6 transition-all duration-300 hover:brightness-110" />
+      </a>
+      <a
+        href="https://github.com/danglorioso"
+        target="GitHub"
+        aria-label="GitHub"
+        class="p-3 transition-all duration-300 hover:scale-110"
+      >
+        <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 transition-all duration-300 hover:brightness-110" />
       </a>
     </div>
   </div>
@@ -91,14 +112,11 @@ const isActive = (href: string) => {
     >
       <!-- Hamburger Icon -->
       <div class="hamburger-icon">
-        <span class="block w-6 h-0.5 bg-gray-300 transition-all duration-300 group-hover:bg-white"></span>
-        <span class="block w-6 h-0.5 bg-gray-300 mt-1.5 transition-all duration-300 group-hover:bg-white"></span>
-        <span class="block w-6 h-0.5 bg-gray-300 mt-1.5 transition-all duration-300 group-hover:bg-white"></span>
+        <img src="icons/FaBars.svg" alt="Menu" class="w-6 h-6 transition-all duration-300 group-hover:brightness-125" />
       </div>
       <!-- X Icon (hidden by default) -->
       <div class="x-icon hidden">
-        <span class="block w-6 h-0.5 bg-gray-300 rotate-45 transition-all duration-300 group-hover:bg-white"></span>
-        <span class="block w-6 h-0.5 bg-gray-300 -rotate-45 -mt-0.5 transition-all duration-300 group-hover:bg-white"></span>
+        <img src="icons/FaTimes.svg" alt="Close" class="w-6 h-6 transition-all duration-300 group-hover:brightness-125" />
       </div>
     </button>
   </div>
@@ -118,8 +136,7 @@ const isActive = (href: string) => {
         class="group relative p-3 rounded-xl bg-slate-950/50 backdrop-blur-xl border border-slate-700/30 transition-all duration-300 hover:bg-slate-700/50"
         aria-label="Close mobile menu"
       >
-        <span class="block w-6 h-0.5 bg-gray-300 rotate-45 transition-all duration-300 group-hover:bg-white"></span>
-        <span class="block w-6 h-0.5 bg-gray-300 -rotate-45 -mt-0.5 transition-all duration-300 group-hover:bg-white"></span>
+        <img src="icons/FaTimes.svg" alt="Close" class="w-6 h-6 transition-all duration-300 group-hover:brightness-125" />
       </button>
     </div>
     
@@ -143,14 +160,14 @@ const isActive = (href: string) => {
     </nav>
     
     <!-- Social Icons in Mobile Menu -->
-    <div class="absolute bottom-8 left-6 flex items-center space-x-4 bg-slate-950/50 rounded-xl px-4 py-3 backdrop-blur-xl border border-slate-700/30">
+    <div class="absolute bottom-8 left-4 flex items-center space-x-4 bg-slate-950/50 rounded-xl px-4 py-3 backdrop-blur-xl border border-slate-700/30">
       <a 
         href="https://linkedin.com/in/dan-glorioso" 
         target="LinkedIn"
         aria-label="LinkedIn"
         class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-blue-500/10"
       >
-        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <img src="/icons/linkedin.svg" alt="LinkedIn" class="transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
         <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </a>
       <div class="w-px h-6 bg-slate-600/50"></div>
@@ -160,7 +177,7 @@ const isActive = (href: string) => {
         aria-label="GitHub"
         class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-slate-500/10"
       >
-        <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <img src="/icons/github.svg" alt="GitHub" class="transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
         <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-slate-300/20 to-slate-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </a>
     </div>
@@ -185,35 +202,25 @@ const isActive = (href: string) => {
     
     if (isMenuOpen) {
       // Show menu
-      if (mobileMenu) {
-        mobileMenu.classList.remove('hidden');
-      }
+      mobileMenu.classList.remove('hidden');
       // Trigger animation after a brief delay to ensure the element is rendered
       setTimeout(() => {
-        if (mobileMenuPanel) {
-          mobileMenuPanel.style.transform = 'translateX(0)';
-        }
+        mobileMenuPanel.style.transform = 'translateX(0)';
       }, 10);
       // Toggle icons
-      if (hamburgerIcon) {
-        hamburgerIcon.classList.add('hidden');
-      }
-      if (xIcon) {
-        xIcon.classList.remove('hidden');
-      }
+      hamburgerIcon.classList.add('hidden');
+      xIcon.classList.remove('hidden');
       // Prevent body scroll
       document.body.style.overflow = 'hidden';
     } else {
       // Hide menu
-      if (mobileMenuPanel) {
-        mobileMenuPanel.style.transform = 'translateX(100%)';
-      }
-      if (hamburgerIcon) {
-        hamburgerIcon.classList.remove('hidden');
-      }
-      if (xIcon) {
-        xIcon.classList.add('hidden');
-      }
+      mobileMenuPanel.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+      }, 300);
+      // Toggle icons
+      hamburgerIcon.classList.remove('hidden');
+      xIcon.classList.add('hidden');
       // Restore body scroll
       document.body.style.overflow = '';
     }
