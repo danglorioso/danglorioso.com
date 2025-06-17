@@ -1,0 +1,251 @@
+---
+import Monogram from './Monogram.astro';
+
+const navItems = [
+  { href: '/demo', label: 'Home' },
+  { href: '/', label: 'About' },
+  { href: '/', label: 'Projects' },
+  { href: '/', label: 'Hobbies' },
+  { href: '/', label: 'Posts' },
+  { href: '/', label: 'Contact' },
+];
+
+const pathname = Astro.url.pathname;
+
+const isActive = (href: string) => {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+};
+---
+
+<header class="relative rounded-2xl mx-auto max-w-screen-lg px-8 py-6 flex items-center justify-between mt-6 bg-gradient-to-r from-slate-900/80 via-slate-800/60 to-slate-900/80 backdrop-blur-xl border border-slate-700/50 shadow-2xl shadow-slate-900/25">
+  
+  <!-- Subtle glow effect -->
+  <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-blue-500/5 pointer-events-none"></div>
+  
+  <!-- Logo (with Link) -->
+  <div class="relative z-10">
+    <a href="/" class="group cursor-pointer w-24 h-14 sm:w-28 sm:h-20 block transition-all duration-500 hover:scale-105">
+      <div class="relative">
+        <Monogram width="128px" height="86px"/>
+        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Desktop Navigation -->
+  <nav class="relative z-10 flex-grow flex justify-center">
+    <div class="hidden md:flex items-center space-x-2 bg-slate-950/70 rounded-2xl px-4 py-3 backdrop-blur-xl border border-slate-700/30 shadow-lg">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`group relative px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-out flex items-center justify-center overflow-hidden ${
+            isActive(item.href)
+              ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25'
+              : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
+          }`}
+        >
+          {!isActive(item.href) && (
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          )}
+          <span class="relative z-10 tracking-wide">{item.label}</span>
+          {isActive(item.href) && (
+            <div class="absolute bottom-0 left-1/2 w-1 h-1 bg-white rounded-full transform -translate-x-1/2 translate-y-1"></div>
+          )}
+        </a>
+      ))}
+    </div>
+  </nav>
+
+  <!-- Desktop Icons -->
+  <div class="relative z-10 hidden md:flex justify-end items-center">
+    <div class="flex items-center space-x-3 bg-slate-950/50 rounded-xl px-4 py-3 backdrop-blur-xl border border-slate-700/30">
+      <a
+        href="https://linkedin.com/in/dan-glorioso"
+        target="LinkedIn"
+        aria-label="LinkedIn"
+        class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-blue-500/10"
+      >
+        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </a>
+      <div class="w-px h-6 bg-slate-600/50"></div>
+      <a
+        href="https://github.com/danglorioso"
+        target="GitHub"
+        aria-label="GitHub"
+        class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-slate-500/10"
+      >
+        <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-slate-300/20 to-slate-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile Hamburger Button -->
+  <div class="relative z-10 flex md:hidden ml-4">
+    <button
+      id="mobile-menu-button"
+      class="group relative p-3 rounded-xl bg-slate-950/50 backdrop-blur-xl border border-slate-700/30 transition-all duration-300 hover:bg-slate-700/50"
+      aria-label="Toggle mobile menu"
+    >
+      <!-- Hamburger Icon -->
+      <div class="hamburger-icon">
+        <span class="block w-6 h-0.5 bg-gray-300 transition-all duration-300 group-hover:bg-white"></span>
+        <span class="block w-6 h-0.5 bg-gray-300 mt-1.5 transition-all duration-300 group-hover:bg-white"></span>
+        <span class="block w-6 h-0.5 bg-gray-300 mt-1.5 transition-all duration-300 group-hover:bg-white"></span>
+      </div>
+      <!-- X Icon (hidden by default) -->
+      <div class="x-icon hidden">
+        <span class="block w-6 h-0.5 bg-gray-300 rotate-45 transition-all duration-300 group-hover:bg-white"></span>
+        <span class="block w-6 h-0.5 bg-gray-300 -rotate-45 -mt-0.5 transition-all duration-300 group-hover:bg-white"></span>
+      </div>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="fixed inset-0 z-50 md:hidden hidden">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="mobile-menu-backdrop"></div>
+  
+  <!-- Menu Content -->
+  <div class="absolute top-0 right-0 w-80 h-full bg-gradient-to-b from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-700/50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out" id="mobile-menu-panel">
+    <!-- Close Button -->
+    <div class="flex justify-end p-6">
+      <button
+        id="mobile-menu-close"
+        class="group relative p-3 rounded-xl bg-slate-950/50 backdrop-blur-xl border border-slate-700/30 transition-all duration-300 hover:bg-slate-700/50"
+        aria-label="Close mobile menu"
+      >
+        <span class="block w-6 h-0.5 bg-gray-300 rotate-45 transition-all duration-300 group-hover:bg-white"></span>
+        <span class="block w-6 h-0.5 bg-gray-300 -rotate-45 -mt-0.5 transition-all duration-300 group-hover:bg-white"></span>
+      </button>
+    </div>
+    
+    <!-- Menu Items -->
+    <nav class="px-6 py-4">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`mobile-menu-item block px-6 py-4 rounded-xl mb-3 text-lg font-medium transition-all duration-300 ease-out ${
+            isActive(item.href)
+              ? 'text-white bg-gradient-to-r from-blue-500/20 to-blue-600/20 border-l-4 border-blue-500 shadow-lg shadow-blue-500/10'
+              : 'text-gray-300 hover:text-white hover:bg-slate-700/30 hover:translate-x-2'
+          }`}
+        >
+          <span class="relative z-10 tracking-wide">{item.label}</span>
+          {!isActive(item.href) && (
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          )}
+        </a>
+      ))}
+    </nav>
+    
+    <!-- Social Icons in Mobile Menu -->
+    <div class="absolute bottom-8 left-6 flex items-center space-x-4 bg-slate-950/50 rounded-xl px-4 py-3 backdrop-blur-xl border border-slate-700/30">
+      <a 
+        href="https://linkedin.com/in/dan-glorioso" 
+        target="LinkedIn"
+        aria-label="LinkedIn"
+        class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-blue-500/10"
+      >
+        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </a>
+      <div class="w-px h-6 bg-slate-600/50"></div>
+      <a 
+        href="https://github.com/danglorioso" 
+        target="GitHub"
+        aria-label="GitHub"
+        class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-slate-500/10"
+      >
+        <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 transition-all duration-300 group-hover:scale-110 group-hover:brightness-110" />
+        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-slate-300/20 to-slate-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Mobile menu functionality
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+  const hamburgerIcon = document.querySelector('.hamburger-icon');
+  const xIcon = document.querySelector('.x-icon');
+  const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+
+  let isMenuOpen = false;
+
+  const toggleMenu = () => {
+    isMenuOpen = !isMenuOpen;
+    
+    if (isMenuOpen) {
+      // Show menu
+      if (mobileMenu) {
+        mobileMenu.classList.remove('hidden');
+      }
+      // Trigger animation after a brief delay to ensure the element is rendered
+      setTimeout(() => {
+        if (mobileMenuPanel) {
+          mobileMenuPanel.style.transform = 'translateX(0)';
+        }
+      }, 10);
+      // Toggle icons
+      if (hamburgerIcon) {
+        hamburgerIcon.classList.add('hidden');
+      }
+      if (xIcon) {
+        xIcon.classList.remove('hidden');
+      }
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Hide menu
+      if (mobileMenuPanel) {
+        mobileMenuPanel.style.transform = 'translateX(100%)';
+      }
+      if (hamburgerIcon) {
+        hamburgerIcon.classList.remove('hidden');
+      }
+      if (xIcon) {
+        xIcon.classList.add('hidden');
+      }
+      // Restore body scroll
+      document.body.style.overflow = '';
+    }
+  };
+
+  const closeMenu = () => {
+    if (isMenuOpen) {
+      toggleMenu();
+    }
+  };
+
+  // Event listeners
+  mobileMenuButton?.addEventListener('click', toggleMenu);
+  mobileMenuClose?.addEventListener('click', closeMenu);
+  mobileMenuBackdrop?.addEventListener('click', closeMenu);
+
+  // Close menu when clicking on menu items
+  mobileMenuItems.forEach(item => {
+    item.addEventListener('click', closeMenu);
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMenuOpen) {
+      closeMenu();
+    }
+  });
+
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768 && isMenuOpen) {
+      closeMenu();
+    }
+  });
+</script>
