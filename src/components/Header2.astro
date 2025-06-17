@@ -202,25 +202,39 @@ const isActive = (href: string) => {
     
     if (isMenuOpen) {
       // Show menu
-      mobileMenu.classList.remove('hidden');
+      if (mobileMenu) {
+        mobileMenu.classList.remove('hidden');
+      }
       // Trigger animation after a brief delay to ensure the element is rendered
       setTimeout(() => {
-        mobileMenuPanel.style.transform = 'translateX(0)';
+        if (mobileMenuPanel) {
+          mobileMenuPanel.style.transform = 'translateX(0)';
+        }
       }, 10);
       // Toggle icons
-      hamburgerIcon.classList.add('hidden');
-      xIcon.classList.remove('hidden');
+      if (hamburgerIcon) {
+        hamburgerIcon.classList.add('hidden');
+      }
+      if (xIcon) {
+        xIcon.classList.remove('hidden');
+      }
       // Prevent body scroll
       document.body.style.overflow = 'hidden';
-    } else {
-      // Hide menu
-      mobileMenuPanel.style.transform = 'translateX(100%)';
+      if (mobileMenuPanel) {
+        mobileMenuPanel.style.transform = 'translateX(100%)';
+      }
       setTimeout(() => {
-        mobileMenu.classList.add('hidden');
+        if (mobileMenu) {
+          mobileMenu.classList.add('hidden');
+        }
       }, 300);
       // Toggle icons
-      hamburgerIcon.classList.remove('hidden');
-      xIcon.classList.add('hidden');
+      if (hamburgerIcon) {
+        hamburgerIcon.classList.remove('hidden');
+      }
+      if (xIcon) {
+        xIcon.classList.add('hidden');
+      }
       // Restore body scroll
       document.body.style.overflow = '';
     }
