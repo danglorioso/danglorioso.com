@@ -1,0 +1,308 @@
+---
+import SpeedInsights from '@vercel/speed-insights/astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} - {description}</title>
+	</head>
+	<body>
+		<canvas id="background-canvas"></canvas>
+		<div class="content-wrapper">
+			<slot />
+		</div>
+		<SpeedInsights />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--accent: 70, 80, 234;
+		--accent-light: 156, 172, 250;
+		--accent-dark: 2, 0, 70;
+		--accent-gradient: linear-gradient(
+			45deg,
+			rgb(var(--accent)),
+			rgb(var(--accent-light)) 40%,
+			white 60%
+		);
+	}
+	
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	
+	html, body {
+		height: 100%;
+		font-family: system-ui, sans-serif;
+		overflow-x: hidden;
+	}
+	
+	body {
+		position: relative;
+		background: #0b0f16;
+	}
+	
+	#background-canvas {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		opacity: 0;
+		transition: opacity 1s ease-in-out;
+	}
+	
+	#background-canvas.loaded {
+		opacity: 1;
+	}
+	
+	.content-wrapper {
+		position: relative;
+		z-index: 1;
+		min-height: 100vh;
+	}
+	
+	code {
+		font-family:
+			Menlo,
+			Monaco,
+			Lucida Console,
+			Liberation Mono,
+			DejaVu Sans Mono,
+			Bitstream Vera Sans Mono,
+			Courier New,
+			monospace;
+	}
+</style>
+
+<script>
+	import * as THREE from 'three';
+
+	// Vertex shader
+	const vertexShader = `
+		varying vec2 vUv;
+		void main() {
+			vUv = uv;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+		}
+	`;
+
+	// Optimized fragment shader
+	const fragmentShader = `
+		uniform float uTime;
+		uniform vec2 uResolution;
+		varying vec2 vUv;
+
+		// Simplified noise function (much faster than simplex noise)
+		float hash(vec2 p) {
+			vec3 p3 = fract(vec3(p.xyx) * 0.13);
+			p3 += dot(p3, p3.yzx + 3.333);
+			return fract((p3.x + p3.y) * p3.z);
+		}
+
+		float noise(vec2 p) {
+			vec2 i = floor(p);
+			vec2 f = fract(p);
+			
+			float a = hash(i);
+			float b = hash(i + vec2(1.0, 0.0));
+			float c = hash(i + vec2(0.0, 1.0));
+			float d = hash(i + vec2(1.0, 1.0));
+			
+			vec2 u = f * f * (3.0 - 2.0 * f);
+			return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+		}
+
+		// Fast blob function
+		float blob(vec2 uv, vec2 center, float size, float time) {
+			vec2 pos = uv - center;
+			
+			// Simplified organic distortion
+			float n = noise(pos * 2.0 + time * 0.5) * 0.1;
+			pos += n;
+			
+			float dist = length(pos);
+			return smoothstep(size + 0.05, size - 0.05, dist);
+		}
+
+		void main() {
+			vec2 uv = vUv;
+			vec2 center = uv - 0.5;
+			
+			// Base dark background
+			vec3 color = vec3(0.043, 0.059, 0.086);
+			
+			float time = uTime * 0.2; // Slower animation
+			
+			// Reduced to 3 blobs for better performance
+			vec2 blob1Pos = vec2(
+				0.3 + sin(time * 0.4) * 0.2,
+				0.4 + cos(time * 0.3) * 0.15
+			);
+			float blob1 = blob(uv, blob1Pos, 0.3, time);
+			vec3 blob1Color = vec3(0.08, 0.16, 0.35) * 0.8;
+			
+			vec2 blob2Pos = vec2(
+				0.7 + sin(time * 0.6) * 0.15,
+				0.6 + cos(time * 0.5) * 0.2
+			);
+			float blob2 = blob(uv, blob2Pos, 0.25, time + 5.0);
+			vec3 blob2Color = vec3(0.12, 0.08, 0.25) * 0.9;
+			
+			vec2 blob3Pos = vec2(
+				0.5 + sin(time * 0.5) * 0.3,
+				0.3 + cos(time * 0.4) * 0.25
+			);
+			float blob3 = blob(uv, blob3Pos, 0.2, time + 10.0);
+			vec3 blob3Color = vec3(0.06, 0.18, 0.4) * 0.7;
+			
+			// Blend blobs
+			color = mix(color, blob1Color, blob1);
+			color = mix(color, blob2Color, blob2);
+			color = mix(color, blob3Color, blob3);
+			
+			// Subtle vignette only
+			float vignette = 1.0 - length(center) * 0.2;
+			color *= vignette;
+			
+			gl_FragColor = vec4(color, 1.0);
+		}
+	`;
+
+	// Initialize Three.js scene with performance optimizations
+	function initBackground() {
+		const canvas = document.getElementById('background-canvas');
+		if (!canvas) return;
+
+		// Check for reduced motion preference
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (prefersReducedMotion) {
+			canvas.style.display = 'none';
+			return;
+		}
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+		
+		const renderer = new THREE.WebGLRenderer({ 
+			canvas: canvas,
+			antialias: false, // Disable antialiasing for better performance
+			alpha: false,
+			powerPreference: "high-performance"
+		});
+		
+		// Limit pixel ratio and use smaller resolution on mobile
+		const isMobile = window.innerWidth < 768;
+		const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5);
+		const scale = isMobile ? 0.7 : 1; // Render at lower resolution on mobile
+		
+		renderer.setSize(window.innerWidth * scale, window.innerHeight * scale);
+		renderer.setPixelRatio(pixelRatio);
+		
+		// Scale canvas to fill screen
+		canvas.style.width = '100%';
+		canvas.style.height = '100%';
+
+		// Create shader material
+		const material = new THREE.ShaderMaterial({
+			vertexShader: vertexShader,
+			fragmentShader: fragmentShader,
+			uniforms: {
+				uTime: { value: 0 },
+				uResolution: { value: new THREE.Vector2(window.innerWidth * scale, window.innerHeight * scale) }
+			}
+		});
+
+		// Create plane geometry
+		const geometry = new THREE.PlaneGeometry(2, 2);
+		const mesh = new THREE.Mesh(geometry, material);
+		scene.add(mesh);
+
+		// Throttled animation loop for better performance
+		const clock = new THREE.Clock();
+		let animationId;
+		let lastTime = 0;
+		const targetFPS = isMobile ? 30 : 60;
+		const frameInterval = 1000 / targetFPS;
+		
+		function animate(currentTime) {
+			animationId = requestAnimationFrame(animate);
+			
+			if (currentTime - lastTime < frameInterval) return;
+			lastTime = currentTime;
+			
+			const elapsedTime = clock.getElapsedTime();
+			material.uniforms.uTime.value = elapsedTime;
+			
+			renderer.render(scene, camera);
+		}
+
+		// Handle resize with debouncing
+		let resizeTimeout;
+		function handleResize() {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(() => {
+				const isMobile = window.innerWidth < 768;
+				const scale = isMobile ? 0.7 : 1;
+				const width = window.innerWidth * scale;
+				const height = window.innerHeight * scale;
+				
+				renderer.setSize(width, height);
+				material.uniforms.uResolution.value.set(width, height);
+			}, 250);
+		}
+
+		// Pause animation when tab is not visible
+		function handleVisibilityChange() {
+			if (document.hidden) {
+				if (animationId) {
+					cancelAnimationFrame(animationId);
+					animationId = null;
+				}
+			} else {
+				if (!animationId) {
+					animate(0);
+				}
+			}
+		}
+
+		window.addEventListener('resize', handleResize);
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		
+		// Start animation and show canvas
+		animate(0);
+		canvas.classList.add('loaded');
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			if (animationId) {
+				cancelAnimationFrame(animationId);
+			}
+		};
+	}
+
+	// Initialize when DOM is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initBackground);
+	} else {
+		initBackground();
+	}
+</script>
