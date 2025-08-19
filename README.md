@@ -1,4 +1,1 @@
-Run with: 
-```sh
-vercel dev
-```
+Personal portfolio. Created by [Dan Glorioso](https://danglorioso.com).
