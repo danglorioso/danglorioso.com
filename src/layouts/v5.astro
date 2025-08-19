@@ -1,0 +1,297 @@
+---
+import SpeedInsights from '@vercel/speed-insights/astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="bg-blue-950 text-white min-h-screen relative overflow-hidden">
+		<!-- Animated Canvas Background -->
+		<canvas id="wave-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+		<SpeedInsights />
+		
+		<script is:inline>
+			// Animated Wave Background System
+			class WaveBackground {
+				constructor() {
+					this.canvas = document.getElementById('wave-canvas');
+					this.ctx = this.canvas.getContext('2d');
+					this.time = 0;
+					this.waves = [];
+					this.floatingShapes = [];
+					
+					this.resize();
+					this.createWaves();
+					this.createFloatingShapes();
+					this.bindEvents();
+					this.animate();
+				}
+				
+				resize() {
+					this.canvas.width = window.innerWidth;
+					this.canvas.height = window.innerHeight;
+				}
+				
+				createWaves() {
+					// Create multiple wave layers for depth
+					this.waves = [
+						{
+							amplitude: 30,
+							frequency: 0.01,
+							phase: 0,
+							speed: 0.002,
+							color: 'rgba(59, 130, 246, 0.1)', // blue-500 with low opacity
+							yOffset: this.canvas.height * 0.7
+						},
+						{
+							amplitude: 25,
+							frequency: 0.015,
+							phase: Math.PI / 3,
+							speed: 0.0015,
+							color: 'rgba(37, 99, 235, 0.08)', // blue-600 with low opacity
+							yOffset: this.canvas.height * 0.8
+						},
+						{
+							amplitude: 20,
+							frequency: 0.008,
+							phase: Math.PI / 2,
+							speed: 0.0025,
+							color: 'rgba(29, 78, 216, 0.06)', // blue-700 with low opacity
+							yOffset: this.canvas.height * 0.9
+						}
+					];
+				}
+				
+				createFloatingShapes() {
+					const shapeCount = Math.min(12, Math.floor((this.canvas.width * this.canvas.height) / 50000));
+					
+					for (let i = 0; i < shapeCount; i++) {
+						this.floatingShapes.push({
+							x: Math.random() * this.canvas.width,
+							y: Math.random() * this.canvas.height,
+							size: 20 + Math.random() * 40,
+							rotation: Math.random() * Math.PI * 2,
+							rotationSpeed: (Math.random() - 0.5) * 0.01,
+							vx: (Math.random() - 0.5) * 0.3,
+							vy: (Math.random() - 0.5) * 0.3,
+							opacity: 0.05 + Math.random() * 0.1,
+							type: Math.floor(Math.random() * 3), // 0: circle, 1: triangle, 2: square
+							pulsePhase: Math.random() * Math.PI * 2,
+							pulseSpeed: 0.001 + Math.random() * 0.002
+						});
+					}
+				}
+				
+				bindEvents() {
+					window.addEventListener('resize', () => {
+						this.resize();
+						this.createWaves();
+						this.floatingShapes = [];
+						this.createFloatingShapes();
+					});
+				}
+				
+				updateWaves() {
+					this.waves.forEach(wave => {
+						wave.phase += wave.speed;
+					});
+				}
+				
+				updateFloatingShapes() {
+					this.floatingShapes.forEach(shape => {
+						// Move shape
+						shape.x += shape.vx;
+						shape.y += shape.vy;
+						shape.rotation += shape.rotationSpeed;
+						
+						// Gentle pulsing
+						shape.currentOpacity = shape.opacity + 
+							Math.sin(this.time * shape.pulseSpeed + shape.pulsePhase) * shape.opacity * 0.5;
+						
+						// Wrap around edges
+						if (shape.x < -shape.size) shape.x = this.canvas.width + shape.size;
+						if (shape.x > this.canvas.width + shape.size) shape.x = -shape.size;
+						if (shape.y < -shape.size) shape.y = this.canvas.height + shape.size;
+						if (shape.y > this.canvas.height + shape.size) shape.y = -shape.size;
+					});
+				}
+				
+				drawWaves() {
+					this.waves.forEach(wave => {
+						this.ctx.beginPath();
+						this.ctx.moveTo(0, wave.yOffset);
+						
+						// Create smooth wave using quadratic curves
+						for (let x = 0; x <= this.canvas.width; x += 5) {
+							const y = wave.yOffset + 
+								Math.sin(x * wave.frequency + wave.phase) * wave.amplitude;
+							this.ctx.lineTo(x, y);
+						}
+						
+						// Complete the wave shape
+						this.ctx.lineTo(this.canvas.width, this.canvas.height);
+						this.ctx.lineTo(0, this.canvas.height);
+						this.ctx.closePath();
+						
+						this.ctx.fillStyle = wave.color;
+						this.ctx.fill();
+					});
+				}
+				
+				drawFloatingShapes() {
+					this.floatingShapes.forEach(shape => {
+						this.ctx.save();
+						this.ctx.translate(shape.x, shape.y);
+						this.ctx.rotate(shape.rotation);
+						
+						this.ctx.fillStyle = `rgba(59, 130, 246, ${shape.currentOpacity})`;
+						this.ctx.strokeStyle = `rgba(147, 197, 253, ${shape.currentOpacity * 0.5})`;
+						this.ctx.lineWidth = 1;
+						
+						switch(shape.type) {
+							case 0: // Circle
+								this.ctx.beginPath();
+								this.ctx.arc(0, 0, shape.size / 2, 0, Math.PI * 2);
+								this.ctx.fill();
+								this.ctx.stroke();
+								break;
+								
+							case 1: // Triangle
+								this.ctx.beginPath();
+								this.ctx.moveTo(0, -shape.size / 2);
+								this.ctx.lineTo(-shape.size / 2, shape.size / 2);
+								this.ctx.lineTo(shape.size / 2, shape.size / 2);
+								this.ctx.closePath();
+								this.ctx.fill();
+								this.ctx.stroke();
+								break;
+								
+							case 2: // Square
+								this.ctx.fillRect(-shape.size / 2, -shape.size / 2, shape.size, shape.size);
+								this.ctx.strokeRect(-shape.size / 2, -shape.size / 2, shape.size, shape.size);
+								break;
+						}
+						
+						this.ctx.restore();
+					});
+				}
+				
+				animate() {
+					this.time += 16;
+					
+					// Clear canvas with blue gradient background
+					const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+					gradient.addColorStop(0, '#1e3a8a'); // blue-800
+					gradient.addColorStop(0.5, '#1e40af'); // blue-700
+					gradient.addColorStop(1, '#1d4ed8'); // blue-600
+					
+					this.ctx.fillStyle = gradient;
+					this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+					
+					// Update and draw all elements
+					this.updateWaves();
+					this.updateFloatingShapes();
+					
+					this.drawWaves();
+					this.drawFloatingShapes();
+					
+					requestAnimationFrame(() => this.animate());
+				}
+			}
+			
+			// Initialize when DOM is loaded
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', () => new WaveBackground());
+			} else {
+				new WaveBackground();
+			}
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	
+	html, body {
+		font-family: system-ui, sans-serif;
+		overflow-x: hidden;
+	}
+	
+	body {
+		background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+		min-height: 100vh;
+	}
+
+	/* Custom scrollbar for webkit browsers */
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+	
+	::-webkit-scrollbar-track {
+		background: #1e293b;
+	}
+	
+	::-webkit-scrollbar-thumb {
+		background: #475569;
+		border-radius: 4px;
+	}
+	
+	::-webkit-scrollbar-thumb:hover {
+		background: #64748b;
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 1024px) {
+		main {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+		}
+		
+		.flex-1.max-w-lg.ml-16 {
+			margin-left: 0;
+			margin-top: 3rem;
+			max-width: 100%;
+		}
+	}
+	
+	@media (max-width: 768px) {
+		nav {
+			padding-top: 1.5rem;
+			padding-bottom: 2rem;
+		}
+		
+		nav > div {
+			flex-wrap: wrap;
+			gap: 1rem;
+			padding: 0.75rem 1.5rem;
+		}
+		
+		h1 {
+			font-size: 4rem !important;
+		}
+		
+		.bg-slate-300 span {
+			font-size: 3rem !important;
+		}
+	}
+</style>
