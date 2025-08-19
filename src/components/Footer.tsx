@@ -1,12 +1,13 @@
 import React from "react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
 <footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/25">
       <div className="max-w-7xl mx-auto px-8">
         {/* Top row: Copyright left, Social icons right */}
-        <div className="flex justify-between items-center mb-2">
-          <p className="text-md text-gray-400">
+        <div className="flex justify-between items-center mb-1">
+          <p className="text-md text-gray-300">
             Copyright © {new Date().getFullYear()}. Created by{" "}
             <a
               href="https://danglorioso.com"
@@ -27,7 +28,7 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"
             >
-              <img src="/icons/github.svg" alt="GitHub" className="w-7 h-7" />
+              <FaGithub className="w-7 h-7" />
             </a>
             <a
               href="https://linkedin.com/in/dan-glorioso"
@@ -35,7 +36,7 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"
             >
-              <img src="/icons/linkedin.svg" alt="LinkedIn" className="w-7 h-7" />
+              <FaLinkedin className="w-7 h-7" />
             </a>
           </div>
         </div>
@@ -50,7 +51,7 @@ const Footer: React.FC = () => {
           >
             System Status
           </a>
-          <span className="mx-3 text-gray-600">•</span>
+          <span className="mx-2 text-gray-600">•</span>
           <a
             href="mailto:dan@danglorioso.com"
             className="text-gray-400 hover:text-gray-300 transition-colors"
