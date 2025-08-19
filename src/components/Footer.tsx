@@ -1,5 +1,5 @@
 import React from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
@@ -22,6 +22,14 @@ const Footer: React.FC = () => {
           
           {/* Social Icons */}
           <div className="flex space-x-5">
+            <a
+              href="mailto:dan@danglorioso.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <FaEnvelope className="w-7 h-7" />
+            </a>
             <a
               href="https://github.com/danglorioso"
               target="_blank"
