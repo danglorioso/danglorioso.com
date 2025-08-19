@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
-<footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/25">
+<footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
       <div className="max-w-7xl mx-auto px-8">
         {/* Top row: Copyright left, Social icons right */}
         <div className="flex justify-between items-center mb-1">
