@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
               href="https://danglorioso.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-700"
+              className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
             >
               Dan Glorioso
             </a>
@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
               href="mailto:dan@danglorioso.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
             >
               <FaEnvelope className="w-7 h-7" />
             </a>
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
               href="https://github.com/danglorioso"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
             >
               <FaGithub className="w-7 h-7" />
             </a>
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
               href="https://linkedin.com/in/dan-glorioso"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
             >
               <FaLinkedin className="w-7 h-7" />
             </a>
@@ -55,14 +55,14 @@ const Footer: React.FC = () => {
             href="https://status.danglorioso.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-gray-300 transition-colors"
+            className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
           >
             System Status
           </a>
           <span className="mx-2 text-gray-600">•</span>
           <a
             href="mailto:dan@danglorioso.com"
-            className="text-gray-400 hover:text-gray-300 transition-colors"
+            className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
           >
             Contact
           </a>
