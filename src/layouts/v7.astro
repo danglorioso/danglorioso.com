@@ -447,4 +447,15 @@ const { title, description } = Astro.props;
 		background: #0f172a;
 		min-height: 100vh;
 	}
+	
+	/* Custom text selection highlight color */
+	::selection {
+		background-color: #C0C7D2;
+		color: #0f172a;
+	}
+	
+	::-moz-selection {
+		background-color: #C0C7D2;
+		color: #0f172a;
+	}
 </style>
