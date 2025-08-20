@@ -31,20 +31,20 @@ export default function Footer() {
               <FaEnvelope className="w-7 h-7" />
             </a>
             <a
-              href="https://github.com/danglorioso"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-            >
-              <FaGithub className="w-7 h-7" />
-            </a>
-            <a
-              href="https://linkedin.com/in/dan-glorioso"
+              href="https://danglorioso.com/linkedin"
               target="_blank" // Open in new tab
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
             >
               <FaLinkedin className="w-7 h-7" />
+            </a>
+            <a
+              href="https://danglorioso.com/github"
+              target="_blank" // Open in new tab
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
+            >
+              <FaGithub className="w-7 h-7" />
             </a>
           </div>
         </div>
