@@ -1,9 +1,9 @@
 import React from "react";
 import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
-const Footer: React.FC = () => {
+export default function Footer() {
   return (
-<footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
+    <footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
       <div className="max-w-7xl mx-auto px-8">
         {/* Top row: Copyright left, Social icons right */}
         <div className="flex justify-between items-center mb-1">
@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
         
-        {/* Bottom row: Links left-aligned */}
+        {/* Bottom row text: Links left-aligned */}
         <p className="text-sm text-gray-500">
           <a
             href="https://status.danglorioso.com"
@@ -69,9 +69,6 @@ const Footer: React.FC = () => {
           </a>
         </p>
       </div>
-      {/* <p className="text-xs text-gray-500 mt-1">Copyright © 2025. All rights reserved.</p> */}
     </footer>
   );
-};
-
-export default Footer;
+}
