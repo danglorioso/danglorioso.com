@@ -1,0 +1,88 @@
+---
+import Monogram from './Monogram.astro';
+
+// Navigation items - easily customizable
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/hobbies', label: 'Hobbies' },
+  { href: '/posts', label: 'Posts' },
+  { href: '/contact', label: 'Contact' },
+];
+
+// Get current pathname for active state
+const pathname = Astro.url.pathname;
+
+// Helper function to determine if a nav item is active
+const isActive = (href: string) => {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+};
+---
+
+<header class="w-full py-4 border-b border-gray-800 bg-slate-900/80 backdrop-blur-sm">
+  <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
+    
+    <!-- Logo Section -->
+    <div class="flex-shrink-0">
+      <a href="/" class="block w-20 h-12 sm:w-24 sm:h-14 hover:opacity-80 transition-opacity duration-200">
+        <Monogram width="96px" height="56px" />
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center space-x-1">
+      <div class="flex space-x-1 bg-slate-950/60 rounded-full px-4 py-2 backdrop-blur-sm border border-slate-700/50">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              isActive(item.href)
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
+                : 'text-gray-300 hover:text-white hover:bg-slate-800/60'
+            }`}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <!-- Mobile Menu Button Placeholder -->
+    <!-- You'll replace this with a React component for interactivity -->
+    <div class="md:hidden">
+      <button 
+        class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-slate-800/60 transition-colors duration-200"
+        aria-label="Open mobile menu"
+      >
+        <!-- Hamburger icon - you can replace with react-icons later -->
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<style>
+  /* Optional: Add subtle animation to the navigation pills */
+  nav a {
+    position: relative;
+  }
+  
+  nav a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  nav a:hover::before {
+    opacity: 1;
+  }
+</style>
