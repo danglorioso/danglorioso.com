@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
             Copyright © {new Date().getFullYear()}. Created by{" "}
             <a
               href="https://danglorioso.com"
-              target="_blank"
+              target="" // Open in same tab
               rel="noopener noreferrer"
               className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
             >
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           <div className="flex space-x-5">
             <a
               href="mailto:dan@danglorioso.com"
-              target="_blank"
+              target="_blank" // Open in new tab
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
             >
@@ -32,17 +32,17 @@ const Footer: React.FC = () => {
             </a>
             <a
               href="https://github.com/danglorioso"
-              target="_blank"
+              target="_blank" // Open in new tab
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
+              className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
             >
               <FaGithub className="w-7 h-7" />
             </a>
             <a
               href="https://linkedin.com/in/dan-glorioso"
-              target="_blank"
+              target="_blank" // Open in new tab
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
+              className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
             >
               <FaLinkedin className="w-7 h-7" />
             </a>
@@ -53,9 +53,9 @@ const Footer: React.FC = () => {
         <p className="text-sm text-gray-500">
           <a
             href="https://status.danglorioso.com"
-            target="_blank"
+            target="_blank" // Open in new tab
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
+            className="text-gray-400 hover:text-gray-300 hover:scale-105 transition-colors duration-300 ease-in-out"
           >
             System Status
           </a>
