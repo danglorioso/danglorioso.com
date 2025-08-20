@@ -62,6 +62,7 @@ const Footer: React.FC = () => {
           <span className="mx-2 text-gray-600">•</span>
           <a
             href="mailto:dan@danglorioso.com"
+            target="_blank" // Open in new tab
             className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
           >
             Contact
