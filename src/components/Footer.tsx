@@ -95,15 +95,7 @@ export default function Footer() {
             
             {/* Social Icons */}
             <div className="flex space-x-5">
-              <a
-                href="/mail"
-                target="_blank" // Open in new tab
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
-                aria-label="Email"
-              >
-                <FaEnvelope className="w-7 h-7" />
-              </a>
+              {/* LinkedIn */}
               <a
                 href="/linkedin"
                 target="_blank" // Open in new tab
@@ -113,6 +105,7 @@ export default function Footer() {
               >
                 <FaLinkedin className="w-7 h-7" />
               </a>
+              {/* Github */}
               <a
                 href="/github"
                 target="_blank" // Open in new tab
@@ -121,6 +114,16 @@ export default function Footer() {
                 aria-label="GitHub"
               >
                 <FaGithub className="w-7 h-7" />
+              </a>
+              {/* Email */}
+              <a
+                href="/mail"
+                target="_blank" // Open in new tab
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
+                aria-label="Email"
+              >
+                <FaEnvelope className="w-7 h-7" />
               </a>
             </div>
           </div>
