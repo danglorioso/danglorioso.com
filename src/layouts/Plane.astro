@@ -1,0 +1,663 @@
+---
+import SpeedInsights from '@vercel/speed-insights/astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | {description}</title>
+	</head>
+	<body class="text-white min-h-screen relative overflow-hidden flex flex-col">
+		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+		<SpeedInsights />
+		
+		<!-- Page Content -->
+		<div class="relative z-10 flex-grow flex flex-col">
+			<slot />
+		</div>
+		
+		<script is:inline>
+			// Dynamic Neural Network Animation System
+			class DynamicNeuralNetwork {
+				constructor() {
+					this.canvas = document.getElementById('neural-canvas');
+					this.ctx = this.canvas.getContext('2d');
+					this.time = 0;
+					this.nodes = [];
+					this.connections = [];
+					this.pulses = [];
+					this.mouseX = 0;
+					this.mouseY = 0;
+					
+					// Paper airplane system
+					this.paperAirplanes = [];
+					this.nextAirplaneTime = 0;
+					this.paperPlaneIcon = null;
+					
+					this.resize();
+					this.createNetwork();
+					this.loadPaperPlaneIcon();
+					this.bindEvents();
+					this.animate();
+				}
+				
+				resize() {
+					this.canvas.width = window.innerWidth;
+					this.canvas.height = window.innerHeight;
+				}
+				
+				createNetwork() {
+					this.nodes = [];
+					this.connections = [];
+					
+					// Create nodes in a loose grid with lots of variation
+					const cols = Math.floor(this.canvas.width / 100) + 1;
+					const rows = Math.floor(this.canvas.height / 80) + 1;
+					
+					// Create base nodes
+					for (let row = 0; row < rows; row++) {
+						for (let col = 0; col < cols; col++) {
+							// Skip some nodes randomly to break the grid
+							if (Math.random() < 0.3) continue;
+							
+							const baseX = (col * this.canvas.width) / (cols - 1);
+							const baseY = (row * this.canvas.height) / (rows - 1);
+							
+							// Add significant randomness to break grid pattern
+							const offsetX = (Math.random() - 0.5) * 80;
+							const offsetY = (Math.random() - 0.5) * 60;
+							
+							this.nodes.push({
+								x: baseX + offsetX,
+								y: baseY + offsetY,
+								originalX: baseX + offsetX,
+								originalY: baseY + offsetY,
+								size: 0.8 + Math.random() * 2, // Smaller nodes
+								intensity: 0,
+								maxIntensity: 0.2 + Math.random() * 0.3, // Less bright
+								pulsePhase: Math.random() * Math.PI * 2,
+								activity: 0,
+								maxActivity: 0.4 + Math.random() * 0.2, // Reduced activity
+								
+								// Fade in/out properties
+								fadeState: Math.random() < 0.7 ? 'visible' : 'hidden', // Start most visible
+								fadeTimer: Math.random() * 5000, // Random initial timer
+								fadeDuration: 2000 + Math.random() * 3000, // 2-5 seconds to fade
+								nextFadeDelay: 1000 + Math.random() * 8000, // 1-9 seconds between fades
+								
+								// Floating properties
+								floatAmplitude: 5 + Math.random() * 10,
+								floatSpeed: 0.0005 + Math.random() * 0.001,
+								
+								row: row,
+								col: col,
+								alive: true
+							});
+						}
+					}
+					
+					// Add some completely random nodes to fill gaps
+					const randomNodeCount = Math.floor(this.nodes.length * 0.3);
+					for (let i = 0; i < randomNodeCount; i++) {
+						this.nodes.push({
+							x: Math.random() * this.canvas.width,
+							y: Math.random() * this.canvas.height,
+							originalX: Math.random() * this.canvas.width,
+							originalY: Math.random() * this.canvas.height,
+							size: 1 + Math.random() * 3,
+							intensity: 0,
+							maxIntensity: 0.3 + Math.random() * 0.4,
+							pulsePhase: Math.random() * Math.PI * 2,
+							activity: 0,
+							maxActivity: 0.5 + Math.random() * 0.3,
+							
+							fadeState: Math.random() < 0.5 ? 'visible' : 'hidden',
+							fadeTimer: Math.random() * 5000,
+							fadeDuration: 1500 + Math.random() * 2500,
+							nextFadeDelay: 2000 + Math.random() * 6000,
+							
+							floatAmplitude: 3 + Math.random() * 8,
+							floatSpeed: 0.0008 + Math.random() * 0.0012,
+							
+							row: -1,
+							col: -1,
+							alive: true
+						});
+					}
+					
+					// Create dynamic connections
+					this.updateConnections();
+				}
+				
+				updateConnections() {
+					this.connections = [];
+					
+					// Only connect visible nodes
+					const visibleNodes = this.nodes.filter(node => 
+						node.alive && (node.fadeState === 'visible' || node.fadeState === 'fading-in')
+					);
+					
+					visibleNodes.forEach((node, i) => {
+						visibleNodes.forEach((otherNode, j) => {
+							if (i !== j) {
+								const dx = node.x - otherNode.x;
+								const dy = node.y - otherNode.y;
+								const distance = Math.sqrt(dx * dx + dy * dy);
+								
+								// Connect closer nodes with higher probability
+								if (distance < 120 && Math.random() > 0.6) {
+									this.connections.push({
+										start: this.nodes.indexOf(node),
+										end: this.nodes.indexOf(otherNode),
+										strength: 0,
+										baseStrength: 0.05 + Math.random() * 0.25,
+										pulseSpeed: 0.008 + Math.random() * 0.015,
+										distance: distance,
+										maxStrength: 0.3 + Math.random() * 0.4
+									});
+								}
+							}
+						});
+					});
+				}
+				
+				// Find nearby nodes for connections
+				findNearbyNodes(nodeIndex) {
+					const node = this.nodes[nodeIndex];
+					const nearby = [];
+					const maxDistance = 80; // Connection range
+					
+					for (let i = 0; i < this.nodes.length; i++) {
+						if (i === nodeIndex) continue;
+						
+						const other = this.nodes[i];
+						const dx = node.x - other.x;
+						const dy = node.y - other.y;
+						const distance = Math.sqrt(dx * dx + dy * dy);
+						
+						if (distance < maxDistance) {
+							nearby.push({ index: i, distance });
+						}
+					}
+					
+					return nearby;
+				}
+
+				// Draw connections between nodes
+				drawConnections() {
+					for (let i = 0; i < this.nodes.length; i++) {
+						const node = this.nodes[i];
+						if (node.fadeState === 'hidden' || node.intensity < 0.1) continue;
+						
+						const nearby = this.findNearbyNodes(i);
+						
+						for (const { index, distance } of nearby) {
+							const other = this.nodes[index];
+							if (other.fadeState === 'hidden' || other.intensity < 0.1) continue;
+							
+							// Only draw if both nodes are reasonably visible
+							const minIntensity = Math.min(node.intensity, other.intensity);
+							if (minIntensity < 0.05) continue;
+							
+							// Fade connection based on node intensities and distance
+							const alpha = (minIntensity * 0.15) * (1 - distance / 80);
+							this.ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+							this.ctx.lineWidth = 5.5;
+							
+							this.ctx.beginPath();
+							this.ctx.moveTo(node.x, node.y);
+							this.ctx.lineTo(other.x, other.y);
+							this.ctx.stroke();
+						}
+					}
+				}
+				
+				bindEvents() {
+					window.addEventListener('resize', () => {
+						this.resize();
+						this.createNetwork();
+					});
+					
+					// this.canvas.addEventListener('mousemove', (e) => {
+					// 	this.mouseX = e.clientX;
+					// 	this.mouseY = e.clientY;
+						
+					// 	// Activate nodes near mouse and force them to be visible
+					// 	this.nodes.forEach(node => {
+					// 		if (!node.alive) return;
+							
+					// 		const dx = this.mouseX - node.x;
+					// 		const dy = this.mouseY - node.y;
+					// 		const distance = Math.sqrt(dx * dx + dy * dy);
+							
+					// 		if (distance < 80) {
+					// 			const activation = Math.max(0, 1 - distance / 80);
+					// 			node.activity = Math.min(node.maxActivity, node.activity + activation * 0.08);
+								
+					// 			// Force visibility when mouse is near
+					// 			if (node.fadeState === 'hidden' || node.fadeState === 'fading-out') {
+					// 				node.fadeState = 'fading-in';
+					// 				node.fadeTimer = 0;
+					// 			}
+					// 		}
+					// 	});
+					// });
+				}
+				
+				createPulse(startNodeIndex, endNodeIndex) {
+					this.pulses.push({
+						startNode: startNodeIndex,
+						endNode: endNodeIndex,
+						progress: 0,
+						speed: 0.015 + Math.random() * 0.025,
+						intensity: 0.5 + Math.random() * 0.5,
+						life: 1.0
+					});
+				}
+				
+				// Paper Airplane System
+				loadPaperPlaneIcon() {
+					// Create SVG path data for the paper plane icon
+					this.paperPlaneIcon = new Path2D('M1.78212 6.19489L25.8076 53.5211L32.4482 34.4673L7.12889 10.6626L35.0544 31.3483L52.6125 21.4283L1.78212 6.19489Z');
+				}
+				
+				createPaperAirplane() {
+					// More varied entry points and directions
+					const entryStyle = Math.random();
+					let startX, startY, directionX, directionY;
+					
+					if (entryStyle < 0.25) {
+						// Top edge with varied angles
+						startX = Math.random() * this.canvas.width;
+						startY = -80;
+						const angle = (Math.PI / 6) + Math.random() * (2 * Math.PI / 3); // 30° to 150°
+						directionX = Math.cos(angle);
+						directionY = Math.sin(angle);
+					} else if (entryStyle < 0.5) {
+						// Right edge with varied angles
+						startX = this.canvas.width + 80;
+						startY = Math.random() * this.canvas.height;
+						const angle = (2 * Math.PI / 3) + Math.random() * (2 * Math.PI / 3); // 120° to 240°
+						directionX = Math.cos(angle);
+						directionY = Math.sin(angle);
+					} else if (entryStyle < 0.75) {
+						// Bottom edge with varied angles
+						startX = Math.random() * this.canvas.width;
+						startY = this.canvas.height + 80;
+						const angle = (4 * Math.PI / 3) + Math.random() * (2 * Math.PI / 3); // 240° to 360°
+						directionX = Math.cos(angle);
+						directionY = Math.sin(angle);
+					} else {
+						// Left edge with varied angles
+						startX = -80;
+						startY = Math.random() * this.canvas.height;
+						const angle = Math.random() * (2 * Math.PI / 3); // 0° to 120°
+						directionX = Math.cos(angle);
+						directionY = Math.sin(angle);
+					}
+					
+					// Normalize direction vector
+					const magnitude = Math.sqrt(directionX * directionX + directionY * directionY);
+					directionX /= magnitude;
+					directionY /= magnitude;
+					
+					const airplane = {
+						x: startX,
+						y: startY,
+						baseDirectionX: directionX,
+						baseDirectionY: directionY,
+						angle: Math.atan2(directionY, directionX),
+						speed: 0.3 + Math.random() * 1.2, // Varied speeds
+						time: 0,
+						loopRadius: 30 + Math.random() * 80, // Varied loop sizes
+						loopSpeed: 0.8 + Math.random() * 1.5, // Varied loop frequencies
+						loopPhase: Math.random() * Math.PI * 2, // Random starting phase
+						size: 12 + Math.random() * 8, // Varied airplane sizes
+						trail: [],
+						life: 1.0,
+						maxTime: 8000 + Math.random() * 12000 // Varied lifetimes
+					};
+					
+					this.paperAirplanes.push(airplane);
+				}
+				
+				updatePaperAirplanes() {
+					// Create new airplanes at random intervals
+					if (this.time > this.nextAirplaneTime) {
+						this.createPaperAirplane();
+						this.nextAirplaneTime = this.time + 1000 + Math.random() * 2000; // More frequent for testing
+					}
+					
+					// Update existing airplanes
+					this.paperAirplanes = this.paperAirplanes.filter(airplane => {
+						// Store previous position for velocity calculation
+						const prevX = airplane.x;
+						const prevY = airplane.y;
+						
+						// Update time and loop phase
+						airplane.time += 16;
+						airplane.loopPhase += airplane.loopSpeed * 0.016; // Convert to seconds
+						
+						// Calculate the center point of the circular motion
+						// This moves along the base direction
+						const centerX = airplane.x + airplane.baseDirectionX * airplane.speed;
+						const centerY = airplane.y + airplane.baseDirectionY * airplane.speed;
+						
+						// Calculate circular offset from the center
+						const circleX = Math.cos(airplane.loopPhase) * airplane.loopRadius;
+						const circleY = Math.sin(airplane.loopPhase) * airplane.loopRadius;
+						
+						// Create perpendicular vectors to the base direction for the loop plane
+						const perpX = -airplane.baseDirectionY; // Perpendicular X
+						const perpY = airplane.baseDirectionX;  // Perpendicular Y
+						
+						// Apply the circular motion in the perpendicular plane
+						airplane.x = centerX + (perpX * circleX + airplane.baseDirectionY * circleY) * 0.01;
+						airplane.y = centerY + (perpY * circleX - airplane.baseDirectionX * circleY) * 0.01;
+						
+						// Calculate velocity for proper rotation
+						const velocityX = airplane.x - prevX;
+						const velocityY = airplane.y - prevY;
+						
+						// Update angle to match movement direction with some smoothing
+						if (Math.abs(velocityX) > 0.01 || Math.abs(velocityY) > 0.01) {
+							const targetAngle = Math.atan2(velocityY, velocityX);
+							// Smooth angle transition
+							let angleDiff = targetAngle - airplane.angle;
+							// Handle angle wrapping
+							if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+							if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+							airplane.angle += angleDiff * 0.1;
+						}
+						
+						// Add to trail
+						airplane.trail.push({ x: airplane.x, y: airplane.y, time: this.time });
+						
+						// Keep trail manageable length
+						if (airplane.trail.length > 120) {
+							airplane.trail.shift();
+						}
+						
+						// Fade out based on time
+						if (airplane.time > airplane.maxTime * 0.7) {
+							const fadeProgress = (airplane.time - airplane.maxTime * 0.7) / (airplane.maxTime * 0.3);
+							airplane.life = Math.max(0, 1 - fadeProgress);
+						}
+						
+						// Remove when faded, too old, or off screen
+						const margin = 150;
+						const isOnScreen = airplane.x > -margin && airplane.x < this.canvas.width + margin && 
+										  airplane.y > -margin && airplane.y < this.canvas.height + margin;
+						
+						return airplane.time < airplane.maxTime && airplane.life > 0 && isOnScreen;
+					});
+				}
+				
+				drawPaperAirplanes() {
+					// Draw dashed trails first (behind airplanes)
+					this.paperAirplanes.forEach(airplane => {
+						if (airplane.trail.length < 2) return;
+						
+						// Light, calming white dashed trail
+						this.ctx.strokeStyle = `rgba(255, 255, 255, ${airplane.life * 0.4})`;
+						this.ctx.lineWidth = 1.5;
+						this.ctx.setLineDash([4, 6]); // Dashed pattern
+						
+						this.ctx.beginPath();
+						this.ctx.moveTo(airplane.trail[0].x, airplane.trail[0].y);
+						
+						for (let i = 1; i < airplane.trail.length; i++) {
+							const point = airplane.trail[i];
+							const age = (this.time - point.time) / 4000; // Fade over 4 seconds
+							const alpha = Math.max(0, 1 - age) * airplane.life * 0.3;
+							
+							if (alpha > 0.05) {
+								this.ctx.lineTo(point.x, point.y);
+							}
+						}
+						
+						this.ctx.stroke();
+						this.ctx.setLineDash([]); // Reset line dash
+					});
+					
+					// Draw paper airplanes using SVG icon
+					this.paperAirplanes.forEach(airplane => {
+						this.ctx.save();
+						this.ctx.translate(airplane.x, airplane.y);
+						this.ctx.rotate(airplane.angle);
+						this.ctx.scale(airplane.size / 30, airplane.size / 30); // Scale to appropriate size
+						
+						const alpha = airplane.life * 0.8;
+						
+						// Draw the paper airplane icon
+						this.ctx.fillStyle = `rgba(240, 240, 240, ${alpha})`;
+						this.ctx.strokeStyle = `rgba(200, 200, 200, ${alpha * 0.6})`;
+						this.ctx.lineWidth = 1;
+						
+						this.ctx.fill(this.paperPlaneIcon);
+						this.ctx.stroke(this.paperPlaneIcon);
+						
+						// Add subtle glow for calming effect
+						this.ctx.shadowColor = `rgba(255, 255, 255, ${alpha * 0.3})`;
+						this.ctx.shadowBlur = 8;
+						this.ctx.fill(this.paperPlaneIcon);
+						this.ctx.shadowBlur = 0;
+						
+						this.ctx.restore();
+					});
+				}
+				
+				updateNetwork() {
+					const deltaTime = 16;
+					
+					// Update nodes
+					this.nodes.forEach((node) => {
+						if (!node.alive) return;
+						
+						// Update fade states
+						node.fadeTimer += deltaTime;
+						
+						switch (node.fadeState) {
+							case 'visible':
+								node.intensity = Math.min(node.maxIntensity, node.intensity + 0.02);
+								if (node.fadeTimer > node.nextFadeDelay) {
+									if (Math.random() < 0.002) { // Random chance to start fading
+										node.fadeState = 'fading-out';
+										node.fadeTimer = 0;
+									}
+								}
+								break;
+								
+							case 'fading-out':
+								const fadeOutProgress = node.fadeTimer / node.fadeDuration;
+								node.intensity = node.maxIntensity * (1 - fadeOutProgress);
+								if (fadeOutProgress >= 1) {
+									node.fadeState = 'hidden';
+									node.fadeTimer = 0;
+									node.intensity = 0;
+									node.nextFadeDelay = 1000 + Math.random() * 8000;
+								}
+								break;
+								
+							case 'hidden':
+								node.intensity = 0;
+								if (node.fadeTimer > node.nextFadeDelay) {
+									if (Math.random() < 0.003) { // Random chance to start appearing
+										node.fadeState = 'fading-in';
+										node.fadeTimer = 0;
+									}
+								}
+								break;
+								
+							case 'fading-in':
+								const fadeInProgress = node.fadeTimer / node.fadeDuration;
+								node.intensity = node.maxIntensity * fadeInProgress;
+								if (fadeInProgress >= 1) {
+									node.fadeState = 'visible';
+									node.fadeTimer = 0;
+									node.intensity = node.maxIntensity;
+									node.nextFadeDelay = 3000 + Math.random() * 10000;
+								}
+								break;
+						}
+						
+						// Natural activity decay
+						node.activity *= 0.992;
+						
+						// Random bursts of activity
+						if (node.fadeState === 'visible' && Math.random() < 0.0008) {
+							node.activity = Math.min(node.maxActivity, node.activity + Math.random() * 0.4);
+						}
+						
+						// Enhanced floating motion
+						node.x = node.originalX + 
+							Math.sin(this.time * node.floatSpeed + node.pulsePhase) * node.floatAmplitude;
+						node.y = node.originalY + 
+							Math.cos(this.time * node.floatSpeed * 0.7 + node.pulsePhase) * node.floatAmplitude * 0.6;
+					});
+					
+					// Periodically update connections as nodes fade in/out
+					if (this.time % 1000 < 16) {
+						this.updateConnections();
+					}
+					
+					// Update connections
+					this.connections.forEach(connection => {
+						const startNode = this.nodes[connection.start];
+						const endNode = this.nodes[connection.end];
+						
+						if (!startNode || !endNode || !startNode.alive || !endNode.alive) return;
+						
+						// Connection strength based on both nodes being visible and active
+						const visibilityFactor = Math.min(startNode.intensity, endNode.intensity);
+						const avgActivity = (startNode.activity + endNode.activity) / 2;
+						connection.strength = connection.baseStrength * visibilityFactor * (0.3 + avgActivity);
+						
+						// Create pulses along active connections
+						if (connection.strength > 0.15 && Math.random() < 0.004) {
+							this.createPulse(connection.start, connection.end);
+						}
+					});
+					
+					// Update pulses
+					this.pulses = this.pulses.filter(pulse => {
+						pulse.progress += pulse.speed;
+						pulse.life *= 0.985;
+						
+						if (pulse.progress >= 1) {
+							const endNode = this.nodes[pulse.endNode];
+							if (endNode && endNode.alive) {
+								endNode.activity = Math.min(endNode.maxActivity, endNode.activity + pulse.intensity * 0.3);
+							}
+							return false;
+						}
+						
+						return pulse.life > 0.1;
+					});
+				}
+				
+				drawNetwork() {
+					// Draw simple connections between nearby nodes
+					this.drawConnections();
+					
+					// Draw nodes
+					this.nodes.forEach(node => {
+						if (!node.alive || node.intensity < 0.01) return;
+						
+						const totalBrightness = node.intensity + node.activity;
+						const pulseEffect = 1 + Math.sin(this.time * 0.002 + node.pulsePhase) * 0.15; // Reduced pulse
+						
+						// Node glow (smaller and dimmer)
+						this.ctx.beginPath();
+						this.ctx.arc(node.x, node.y, node.size * 1.8 * pulseEffect, 0, Math.PI * 2);
+						this.ctx.fillStyle = `rgba(100, 200, 255, ${totalBrightness * 0.08})`;
+						this.ctx.fill();
+						
+						// Node core
+						this.ctx.beginPath();
+						this.ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+						this.ctx.fillStyle = `rgba(200, 230, 255, ${totalBrightness * 0.6})`; // Dimmer
+						this.ctx.fill();
+						
+						// Bright center for very active nodes (dimmer)
+						if (node.activity > 0.3) {
+							this.ctx.beginPath();
+							this.ctx.arc(node.x, node.y, node.size * 0.3, 0, Math.PI * 2);
+							this.ctx.fillStyle = `rgba(255, 255, 255, ${node.activity * 0.4})`;
+							this.ctx.fill();
+						}
+					});
+				}
+				
+				animate() {
+					this.time += 16;
+					
+					// Clear canvas with dark background
+					// this.ctx.fillStyle = 'rgba(2, 6, 23, 0.95)';
+					this.ctx.fillStyle = '#0f172a';
+					this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+					
+					// Update and draw the neural network
+					this.updateNetwork();
+					this.drawNetwork();
+					
+					// Update and draw paper airplanes
+					this.updatePaperAirplanes();
+					this.drawPaperAirplanes();
+					
+					requestAnimationFrame(() => this.animate());
+				}
+			}
+			
+			// Initialize when DOM is loaded
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', () => new DynamicNeuralNetwork());
+			} else {
+				new DynamicNeuralNetwork();
+			}
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	
+	html, body {
+		font-family: system-ui, sans-serif;
+		overflow-x: hidden;
+	}
+	
+	body {
+		/* background: linear-gradient(135deg, #170202 0%, #0f172a 50%, #1e293b 100%); */
+		background: #0f172a;
+		min-height: 100vh;
+	}
+	
+	/* Text selection highlight color */
+	::selection {
+		background-color: #828FA4;
+		color: #0f172a;
+	}
+	
+	::-moz-selection {
+		background-color: #828FA4;
+		color: #0f172a;
+	}
+</style>
