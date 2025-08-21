@@ -83,7 +83,7 @@ export default function Footer() {
             <p className="text-md text-gray-300">
               Copyright © {new Date().getFullYear()}. Created by{" "}
               <a
-                href="https://danglorioso.com"
+                href="/"
                 target="" // Open in same tab
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
@@ -96,7 +96,7 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex space-x-5">
               <a
-                href="mailto:dan@danglorioso.com"
+                href="/mail"
                 target="_blank" // Open in new tab
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
@@ -105,7 +105,7 @@ export default function Footer() {
                 <FaEnvelope className="w-7 h-7" />
               </a>
               <a
-                href="https://danglorioso.com/linkedin"
+                href="/linkedin"
                 target="_blank" // Open in new tab
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
@@ -114,7 +114,7 @@ export default function Footer() {
                 <FaLinkedin className="w-7 h-7" />
               </a>
               <a
-                href="https://danglorioso.com/github"
+                href="/github"
                 target="_blank" // Open in new tab
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
@@ -137,8 +137,8 @@ export default function Footer() {
             </a>
             <span className="mx-2 text-gray-600">•</span>
             <a
-              href="mailto:dan@danglorioso.com"
-              target="_blank" // Open in new tab
+              href="/contact"
+              target="" // Open in same tab
               className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
             >
               Contact
