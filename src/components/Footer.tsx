@@ -35,8 +35,8 @@ export default function Footer() {
               </a>
               <span className="mx-2 text-gray-600">•</span>
               <a
-                href="mailto:dan@danglorioso.com"
-                target="_blank" // Open in new tab
+                href="/contact"
+                target="" // Open in same tab
                 className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
               >
                 Contact
