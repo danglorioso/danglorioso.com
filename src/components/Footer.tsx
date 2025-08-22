@@ -6,8 +6,8 @@ export default function Footer() {
     <footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
       <div className="max-w-7xl mx-auto px-8">
         
-        {/* Mobile Layout: Stack with social icons at bottom */}
-        <div className="sm:hidden flex flex-col space-y-3">
+        {/* MOBILE - Stack with social icons on bottom */}
+        <div className="sm:hidden flex flex-col space-y-2">
           {/* Copyright */}
           <p className="text-md text-gray-300 text-center">
             Copyright © {new Date().getFullYear()}. Created by{" "}
@@ -24,7 +24,7 @@ export default function Footer() {
           
           {/* Status Links */}
           <div className="flex justify-center">
-            <p className="text-sm text-gray-500 flex items-center">
+            <p className="text-sm text-gray-500 flex items-center mb-1">
               <a
                 href="https://status.danglorioso.com"
                 target="_blank" // Open in new tab
@@ -44,17 +44,8 @@ export default function Footer() {
             </p>
           </div>
           
-          {/* Social Icons at bottom on mobile */}
+          {/* Mobile Social Icons at bottom */}
           <div className="flex justify-center space-x-4">
-            <a
-              href="mailto:dan@danglorioso.com"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
-              aria-label="Email"
-            >
-              <FaEnvelope className="w-6 h-6" />
-            </a>
             <a
               href="https://danglorioso.com/linkedin"
               target="_blank" // Open in new tab
@@ -73,10 +64,19 @@ export default function Footer() {
             >
               <FaGithub className="w-6 h-6" />
             </a>
+            <a
+              href="mailto:dan@danglorioso.com"
+              target="_blank" // Open in new tab
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
+              aria-label="Email"
+            >
+              <FaEnvelope className="w-6 h-6" />
+            </a>
           </div>
         </div>
 
-        {/* Desktop Layout: Original design */}
+        {/* DESKTOP - Text left, icons right */}
         <div className="hidden sm:block">
           {/* Top row: Copyright left, Social icons right */}
           <div className="flex justify-between items-center mb-1">
