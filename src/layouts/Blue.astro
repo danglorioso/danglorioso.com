@@ -1,5 +1,6 @@
 ---
 import SpeedInsights from '@vercel/speed-insights/astro';
+import Footer from '../components/Footer.tsx';
 
 interface Props {
 	title: string;
@@ -7,6 +8,8 @@ interface Props {
 }
 const { title, description } = Astro.props;
 ---
+
+<!-- Purpose: Updated layout with NO animation in background -->
 
 <!doctype html>
 <html lang="en">
@@ -17,13 +20,9 @@ const { title, description } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title} | Dan Glorioso</title>
-		<style>
-			@tailwind base;
-			@tailwind components;
-			@tailwind utilities;
-		</style>
+		<title>{title} | {description}</title>
 	</head>
+	
 	<body class="text-white min-h-screen relative overflow-hidden flex flex-col">
 		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
@@ -33,7 +32,10 @@ const { title, description } = Astro.props;
 		<div class="relative z-10 flex-grow flex flex-col">
 			<slot />
 		</div>
-		
+
+		<!-- Footer -->
+		<Footer />
+
 		<script is:inline>
 			// Dynamic Neural Network Animation System
 			class DynamicNeuralNetwork {
@@ -418,8 +420,8 @@ const { title, description } = Astro.props;
 					this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 					
 					// Update and draw the neural network
-					this.updateNetwork();
-					this.drawNetwork();
+					// this.updateNetwork();
+					// this.drawNetwork();
 					
 					requestAnimationFrame(() => this.animate());
 				}

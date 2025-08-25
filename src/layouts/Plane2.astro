@@ -1,5 +1,7 @@
 ---
 import SpeedInsights from '@vercel/speed-insights/astro';
+import Header from '../components/HeaderNew.astro';
+import Footer from '../components/Footer.tsx';
 
 interface Props {
 	title: string;
@@ -7,6 +9,8 @@ interface Props {
 }
 const { title, description } = Astro.props;
 ---
+
+<!-- Purpose: Current layout iteration with paper airplane animation -->
 
 <!doctype html>
 <html lang="en">
@@ -24,18 +28,26 @@ const { title, description } = Astro.props;
 			@tailwind utilities;
 		</style>
 	</head>
+
 	<body class="text-white min-h-screen relative overflow-hidden flex flex-col">
 		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
+		<!-- Vercel analytics -->
 		<SpeedInsights />
 		
+		<!-- Header -->
+		<Header />
+
 		<!-- Page Content -->
 		<div class="relative z-10 flex-grow flex flex-col">
 			<slot />
 		</div>
-		
+
+		<!-- Footer -->
+		<Footer />
+
+		<!-- Dynamic Neural Network Animation System -->
 		<script is:inline>
-			// Dynamic Neural Network Animation System
 			class DynamicNeuralNetwork {
 				constructor() {
 					this.canvas = document.getElementById('neural-canvas');

@@ -2,15 +2,13 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Plane2.astro';
-import Header from '../../components/HeaderNew.astro';
-import Footer from '../../components/Footer';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
   try {
     const posts = await getCollection('blog');
-    console.log('Posts found:', posts.length);
+    // console.log('Posts found:', posts.length);
     
     return posts
       .filter(post => !post.data.draft)
@@ -29,12 +27,6 @@ type Props = {
 };
 
 const { post } = Astro.props;
-
-// Check if post exists
-if (!post) {
-  return Astro.redirect('/404');
-}
-
 const { Content } = await post.render();
 
 // Get related posts (excluding current post)
@@ -53,9 +45,8 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<Layout title={post.data.title}>
-  <Header />
-  
+<Layout title={post.data.title}>  
+
   <main class="min-h-screen pt-24 pb-16">
     <div class="max-w-4xl mx-auto px-6">
       <!-- Back to blog -->
@@ -191,7 +182,6 @@ const formatDate = (date: Date) => {
     </div>
   </main>
 
-  <Footer />
 </Layout>
 
 <style>

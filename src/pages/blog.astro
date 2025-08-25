@@ -1,8 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Plane2.astro';
-import Header from '../components/HeaderNew.astro';
-import Footer from '../components/Footer';
 
 // Get all blog posts and sort by date (newest first)
 const allPosts = await getCollection('blog', ({ data }) => {
@@ -34,7 +32,6 @@ const formatDate = (dateString: string) => {
 ---
 
 <Layout title="Blog" description="Thoughts on tech, development, and computer science">
-  <Header />
 
   <main class="flex-grow relative z-10">
     <div class="max-w-4xl mx-auto px-8 py-12">
@@ -128,7 +125,6 @@ const formatDate = (dateString: string) => {
     </div>
   </main>
 
-  <Footer />
 </Layout>
 
 <style>
