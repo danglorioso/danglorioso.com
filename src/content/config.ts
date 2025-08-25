@@ -15,7 +15,7 @@ const blog = defineCollection({
     readTime: z.string(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
-    relatedPosts: z.array(reference('blog')),
+    relatedPosts: z.array(reference('blog')).optional(),
   }),
 });
 
