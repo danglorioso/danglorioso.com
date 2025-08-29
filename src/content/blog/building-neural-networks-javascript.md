@@ -6,6 +6,7 @@ category: "Machine Learning"
 tags: ["JavaScript", "AI", "Neural Networks", "Machine Learning"]
 readTime: "8 min read"
 featured: true
+draft: false
 heroImage: "/images/blog/neural-networks-js.jpg"
 ---
 
@@ -183,6 +184,3 @@ console.log(network.predict([1, 1])); // Should be close to 0
 
 Building neural networks from scratch gives you deep understanding of how they work. While you'll probably use libraries in production, this foundation is invaluable for debugging and optimization.
 
----
-
-*Want to dive deeper? Check out my [Neural Network Visualization Tool](/demos/neural-network) or follow me on [Twitter](https://twitter.com/danglorioso) for more AI content.*

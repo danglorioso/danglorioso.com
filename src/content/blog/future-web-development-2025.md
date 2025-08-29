@@ -6,13 +6,7 @@ category: "Web Development"
 tags: ["Web Development", "Trends", "AI", "Performance", "React", "TypeScript"]
 readTime: "6 min read"
 featured: false
----: "The Future of Web Development: Trends to Watch in 2025"
-description: "Explore the cutting-edge trends shaping web development in 2025, from AI integration to new frameworks and performance innovations."
-pubDate: 2024-12-10T00:00:00.000Z
-category: "Web Development"
-tags: ["Web Development", "Trends", "AI", "Performance", "React", "TypeScript"]
-readTime: "6 min read"
-featured: false
+draft: false
 ---
 
 # The Future of Web Development: Trends to Watch in 2025

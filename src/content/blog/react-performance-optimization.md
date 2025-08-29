@@ -6,6 +6,7 @@ category: "React"
 tags: ["React", "Performance", "Optimization", "JavaScript"]
 readTime: "10 min read"
 featured: false
+draft: false
 ---
 
 # React Performance Optimization: A Practical Guide
@@ -147,4 +148,4 @@ Performance optimization is an ongoing process. Start with the biggest bottlenec
 
 ---
 
-*Need help optimizing your React app? Reach out on [Twitter](https://twitter.com/danglorioso) or [LinkedIn](https://linkedin.com/in/danglorioso)!*
+*Need help optimizing your React app? Reach out on [LinkedIn](https://linkedin.com/in/danglorioso)!*
