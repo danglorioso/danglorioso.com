@@ -27,7 +27,7 @@ type Props = {
 };
 
 const { post } = Astro.props;
-const { Content, headings } = await post.render();
+const { Content } = await post.render();
 
 // Get related posts (excluding current post)
 const allPosts = await getCollection('blog');
@@ -49,7 +49,7 @@ const formatDate = (date: Date) => {
 <Layout title={post.data.title}>
 
   <main class="min-h-screen pb-16">
-    <div class="max-w-4xl mx-auto py-12">
+    <div class="max-w-4xl mx-auto px-8 py-12">
       <!-- Back to blog -->
       <div class="mb-8">
         <a 
@@ -100,7 +100,7 @@ const formatDate = (date: Date) => {
       </header>
 
       <!-- Table of Contents (if headings exist) -->
-      {headings.length > 0 && (
+      <!-- {headings.length > 0 && (
         <nav class="bg-slate-800/50 rounded-lg p-6 mb-8 border border-slate-700">
           <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
             <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ const formatDate = (date: Date) => {
             ))}
           </ul>
         </nav>
-      )}
+      )} -->
 
       <!-- Article content -->
       <article class="max-w-none mb-16 blog-content">
