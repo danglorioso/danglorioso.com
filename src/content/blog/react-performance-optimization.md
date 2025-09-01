@@ -145,7 +145,3 @@ Monitor these metrics to track performance:
 - ✅ Use React DevTools Profiler for debugging
 
 Performance optimization is an ongoing process. Start with the biggest bottlenecks and measure the impact of each change.
-
----
-
-*Need help optimizing your React app? Reach out on [LinkedIn](https://linkedin.com/in/danglorioso)!*
