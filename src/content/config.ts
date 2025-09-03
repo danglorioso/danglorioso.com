@@ -19,6 +19,29 @@ const blog = defineCollection({
   }),
 });
 
+// Projects schema
+const projects = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    startDate: z.date(),
+    endDate: z.date().optional(),
+    status: z.enum(['completed', 'in-progress', 'planned', 'archived']).default('completed'),
+    technologies: z.array(z.string()),
+    category: z.string(),
+    featured: z.boolean().default(false),
+    draft: z.boolean().default(false),
+    githubUrl: z.string().url().optional(),
+    liveUrl: z.string().url().optional(),
+    imageUrl: z.string().optional(),
+    priority: z.number().min(1).max(10).default(5), // For sorting
+    collaborators: z.array(z.string()).optional(),
+    achievements: z.array(z.string()).optional(), // Awards, metrics, etc.
+  }),
+});
+
 export const collections = {
   'blog': blog,
+  'projects': projects,
 };
