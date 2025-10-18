@@ -27,7 +27,7 @@ export default function Footer() {
             <p className="text-sm text-gray-500 flex items-center mb-1">
               <a
                 href="https://status.danglorioso.com"
-                target="_blank" // Open in new tab
+                target="" // Open in new tab
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
               >
