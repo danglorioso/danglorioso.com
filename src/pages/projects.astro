@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../layouts/Plane2.astro';
+import Layout from '../layouts/Layout.astro';
 
 // Get all projects that aren't drafts and sort by priority and date
 const allProjects = await getCollection('projects', ({ data }) => {
