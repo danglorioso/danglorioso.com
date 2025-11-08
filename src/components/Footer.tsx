@@ -8,6 +8,37 @@ export default function Footer() {
         
         {/* MOBILE - Stack with social icons on bottom */}
         <div className="sm:hidden flex flex-col space-y-2">
+          {/* Mobile Social Icons at top */}
+          <div className="flex justify-center space-x-4 mb-4">
+            <a
+              href="https://danglorioso.com/linkedin"
+              target="_blank" // Open in new tab
+              rel="noopener noreferrer"
+              className="text-white hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin className="w-6 h-6" />
+            </a>
+            <a
+              href="https://danglorioso.com/github"
+              target="_blank" // Open in new tab
+              rel="noopener noreferrer"
+              className="text-white hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
+              aria-label="GitHub"
+            >
+              <FaGithub className="w-6 h-6" />
+            </a>
+            <a
+              href="mailto:dan@danglorioso.com"
+              target="_blank" // Open in new tab
+              rel="noopener noreferrer"
+              className="text-white hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
+              aria-label="Email"
+            >
+              <FaEnvelope className="w-6 h-6" />
+            </a>
+          </div>
+
           {/* Copyright */}
           <p className="text-md text-gray-300 text-center">
             Copyright © {new Date().getFullYear()}. Created by{" "}
@@ -42,37 +73,6 @@ export default function Footer() {
                 Contact
               </a>
             </p>
-          </div>
-          
-          {/* Mobile Social Icons at bottom */}
-          <div className="flex justify-center space-x-4">
-            <a
-              href="https://danglorioso.com/linkedin"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedin className="w-6 h-6" />
-            </a>
-            <a
-              href="https://danglorioso.com/github"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-              aria-label="GitHub"
-            >
-              <FaGithub className="w-6 h-6" />
-            </a>
-            <a
-              href="mailto:dan@danglorioso.com"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
-              aria-label="Email"
-            >
-              <FaEnvelope className="w-6 h-6" />
-            </a>
           </div>
         </div>
 
