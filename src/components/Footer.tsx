@@ -3,8 +3,8 @@ import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
-      <div className="max-w-7xl mx-auto px-8">
+    <footer className="w-full mt-8 py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
+      <div className="max-w-5xl mx-auto px-8">
         
         {/* MOBILE - Stack with social icons on bottom */}
         <div className="sm:hidden flex flex-col space-y-2">
