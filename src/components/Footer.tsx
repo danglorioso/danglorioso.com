@@ -1,43 +1,15 @@
 import React from "react";
-import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import SocialIcons from "./SocialIcons3";
 
 export default function Footer() {
   return (
     <footer className="w-full mt-8 py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
       <div className="max-w-5xl mx-auto px-8">
         
-        {/* MOBILE - Stack with social icons on bottom */}
+        {/* MOBILE - Stack with social icons on top */}
         <div className="sm:hidden flex flex-col space-y-2">
           {/* Mobile Social Icons at top */}
-          <div className="flex justify-center space-x-4 mb-4">
-            <a
-              href="https://danglorioso.com/linkedin"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-white hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedin className="w-6 h-6" />
-            </a>
-            <a
-              href="https://danglorioso.com/github"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-white hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-              aria-label="GitHub"
-            >
-              <FaGithub className="w-6 h-6" />
-            </a>
-            <a
-              href="mailto:dan@danglorioso.com"
-              target="_blank" // Open in new tab
-              rel="noopener noreferrer"
-              className="text-white hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-              aria-label="Email"
-            >
-              <FaEnvelope className="w-6 h-6" />
-            </a>
-          </div>
+          <SocialIcons />
 
           {/* Copyright */}
           <p className="text-md text-gray-300 text-center">
@@ -94,38 +66,7 @@ export default function Footer() {
             </p>
             
             {/* Social Icons */}
-            <div className="flex space-x-5">
-              {/* LinkedIn */}
-              <a
-                href="/linkedin"
-                target="_blank" // Open in new tab
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="w-7 h-7" />
-              </a>
-              {/* Github */}
-              <a
-                href="/github"
-                target="_blank" // Open in new tab
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white hover:scale-105 transition-colors duration-300 ease-in-out"
-                aria-label="GitHub"
-              >
-                <FaGithub className="w-7 h-7" />
-              </a>
-              {/* Email */}
-              <a
-                href="/mail"
-                target="_blank" // Open in new tab
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-300 ease-in-out"
-                aria-label="Email"
-              >
-                <FaEnvelope className="w-7 h-7" />
-              </a>
-            </div>
+            <SocialIcons />
           </div>
           
           {/* Bottom row text: Links left-aligned */}
