@@ -1,0 +1,43 @@
+---
+import Monogram from './Monogram.astro';
+import SocialIcons from './SocialIcons2.tsx';
+import NavBar from './NavBarDark.astro';
+---
+
+<header class="w-full py-4 border-b border-gray-800 bg-slate-900/80 backdrop-blur-sm">
+  <div class="max-w-5xl mx-auto px-8 flex items-center justify-between">
+    
+    <!-- Logo -->
+    <div class="flex-shrink-0">
+      <a href="/" class="block w-20 h-12 sm:w-24 sm:h-14 hover:opacity-80 transition-opacity duration-200">
+        <Monogram width="96px" height="56px" />
+      </a>
+    </div>
+    
+    <!-- Right Side: Social Icons + Mobile Menu -->
+    <div class="flex items-center space-x-4">
+        <!-- Social Icons (visible on all screens) -->
+        <SocialIcons client:load />
+    </div>
+</header>
+
+<style>
+  /* Animation to nav pills */
+  nav a {
+    position: relative;
+  }
+  
+  nav a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  nav a:hover::before {
+    opacity: 1;
+  }
+</style>
