@@ -58,7 +58,6 @@ const getStatusStyle = (status: string) => {
 
 // Featured projects (for highlighting)
 const featuredProjects = projects.filter(p => p.featured);
-const otherProjects = projects.filter(p => !p.featured);
 ---
 
 <Layout title="Projects" description="A collection of my software engineering and machine learning projects">
@@ -197,7 +196,7 @@ const otherProjects = projects.filter(p => !p.featured);
         </h2>
         
         <div class="space-y-6">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <article class="group bg-slate-800/20 backdrop-blur-sm border border-slate-700/30 rounded-lg p-6 hover:bg-slate-700/20 hover:border-slate-600/40 transition-all duration-200">
               <div class="flex flex-col lg:flex-row lg:items-start gap-6">
                 
