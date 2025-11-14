@@ -4,7 +4,7 @@ const navItems = [
 //   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/projects', label: 'Projects' },
-  { href: '/hobbies', label: 'Hobbies' },
+  // { href: '/hobbies', label: 'Hobbies' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -27,7 +27,7 @@ const isActive = (href: string) => {
             class={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
               isActive(item.href)
                 ? 'bg-blue-600 text-white'
-                : 'text-gray-300 hover:text-white hover:bg-slate-800/60'
+                : 'text-gray-300 hover:text-white hover:bg-slate-800/60 transition-all duration-300'
             }`}
           >
             {item.label}
