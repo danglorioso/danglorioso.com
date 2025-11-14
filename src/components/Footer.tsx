@@ -9,7 +9,9 @@ export default function Footer() {
         {/* MOBILE - Stack with social icons on top */}
         <div className="sm:hidden flex flex-col space-y-2">
           {/* Mobile Social Icons at top */}
-          <SocialIcons />
+          <div className="flex justify-center">
+            <SocialIcons />
+          </div>
 
           {/* Copyright */}
           <p className="text-md text-gray-300 text-center">

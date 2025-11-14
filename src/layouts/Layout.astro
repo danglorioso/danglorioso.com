@@ -30,6 +30,7 @@ const { title, description } = Astro.props;
 	<body class="text-white min-h-screen relative overflow-hidden flex flex-col">
 		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
+		<!-- Vercel Speed Insights -->
 		<SpeedInsights />
 		
 		<!-- Header -->
@@ -423,7 +424,7 @@ const { title, description } = Astro.props;
 					
 					// Clear canvas with dark background
 					// this.ctx.fillStyle = 'rgba(2, 6, 23, 0.95)';
-					this.ctx.fillStyle = '#0f172a';
+					this.ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-bg');
 					this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 					
 					// Update and draw the neural network
@@ -451,6 +452,10 @@ const { title, description } = Astro.props;
 		box-sizing: border-box;
 	}
 	
+	:root {
+		--primary-bg: #0f172a;
+	}
+	
 	html, body {
 		font-family: system-ui, sans-serif;
 		overflow-x: hidden;
@@ -458,18 +463,18 @@ const { title, description } = Astro.props;
 	
 	body {
 		/* background: linear-gradient(135deg, #170202 0%, #0f172a 50%, #1e293b 100%); */
-		background: #0f172a;
+		background: var(--primary-bg);
 		min-height: 100vh;
 	}
 	
 	/* Text selection highlight color */
 	::selection {
 		background-color: #828FA4;
-		color: #0f172a;
+		color: var(--primary-bg);
 	}
 	
 	::-moz-selection {
 		background-color: #828FA4;
-		color: #0f172a;
+		color: var(--primary-bg);
 	}
 </style>
