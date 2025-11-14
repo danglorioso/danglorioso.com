@@ -27,7 +27,7 @@ export default function Footer() {
           
           {/* Status Links */}
           <div className="flex justify-center">
-            <p className="text-sm text-gray-500 flex items-center mb-1">
+            <p className="text-sm text-gray-500 flex items-center">
               <a
                 href="https://status.danglorioso.com"
                 target="" // Open in same tab
@@ -51,7 +51,7 @@ export default function Footer() {
         {/* DESKTOP - Text left, icons right */}
         <div className="hidden sm:block">
           {/* Top row: Copyright left, Social icons right */}
-          <div className="flex justify-between items-center mb-1">
+          <div className="flex justify-between items-center">
             <p className="text-md text-gray-300">
               Copyright © {new Date().getFullYear()}. Created by{" "}
               <a

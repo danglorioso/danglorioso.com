@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function SocialIcons() {
   return (
-    <div className="flex items-center space-x-3">
+    <div className="flex items-center space-x-1">
       <a
         href="/github"
         target="_blank"
