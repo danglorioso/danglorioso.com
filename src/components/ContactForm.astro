@@ -74,13 +74,24 @@
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
-                    <button 
-                        type="submit" 
-                        id="submit-btn"
-                        class="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-normal py-3 px-6 rounded-md transition-all duration-200"
-                    >
-                        <span id="btn-text">Send Message</span>
-                    </button>
+                    <div class="relative">
+                        <button 
+                            type="submit" 
+                            id="submit-btn"
+                            disabled
+                            title="Please fill out all required fields"
+                            class="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-normal py-3 px-6 rounded-md transition-all duration-200"
+                        >
+                            <span id="btn-text">Send Message</span>
+                        </button>
+                        <div 
+                            id="submit-tooltip" 
+                            class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-md whitespace-nowrap opacity-0 invisible transition-all duration-200 pointer-events-none z-10"
+                        >
+                            Please fill out all required fields
+                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,7 +126,7 @@
         }
 
         function clearFieldErrors() {
-            ['firstName', 'lastName', 'email', 'message'].forEach(fieldName => {
+            ['name', 'email', 'message'].forEach(fieldName => {
                 setFieldError(fieldName, '');
             });
         }
@@ -132,25 +143,35 @@
             }
         }
 
+        function checkRequiredFields() {
+            const name = form.querySelector('input[name="name"]').value.trim();
+            const email = form.querySelector('input[name="email"]').value.trim();
+            const message = form.querySelector('textarea[name="message"]').value.trim();
+            
+            const allRequiredFieldsFilled = name && email && message;
+            submitBtn.disabled = !allRequiredFieldsFilled;
+            
+            // Update tooltip and title attribute based on button state
+            if (allRequiredFieldsFilled) {
+                submitBtn.removeAttribute('title');
+            } else {
+                submitBtn.setAttribute('title', 'Please fill out all required fields');
+            }
+        }
+
         // Form validation
         function validateForm() {
             clearFieldErrors();
             setStatus('');
             
-            const firstName = form.querySelector('input[name="firstName"]').value.trim();
-            const lastName = form.querySelector('input[name="lastName"]').value.trim();
+            const name = form.querySelector('input[name="name"]').value.trim();
             const email = form.querySelector('input[name="email"]').value.trim();
             const message = form.querySelector('textarea[name="message"]').value.trim();
 
             let isValid = true;
 
-            if (!firstName) {
-                setFieldError('firstName', 'First name is required.');
-                isValid = false;
-            }
-            
-            if (!lastName) {
-                setFieldError('lastName', 'Last name is required.');
+            if (!name) {
+                setFieldError('name', 'Name is required.');
                 isValid = false;
             }
             
@@ -173,15 +194,35 @@
             return isValid;
         }
 
-        // Clear individual field errors on input
-        ['firstName', 'lastName', 'email', 'message'].forEach(fieldName => {
+        // Clear individual field errors on input and check required fields
+        ['name', 'email', 'message'].forEach(fieldName => {
             const field = form.querySelector(`[name="${fieldName}"]`);
             if (field) {
                 field.addEventListener('input', function() {
                     setFieldError(fieldName, '');
+                    checkRequiredFields();
                 });
             }
         });
+
+        // Initial check of required fields
+        checkRequiredFields();
+
+        // Tooltip functionality for disabled button
+        const tooltip = document.getElementById('submit-tooltip');
+        if (tooltip) {
+            submitBtn.addEventListener('mouseenter', function() {
+                if (submitBtn.disabled) {
+                    tooltip.classList.remove('opacity-0', 'invisible');
+                    tooltip.classList.add('opacity-100', 'visible');
+                }
+            });
+
+            submitBtn.addEventListener('mouseleave', function() {
+                tooltip.classList.remove('opacity-100', 'visible');
+                tooltip.classList.add('opacity-0', 'invisible');
+            });
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
