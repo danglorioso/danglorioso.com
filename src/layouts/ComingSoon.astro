@@ -10,8 +10,6 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<!-- Purpose: Layout for temporary "coming soon" landing page w/ no header -->
-
 <!doctype html>
 <html lang="en">
 	<head>
@@ -21,7 +19,7 @@ const { title, description } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title} | {description}</title>
+		<title>{title} | Dan Glorioso</title>
 		<style>
 			@tailwind base;
 			@tailwind components;
@@ -38,7 +36,7 @@ const { title, description } = Astro.props;
 		<Header />
 
 		<!-- Page Content -->
-		<div class="max-w-5xl px-16 md:px-0 mx-auto flex flex-col justify-center gap-4">
+		<div class="relative z-10 mb-10 flex flex-col max-w-5xl mx-auto w-full">
 			<slot />
 		</div>
 
