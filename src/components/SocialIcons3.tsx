@@ -3,7 +3,7 @@ import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function SocialIcons() {
   return (
-    <div className="flex space-x-5">
+    <div className="flex flex-row justify-end gap-4">
         {/* LinkedIn */}
         <a
         href="/linkedin"
