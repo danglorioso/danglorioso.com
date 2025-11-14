@@ -8,7 +8,7 @@ export default function SocialIcons() {
         href="/github"
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-lg text-white-400 hover:text-white hover:bg-slate-800/60 transition-all duration-200 hover:scale-110"
+        className="p-2 rounded-lg text-white-400 hover:text-white hover:bg-slate-800/60 hover:scale-110 transition-transform duration-200"
         aria-label="GitHub"
       >
         <FaGithub className="w-7 h-7" />
@@ -17,7 +17,7 @@ export default function SocialIcons() {
         href="/linkedin"
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-lg text-white-400 hover:text-white hover:bg-slate-800/60 transition-all duration-200 hover:scale-110"
+        className="p-2 rounded-lg text-white-400 hover:text-white hover:bg-slate-800/60 hover:scale-110 transition-transform duration-200 "
         aria-label="LinkedIn"
       >
         <FaLinkedin className="w-7 h-7" />
