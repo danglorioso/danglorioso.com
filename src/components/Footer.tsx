@@ -7,20 +7,20 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto px-8">
         
         {/* MOBILE - Stack with social icons on top */}
-        <div className="sm:hidden flex flex-col space-y-2">
+        <div className="sm:hidden flex flex-col gap-2 items-center">
           {/* Mobile Social Icons at top */}
-          <div className="flex justify-center">
             <SocialIcons />
-          </div>
 
           {/* Copyright */}
           <p className="text-md text-gray-300 text-center">
-            Copyright © {new Date().getFullYear()}. Created by{" "}
+            Copyright © {new Date().getFullYear()}. 
+            <br></br> 
+            Created by{" "}
             <a
               href="https://danglorioso.com"
               target="" // Open in same tab
               rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
+              className="text-blue-500 hover:text-blue-300 transition duration-300 ease-in-out"
             >
               Dan Glorioso
             </a>
@@ -30,6 +30,45 @@ export default function Footer() {
           {/* Status Links */}
           <div className="flex justify-center">
             <p className="text-sm text-gray-500 flex items-center">
+              <a
+                href="https://status.danglorioso.com"
+                target="" // Open in same tab
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-300 transition duration-300 ease-in-out"
+              >
+                System Status
+              </a>
+              <span className="mx-2 text-gray-600">•</span>
+              <a
+                href="/contact"
+                target="" // Open in same tab
+                className="text-gray-400 hover:text-gray-300 transition duration-300 ease-in-out"
+              >
+                Contact
+              </a>
+            </p>
+          </div>
+        </div>
+
+        {/* DESKTOP - Text left, icons right */}
+        <div className="hidden sm:flex flex-row items-center justify-between">
+          {/* Top row: Copyright left, Social icons right */}
+          <div className="flex flex-col">
+            <p className="text-md text-gray-300">
+              Copyright © {new Date().getFullYear()}. Created by{" "}
+              <a
+                href="/"
+                target="" // Open in same tab
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
+              >
+                Dan Glorioso
+              </a>
+              .
+            </p>
+
+            {/* Bottom row text: Links left-aligned */}
+            <p className="text-sm text-gray-500">
               <a
                 href="https://status.danglorioso.com"
                 target="" // Open in same tab
@@ -48,48 +87,9 @@ export default function Footer() {
               </a>
             </p>
           </div>
-        </div>
 
-        {/* DESKTOP - Text left, icons right */}
-        <div className="hidden sm:block">
-          {/* Top row: Copyright left, Social icons right */}
-          <div className="flex justify-between items-center">
-            <p className="text-md text-gray-300">
-              Copyright © {new Date().getFullYear()}. Created by{" "}
-              <a
-                href="/"
-                target="" // Open in same tab
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
-              >
-                Dan Glorioso
-              </a>
-              .
-            </p>
-            
-            {/* Social Icons */}
-            <SocialIcons />
-          </div>
-          
-          {/* Bottom row text: Links left-aligned */}
-          <p className="text-sm text-gray-500">
-            <a
-              href="https://status.danglorioso.com"
-              target="" // Open in same tab
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
-            >
-              System Status
-            </a>
-            <span className="mx-2 text-gray-600">•</span>
-            <a
-              href="/contact"
-              target="" // Open in same tab
-              className="text-gray-400 hover:text-gray-300 transition-colors duration-300 ease-in-out"
-            >
-              Contact
-            </a>
-          </p>
+          {/* Social Icons */}
+          <SocialIcons />
         </div>
       </div>
     </footer>

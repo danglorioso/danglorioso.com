@@ -3,21 +3,24 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function SocialIcons() {
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex flex-row justify-end gap-1">
+      {/* GitHub */}
       <a
         href="/github"
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-lg text-white-400 hover:text-white hover:bg-slate-800/60 hover:scale-110 transition-transform duration-200"
+        className="p-2 rounded-lg text-gray-100 hover:text-white hover:bg-slate-800/60 hover:scale-110 transition duration-300"
         aria-label="GitHub"
       >
         <FaGithub className="w-7 h-7" />
       </a>
+
+      {/* LinkedIn */}
       <a
         href="/linkedin"
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-lg text-white-400 hover:text-white hover:bg-slate-800/60 hover:scale-110 transition-transform duration-200 "
+        className="p-2 rounded-lg text-gray-100 hover:text-white hover:bg-slate-800/60 hover:scale-110 transition duration-300"
         aria-label="LinkedIn"
       >
         <FaLinkedin className="w-7 h-7" />
