@@ -4,8 +4,8 @@
 
 :root {
   /* Global Standard Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
+  --bg-primary: rgb(16,23,41);
+  --bg-secondary: oklch(0.279 0.041 260.031);
   --accent-primary: oklch(54.6% 0.245 262.881);
   --accent-secondary: oklch(0.623 0.214 259.815);
   --text-primary: #171717;
