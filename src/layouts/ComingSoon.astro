@@ -1,4 +1,5 @@
 ---
+import '../globals.css';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import Header from '../components/Header_CS.astro';
 import Footer from '../components/Footer.tsx';
@@ -20,11 +21,6 @@ const { title, description } = Astro.props;
 		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | {description}</title>
-		<style>
-			@tailwind base;
-			@tailwind components;
-			@tailwind utilities;
-		</style>
 	</head>
 	
 	<body class="text-white min-h-screen relative overflow-hidden flex flex-col">
