@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto px-8">
         
         {/* MOBILE - Stack with social icons on top */}
-        <div className="sm:hidden flex flex-col gap-2 items-center">
+        <div className="sm:hidden flex flex-col gap-4 items-center">
           {/* Mobile Social Icons at top */}
             <SocialIcons />
 
