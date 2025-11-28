@@ -19,19 +19,19 @@ const isActive = (href: string) => {
 };
 ---
 <!-- Desktop Nav -->
-    <nav class="hidden md:flex items-center space-x-1">
-      <div class="flex gap-2 rounded-full px-3 py-2 border border-slate-700/50">
-        {navItems.map((item) => (
-          <a
-            href={item.href}
-            class={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-              isActive(item.href)
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-300 hover:text-white hover:bg-slate-800/60 transition-all duration-300'
-            }`}
-          >
-            {item.label}
-          </a>
-        ))}
-      </div>
-    </nav>
+<nav class="hidden md:flex items-center space-x-1">
+  <div class="flex gap-2 rounded-full px-3 py-2 border border-slate-700/50">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+          isActive(item.href)
+            ? 'bg-accent-primary text-white'
+            : 'text-gray-300 hover:text-white hover:bg-slate-800/60 transition-all duration-300'
+        }`}
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+</nav>

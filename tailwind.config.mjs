@@ -5,7 +5,12 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				background: '#1e1e1e',
+				'bg-primary': 'var(--bg-primary)',
+				'bg-secondary': 'var(--bg-secondary)',
+				'accent-primary': 'var(--accent-primary)',
+				'accent-secondary': 'var(--accent-secondary)',
+				'text-primary': 'var(--text-primary)',
+				'text-secondary': 'var(--text-secondary)',
 			},
 		},
 	},

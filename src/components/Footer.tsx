@@ -60,7 +60,7 @@ export default function Footer() {
                 href="/"
                 target="" // Open in same tab
                 rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
+                className="text-accent-primary hover:text-accent-secondary transition-all duration-300 ease-in-out"
               >
                 Dan Glorioso
               </a>

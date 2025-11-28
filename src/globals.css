@@ -1,36 +1,26 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-sans: var(--font-inter);
-  --primary-bg: #0f172a;
-  --accent-primary: #3b82f6;
-}
-
-/* Custom theme colors */
-.bg-primary {
-  background-color: var(--primary-bg);
-}
-
-.bg-accent-primary {
-  background-color: var(--accent-primary);
-}
-
-.text-accent-primary {
-  color: var(--accent-primary);
-}
-
-.border-accent-primary {
-  border-color: var(--accent-primary);
+  /* Global Standard Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --accent-primary: oklch(54.6% 0.245 262.881);
+  --accent-secondary: oklch(0.623 0.214 259.815);
+  --text-primary: #171717;
+  --text-secondary: #64748b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary-bg: #0f172a;
-    --accent-primary: #3b82f6;
+    /* Dark mode colors */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f172a;
+    --accent-primary: oklch(54.6% 0.245 262.881); /* blue-600 */
+    --accent-secondary: oklch(0.623 0.214 259.815); /* blue-500 */
+    --text-primary: #ededed;
+    --text-secondary: #94a3b8;
   }
 }
 
