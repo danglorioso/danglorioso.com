@@ -23,8 +23,8 @@ const { title, description } = Astro.props;
 		<title>{title} | Dan Glorioso</title>
 	</head>
 	
-	<body class="text-white min-h-screen relative overflow-hidden flex flex-col">
-		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+	<body class="min-h-screen flex flex-col">
+		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full"></canvas>
 
 		<!-- Vercel Speed Insights -->
 		<SpeedInsights />
@@ -33,13 +33,13 @@ const { title, description } = Astro.props;
 		<Header />
 
 		<!-- Page Content -->
-		<div class="flex flex-col max-w-5xl px-8 py-8 mx-auto w-full">
+		<main class="flex-1 max-w-5xl px-8 py-8 mx-auto w-full relative z-0">
 			<slot />
-		</div>
+		</main>
 
 		<!-- Footer -->
 		<Footer />
-		
+
 		<script is:inline>
 			// Dynamic Neural Network Animation System
 			class DynamicNeuralNetwork {
