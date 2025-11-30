@@ -1,14 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get all projects and sort
+const allProjects = await getCollection('projects', ({ data }) => {
+	// Only non-draft projects returned
+	return data.draft !== true;
+});
+
+// Sort projects by priority (higher first), then by start date (newer first)
+const sortedProjects = allProjects.sort((a, b) => {
+	if (a.data.priority !== b.data.priority) {
+		 // Higher priority first
+		return b.data.priority - a.data.priority;
+	}
+	// Newer first
+	return new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime();
+});
 ---
 
 <Layout title="Projects" description="A collection of my projects">
 	<section id="projects">
-		<div class="h-full w-full flex flex-col gap-8">
-			<ProjectCard />
-			<ProjectCard />
-			<ProjectCard />
+		<div class="h-full w-full flex flex-col gap-6">
+			<div class="grid grid-cols-1 gap-6">
+				{sortedProjects.map((project) => (
+					<a href={`/projects/${project.slug}`} class="block group">
+						<ProjectCard 
+							title={project.data.title}
+							description={project.data.description}
+							status={project.data.status}
+							technologies={project.data.technologies}
+							category={project.data.category}
+							featured={project.data.featured}
+							githubUrl={project.data.githubUrl}
+							liveUrl={project.data.liveUrl}
+							imageUrl={project.data.imageUrl}
+							achievements={project.data.achievements}
+							startDate={project.data.startDate.toISOString()}
+							endDate={project.data.endDate?.toISOString()}
+						/>
+					</a>
+				))}
+			</div>
 		</div>
 	</section>
 </Layout>
