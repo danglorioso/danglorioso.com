@@ -53,7 +53,7 @@ export default function Footer() {
         {/* DESKTOP - Text left, icons right */}
         <div className="hidden sm:flex flex-row items-center justify-between">
           {/* Top row: Copyright left, Social icons right */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-1">
             <p className="text-md text-gray-300">
               Copyright © {new Date().getFullYear()}. Created by{" "}
               <a
