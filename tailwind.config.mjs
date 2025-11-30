@@ -13,9 +13,7 @@ export default {
 				'text-secondary': 'var(--text-secondary)',
 			},
 			fontFamily: {
-				'sf-pro': ['SF Pro Text', 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-				'sf-display': ['SF Pro Display', 'SF Pro Text', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-				'sans': ['SF Pro Text', 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+				'sans': ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'system-ui', 'sans-serif'],
 			},
 		},
 	},
