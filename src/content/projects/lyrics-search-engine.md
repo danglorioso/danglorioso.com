@@ -1,16 +1,15 @@
 ---
 title: "Lyrics Search Engine - Hooked On"
 description: "An intelligent lyric discovery tool that enables deep searches across entire artist discographies, finding specific phrases, themes, and word patterns with advanced text analysis and music streaming integration."
-startDate: 2024-04-20
-endDate: 2024-07-30
-status: "completed"
+startDate: 2025-03-21
+status: "in-progress"
 technologies: ["Python", "FastAPI", "React", "TypeScript", "Elasticsearch", "Spotify API", "Web Scraping", "NLP"]
 category: "Music Technology"
 featured: false
 draft: false
 liveUrl: "https://lyrics.danglorioso.com"
 favicon: "lyrics.ico"
-priority: 7
+priority: 5
 achievements: ["500k+ songs indexed", "15k+ monthly searches", "Featured on music blogs", "Artist collaboration tools"]
 ---
 

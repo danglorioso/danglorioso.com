@@ -1,16 +1,15 @@
 ---
 title: "Digital Flight Logbook"
 description: "A comprehensive digital pilot logbook designed for flight simulator enthusiasts, featuring detailed flight tracking, performance analytics, and aviation career progression tools with real-world accuracy."
-startDate: 2024-05-15
-endDate: 2024-09-10
-status: "completed"
+startDate: 2025-05-16
+status: "in-progress"
 technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "Chart.js", "PDF Generation", "Aviation APIs"]
 category: "Aviation"
 featured: false
 draft: false
 liveUrl: "https://logbook.danglorioso.com"
 favicon: "logbook.ico"
-priority: 7
+priority: 5
 achievements: ["5k+ registered pilots", "100k+ flights logged", "VATSIM integration", "Real pilot adoption"]
 ---
 

@@ -4,7 +4,7 @@ description: "A real-time status monitoring dashboard for uptime tracking for al
 startDate: 2025-05-26
 endDate: 2025-12-01
 status: "completed"
-technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSockets", "Monitoring APIs", "Chart.js"]
+technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSockets", "Monitoring APIs"]
 category: "DevOps"
 featured: true
 draft: false

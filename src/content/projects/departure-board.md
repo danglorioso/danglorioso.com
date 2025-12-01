@@ -1,7 +1,7 @@
 ---
 title: "Real-Time Departure Board"
 description: "A dynamic flight information display system providing real-time airport departure and arrival data with customizable layouts, multiple airport support, and professional-grade presentation for aviation enthusiasts and professionals."
-startDate: 2024-10-01
+startDate: 2025-01-02
 status: "planned"
 technologies: ["React", "TypeScript", "WebSockets", "Aviation APIs", "Real-time Data", "Next.js"]
 category: "Aviation"
@@ -9,7 +9,7 @@ featured: false
 draft: false
 liveUrl: "https://board.danglorioso.com"
 favicon: "board.ico"
-priority: 6
+priority: 5
 ---
 
 ## Project Overview

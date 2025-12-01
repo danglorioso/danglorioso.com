@@ -9,7 +9,7 @@ featured: false
 draft: false
 liveUrl: "https://planes.danglorioso.com"
 favicon: "planes.ico"
-priority: 6
+priority: 5
 ---
 
 ## Project Overview

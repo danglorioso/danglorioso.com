@@ -1,9 +1,9 @@
 ---
 title: "Track Record Upload System"
 description: "An intelligent web application that automatically detects, parses, and standardizes track meet results from various formats into clean, analyzable CSV reports for athletic performance analysis."
-startDate: 2024-03-10
-endDate: 2024-06-20
-status: "completed"
+startDate: 2025-01-02
+endDate: 2025-05-25
+status: "in-progress"
 technologies: ["Python", "FastAPI", "React", "TypeScript", "Pandas", "OpenCV", "Machine Learning", "PostgreSQL", "Docker"]
 category: "Data Processing"
 featured: true
