@@ -54,7 +54,7 @@ const currentStatus = statusConfig[status] || statusConfig['in-progress'];
 <article class="group bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6 hover:border-accent-primary/50 transition-all duration-300 cursor-pointer">
   <!-- Header with Title and Status -->
   <div class="flex items-start justify-between mb-3">
-    <h3 class="text-lg font-semibold text-white group-hover:text-accent-primary transition-colors line-clamp-2">
+    <h3 class="text-2xl font-semibold text-white group-hover:text-accent-primary transition-colors line-clamp-2">
       {title}
     </h3>
     <span class={`px-2 py-1 rounded text-xs font-medium border ${currentStatus.bg} ${currentStatus.text} ${currentStatus.border} whitespace-nowrap ml-2`}>
@@ -63,7 +63,7 @@ const currentStatus = statusConfig[status] || statusConfig['in-progress'];
   </div>
 
   <!-- Category -->
-  <p class="text-sm text-accent-secondary/80 font-medium mb-3">{category}</p>
+  <!-- <p class="text-sm text-accent-secondary/80 font-medium mb-3">{category}</p> -->
 
   <!-- Description -->
   <p class="text-slate-300 text-sm leading-relaxed mb-4 line-clamp-3">
