@@ -3,8 +3,8 @@ title: "DG Portfolio Website"
 description: "A modern, performant personal portfolio website showcasing projects, skills, and experience. Built with cutting-edge web technologies including Astro, TypeScript, and advanced CSS techniques."
 startDate: 2024-01-15
 endDate: 2024-03-20
-status: "completed"
-technologies: ["Astro", "TypeScript", "Tailwind CSS", "Markdown", "Vercel", "Git", "CSS3", "HTML5"]
+status: "in-progress"
+technologies: ["Astro", "TypeScript", "Tailwind CSS", "Markdown", "Vercel", "Git"]
 category: "Web Development"
 featured: true
 draft: false

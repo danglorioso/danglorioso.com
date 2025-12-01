@@ -23,6 +23,13 @@ const sortedProjects = allProjects.sort((a, b) => {
 <Layout title="Projects" description="A collection of my projects">
 	<section id="projects">
 		<div class="h-full w-full flex flex-col gap-6">
+			<!-- Page Header -->
+			<section class="">
+				<h1 class="text-4xl font-bold">
+				Projects
+				</h1>
+			</section>
+
 			<div class="grid grid-cols-1 gap-6">
 				{sortedProjects.map((project) => (
 					<a href={`/projects/${project.slug}`} class="block group">
