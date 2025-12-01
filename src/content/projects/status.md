@@ -1,8 +1,8 @@
 ---
 title: "Status Page Monitoring System"
-description: "A comprehensive real-time status monitoring dashboard providing uptime tracking, performance metrics, and incident management for all projects and services with automated alerting and public transparency."
-startDate: 2024-07-01
-endDate: 2024-09-25
+description: "A real-time status monitoring dashboard for uptime tracking for all my projects and services with automated alerting."
+startDate: 2025-05-26
+endDate: 2025-12-01
 status: "completed"
 technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSockets", "Monitoring APIs", "Chart.js"]
 category: "DevOps"
@@ -10,7 +10,7 @@ featured: true
 draft: false
 liveUrl: "https://status.danglorioso.com"
 favicon: "status.ico"
-priority: 8
+priority: 7
 achievements: ["99.9% uptime tracking", "Real-time monitoring", "Automated incident detection", "Public transparency"]
 ---
 

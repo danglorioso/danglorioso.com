@@ -1,19 +1,19 @@
 ---
 title: "Under 30 VSCode Extension"
-description: "A productivity-focused VSCode extension that promotes clean code practices by monitoring and limiting function lengths, encouraging developers to write more maintainable and readable code."
-startDate: 2023-11-15
-endDate: 2024-01-10
+description: "A Visual Studio Code extension that helps developers uphold good coding standards by displaying real-time line selection counts and detecting functions that exceed customizable length thresholds. Includes formatting error detection. Used by 700+ users."
+# Under 30 is a Visual Studio Code extension that helps developers maintain clean, readable code by displaying real-time line selection counts in the status bar and automatically detecting functions that exceed customizable length limits. The extension identifies formatting errors like unmatched braces and provides instant feedback to ensure your code adheres to professional coding standards.
+startDate: 2024-05-13
+endDate: 2025-01-13
 status: "completed"
-technologies: ["TypeScript", "VSCode API", "Node.js", "JSON Schema", "Git", "npm"]
+technologies: ["TypeScript", "VSCode Extension API", "Node.js", "JSON Schema", "Git", "npm"]
 category: "Developer Tools"
 featured: true
 draft: false
 githubUrl: "https://github.com/danglorioso/under-30-vscode"
-liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.under-30"
+liveUrl: "https://danglorioso.com/under-30"
 favicon: "under-30.png"
 priority: 9
 achievements: ["5k+ active installations", "4.8/5 star rating", "Featured in VSCode Weekly", "Adopted by 20+ dev teams"]
-collaborators: []
 ---
 
 ## Project Overview

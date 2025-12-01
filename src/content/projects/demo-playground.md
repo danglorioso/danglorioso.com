@@ -1,11 +1,12 @@
 ---
 title: "Demo Playground Platform"
-description: "An interactive showcase of cutting-edge web technologies and experimental features. A living laboratory for testing new frameworks, APIs, and development techniques."
+description: " A living lab for testing new frameworks, APIs, and development techniques."
 startDate: 2024-02-01
 status: "in-progress"
 technologies: ["React", "Next.js", "Three.js", "WebGL", "WebAssembly", "TypeScript", "Tailwind CSS", "Vercel"]
 category: "Experimental"
-featured: true
+featured: false
+draft: true
 githubUrl: "https://github.com/danglorioso/demo"
 liveUrl: "https://demo.danglorioso.com"
 favicon: "demo.png"

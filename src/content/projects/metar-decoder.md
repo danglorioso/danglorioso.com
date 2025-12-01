@@ -1,10 +1,10 @@
 ---
 title: "METAR Aviation Weather Decoder"
-description: "A comprehensive aviation weather tool that transforms cryptic METAR meteorological reports into human-readable format with interactive explanations, hover tooltips, and real-time data integration."
-startDate: 2024-06-01
-endDate: 2024-08-15
+description: "An aviation weather tool that decodes Meterological Aerodome Reports (METAR) into human-readable translations with interactive explanations, hover tooltips, and real-time data integration from any ICAO airport code in the world."
+startDate: 2025-07-29
+endDate: 2025-09-04
 status: "completed"
-technologies: ["JavaScript", "React", "TypeScript", "Weather APIs", "Tailwind CSS", "Node.js", "Express"]
+technologies: ["TypeScript", "React",  "Regular Expressions", "Weather APIs", "Tailwind CSS", "Node.js"]
 category: "Aviation"
 featured: true
 draft: false

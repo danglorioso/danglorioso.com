@@ -1,17 +1,16 @@
 ---
 title: "Header Hero VSCode Extension"
-description: "An intelligent VSCode extension that automatically generates beautiful, customizable file headers with smart template system, metadata extraction, and team collaboration features."
+description: "An intelligent Visual Studio Code extension that automatically generates customizable file headers with smart templates that extract metadata from all files in a directory."
 startDate: 2024-05-01
 endDate: 2024-07-15
 status: "completed"
-technologies: ["TypeScript", "VSCode API", "Node.js", "Regular Expressions", "JSON Schema", "Git Integration"]
+technologies: ["TypeScript", "VSCode API", "Node.js", "Regular Expressions"]
 category: "Developer Tools"
-featured: false
-draft: false
+featured: true
 githubUrl: "https://github.com/danglorioso/header-hero-vscode"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.header-hero"
 favicon: "header-hero.png"
-priority: 7
+priority: 8
 achievements: ["3k+ active users", "Featured in extension roundup", "Multi-language template support", "Enterprise adoption"]
 ---
 

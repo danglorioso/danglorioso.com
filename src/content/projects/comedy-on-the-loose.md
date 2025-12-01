@@ -1,12 +1,11 @@
 ---
 title: "Comedy on the Loose Official Website"
-description: "The official digital presence for sketch comedy TV show Comedy on the Loose, featuring episode archives, streaming integration, cast information, and fan engagement features."
+description: "The digital presence for sketch comedy TV show Comedy on the Loose, featuring episode archives, airing schedule integration, and promotional content."
 startDate: 2023-10-01
 endDate: 2024-02-20
 status: "completed"
 technologies: ["React", "Next.js", "TypeScript", "Sanity CMS", "YouTube API", "Tailwind CSS", "Vercel"]
 category: "Entertainment"
-featured: false
 liveUrl: "https://cotl.danglorioso.com"
 favicon: "cotl.png"
 priority: 6

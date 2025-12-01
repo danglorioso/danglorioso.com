@@ -1,10 +1,10 @@
 ---
-title: "Scott Glorioso Professional Website"
-description: "A sophisticated musician portfolio website featuring comprehensive album showcases, performance schedules, and interactive media galleries. Built with modern web technologies for optimal performance and user experience."
+title: "Scott Glorioso Website"
+description: "A musician portfolio website featuring album, song, and performance details with a modern, scalable designs."
 startDate: 2024-01-20
 endDate: 2024-04-05
 status: "completed"
-technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Sanity CMS", "Vercel", "Spotify API", "YouTube API"]
+technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Dynamic Routing", "Vercel", "Spotify API", "YouTube API"]
 category: "Client Work"
 featured: false
 draft: false
