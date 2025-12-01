@@ -7,9 +7,9 @@ status: "in-progress"
 technologies: ["Astro", "TypeScript", "Tailwind CSS", "Markdown", "Vercel", "Git"]
 category: "Web Development"
 featured: true
-draft: false
 githubUrl: "https://github.com/danglorioso/danglorioso.com"
 liveUrl: "https://danglorioso.com/"
+favicon: "https://danglorioso.com/favicon.ico"
 priority: 10
 achievements: ["Featured on Astro Community Showcase", "98+ Lighthouse Performance Score", "15k+ monthly visitors", "Zero JavaScript for static content"]
 ---

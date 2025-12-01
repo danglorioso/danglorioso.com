@@ -7,8 +7,8 @@ status: "completed"
 technologies: ["React", "Next.js", "TypeScript", "Sanity CMS", "YouTube API", "Tailwind CSS", "Vercel"]
 category: "Entertainment"
 featured: false
-draft: false
 liveUrl: "https://cotl.danglorioso.com"
+favicon: "https://cotl.danglorioso.com/favicon.ico"
 priority: 6
 achievements: ["100k+ episode views", "Featured on comedy blogs", "Social media integration", "Fan community growth"]
 ---

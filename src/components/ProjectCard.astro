@@ -9,6 +9,7 @@ interface Props {
   githubUrl?: string;
   liveUrl?: string;
   imageUrl?: string;
+  favicon?: string;
   priority?: number;
   achievements?: string[];
   startDate: string;
@@ -22,6 +23,7 @@ const {
   technologies = [], 
   category = "Development", 
   featured = false,
+  favicon,
   startDate = "2024-01-01",
   endDate 
 } = Astro.props;
@@ -58,12 +60,24 @@ const currentStatus = statusConfig[status] || statusConfig['in-progress'];
 ---
 
 <article class="group bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-lg p-6 hover:border-accent-primary/50 transition-all duration-300 cursor-pointer">
-  <!-- Header with Title and Status -->
+  <!-- Header with Favicon, Title and Status -->
   <div class="flex items-start justify-between mb-3">
-    <h3 class="text-2xl font-semibold text-white group-hover:text-accent-primary transition-colors line-clamp-2">
-      {title}
-    </h3>
-    <span class={`px-2 py-1 rounded text-xs font-medium border ${currentStatus.bg} ${currentStatus.text} ${currentStatus.border} whitespace-nowrap ml-2`}>
+    <div class="flex items-start gap-3 flex-1 min-w-0">
+      <!-- Favicon -->
+      {favicon && (
+        <img 
+          src={favicon} 
+          alt={`${title} favicon`}
+          class="w-6 h-6 mt-1 flex-shrink-0 rounded-sm"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        />
+      )}
+      <h3 class="text-2xl font-semibold text-white group-hover:text-accent-primary transition-colors line-clamp-2 flex-1 min-w-0">
+        {title}
+      </h3>
+    </div>
+    <span class={`px-2 py-1 rounded text-xs font-medium border ${currentStatus.bg} ${currentStatus.text} ${currentStatus.border} whitespace-nowrap ml-2 flex-shrink-0`}>
       {currentStatus.label}
     </span>
   </div>

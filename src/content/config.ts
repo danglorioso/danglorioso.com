@@ -31,10 +31,11 @@ const projects = defineCollection({
     technologies: z.array(z.string()),
     category: z.string(),
     featured: z.boolean().default(false),
-    draft: z.boolean().default(false),
+    draft: z.boolean().default(false).optional(),
     githubUrl: z.string().url().optional(),
     liveUrl: z.string().url().optional(),
     imageUrl: z.string().optional(),
+    favicon: z.string().url().optional(), // Project favicon/icon
     priority: z.number().min(1).max(10).default(5), // For sorting
     collaborators: z.array(z.string()).optional(),
     achievements: z.array(z.string()).optional(), // Awards, metrics, etc.

@@ -9,6 +9,7 @@ category: "Client Work"
 featured: false
 draft: false
 liveUrl: "https://scottglorioso.com"
+favicon: "https://scottglorioso.com/favicon.ico"
 priority: 6
 achievements: ["50k+ monthly visitors", "Increased booking inquiries by 300%", "Featured on music blogs", "Mobile-first design"]
 ---

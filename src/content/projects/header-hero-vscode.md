@@ -10,6 +10,7 @@ featured: false
 draft: false
 githubUrl: "https://github.com/danglorioso/header-hero-vscode"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.header-hero"
+favicon: "https://danglorioso.gallerycdn.vsassets.io/extensions/danglorioso/header-hero/1.0.2/1722298594849/Microsoft.VisualStudio.Services.Icons.Default"
 priority: 7
 achievements: ["3k+ active users", "Featured in extension roundup", "Multi-language template support", "Enterprise adoption"]
 ---

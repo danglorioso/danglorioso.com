@@ -6,9 +6,9 @@ status: "in-progress"
 technologies: ["React", "Next.js", "Three.js", "WebGL", "WebAssembly", "TypeScript", "Tailwind CSS", "Vercel"]
 category: "Experimental"
 featured: true
-draft: false
 githubUrl: "https://github.com/danglorioso/demo"
 liveUrl: "https://demo.danglorioso.com"
+favicon: "https://demo.danglorioso.com/favicon.png"
 priority: 8
 achievements: ["50+ interactive demos", "WebGL performance benchmarks", "Featured in tech communities", "10k+ developer visits"]
 ---

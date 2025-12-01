@@ -9,6 +9,7 @@ category: "Photography"
 featured: false
 draft: false
 liveUrl: "https://pics.danglorioso.com"
+favicon: "https://pics.danglorioso.com/favicon.ico"
 priority: 5
 achievements: ["Featured photographer spotlight", "10k+ image views monthly", "Professional client inquiries", "Mobile-optimized galleries"]
 ---

@@ -7,6 +7,8 @@ technologies: ["React", "TypeScript", "WebSockets", "Aviation APIs", "Real-time 
 category: "Aviation"
 featured: false
 draft: false
+liveUrl: "https://board.danglorioso.com"
+favicon: "https://danglorioso.com/favicon.ico"
 priority: 6
 ---
 

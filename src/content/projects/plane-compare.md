@@ -7,6 +7,8 @@ technologies: ["React", "TypeScript", "PostgreSQL", "GraphQL", "Next.js", "Chart
 category: "Aviation"
 featured: false
 draft: false
+liveUrl: "https://planes.danglorioso.com"
+favicon: "https://planes.danglorioso.com/favicon.ico"
 priority: 6
 ---
 
