@@ -72,7 +72,6 @@ const isActive = (href: string) => {
     const header = document.querySelector('header');
 
     if (!mobileMenuButton || !mobileMenu) {
-      console.log('Mobile menu elements not found');
       return;
     }
 
@@ -127,7 +126,6 @@ const isActive = (href: string) => {
     }
 
     function closeMobileMenu() {
-      console.log('Closing mobile menu');
       mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
       mobileMenu.classList.remove('translate-y-0', 'opacity-100');
       mobileMenu.setAttribute('aria-hidden', 'true');
@@ -139,7 +137,6 @@ const isActive = (href: string) => {
     // Toggle menu on hamburger button click
     mobileMenuButton.addEventListener('click', function(e) {
       e.preventDefault();
-      console.log('Mobile menu button clicked');
       const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
       if (isOpen) {
         closeMobileMenu();
