@@ -8,7 +8,7 @@ category: "Aviation"
 featured: false
 draft: false
 liveUrl: "https://planes.danglorioso.com"
-favicon: "https://planes.danglorioso.com/favicon.ico"
+favicon: "planes.ico"
 priority: 6
 ---
 

@@ -9,7 +9,7 @@ category: "Data Processing"
 featured: true
 draft: false
 liveUrl: "https://track.danglorioso.com"
-favicon: "https://track.danglorioso.com/favicon.ico"
+favicon: "track.ico"
 priority: 8
 achievements: ["Processed 500+ meet results", "99.2% accuracy rate", "Used by 15+ athletic programs", "Reduced processing time by 95%"]
 ---

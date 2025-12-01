@@ -8,7 +8,7 @@ category: "Aviation"
 featured: false
 draft: false
 liveUrl: "https://board.danglorioso.com"
-favicon: "https://danglorioso.com/favicon.ico"
+favicon: "board.ico"
 priority: 6
 ---
 

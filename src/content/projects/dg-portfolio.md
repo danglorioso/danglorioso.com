@@ -9,7 +9,7 @@ category: "Web Development"
 featured: true
 githubUrl: "https://github.com/danglorioso/danglorioso.com"
 liveUrl: "https://danglorioso.com/"
-favicon: "https://danglorioso.com/favicon.ico"
+favicon: "www.ico"
 priority: 10
 achievements: ["Featured on Astro Community Showcase", "98+ Lighthouse Performance Score", "15k+ monthly visitors", "Zero JavaScript for static content"]
 ---

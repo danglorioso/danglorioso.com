@@ -9,7 +9,7 @@ category: "DevOps"
 featured: true
 draft: false
 liveUrl: "https://status.danglorioso.com"
-favicon: "https://status.danglorioso.com/favicon.ico"
+favicon: "status.ico"
 priority: 8
 achievements: ["99.9% uptime tracking", "Real-time monitoring", "Automated incident detection", "Public transparency"]
 ---

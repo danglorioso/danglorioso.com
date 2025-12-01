@@ -9,7 +9,7 @@ category: "Aviation"
 featured: false
 draft: false
 liveUrl: "https://logbook.danglorioso.com"
-favicon: "https://logbook.danglorioso.com/favicon.ico"
+favicon: "logbook.ico"
 priority: 7
 achievements: ["5k+ registered pilots", "100k+ flights logged", "VATSIM integration", "Real pilot adoption"]
 ---

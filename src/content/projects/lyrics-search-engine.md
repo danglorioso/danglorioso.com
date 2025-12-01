@@ -9,7 +9,7 @@ category: "Music Technology"
 featured: false
 draft: false
 liveUrl: "https://lyrics.danglorioso.com"
-favicon: "https://lyrics.danglorioso.com/favicon.ico"
+favicon: "lyrics.ico"
 priority: 7
 achievements: ["500k+ songs indexed", "15k+ monthly searches", "Featured on music blogs", "Artist collaboration tools"]
 ---

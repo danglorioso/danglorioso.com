@@ -9,7 +9,7 @@ category: "Aviation"
 featured: true
 draft: false
 liveUrl: "https://metar.danglorioso.com"
-favicon: "https://metar.danglorioso.com/favicon.ico"
+favicon: "metar.ico"
 priority: 8
 achievements: ["25k+ monthly users", "Used by flight schools", "Featured in aviation forums", "Real-time weather integration"]
 ---

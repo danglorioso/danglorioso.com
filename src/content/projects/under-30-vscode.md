@@ -10,7 +10,7 @@ featured: true
 draft: false
 githubUrl: "https://github.com/danglorioso/under-30-vscode"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.under-30"
-favicon: "https://danglorioso.gallerycdn.vsassets.io/extensions/danglorioso/under-30/1.1.1/1736747102401/Microsoft.VisualStudio.Services.Icons.Default"
+favicon: "under-30.png"
 priority: 9
 achievements: ["5k+ active installations", "4.8/5 star rating", "Featured in VSCode Weekly", "Adopted by 20+ dev teams"]
 collaborators: []
