@@ -21,7 +21,7 @@ const isActive = (href: string) => {
 };
 ---
 
-<header class="w-full py-4 border-b border-gray-800 bg-slate-900/80 backdrop-blur-sm">
+<header class="w-full py-4 border-b border-gray-800 bg-slate-900/80 backdrop-blur-sm relative z-50">
   <div class="max-w-5xl mx-auto px-8 flex items-center justify-between">
     
     <!-- Logo -->
@@ -111,14 +111,11 @@ const isActive = (href: string) => {
 
     function openMobileMenu() {
       console.log('Opening mobile menu');
-      // Position menu below header
-      if (header) {
-        const headerHeight = header.offsetHeight;
-        mobileMenu.style.top = headerHeight + 'px';
-      }
+      // Position menu to start from top (behind header)
+      mobileMenu.style.top = '0px';
       
-      mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-      mobileMenu.classList.add('translate-y-0', 'opacity-100');
+      mobileMenu.classList.remove('-translate-y-full', 'pointer-events-none');
+      mobileMenu.classList.add('translate-y-0');
       mobileMenu.setAttribute('aria-hidden', 'false');
       mobileMenuButton.setAttribute('aria-expanded', 'true');
       if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
@@ -126,8 +123,8 @@ const isActive = (href: string) => {
     }
 
     function closeMobileMenu() {
-      mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-      mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+      mobileMenu.classList.add('-translate-y-full', 'pointer-events-none');
+      mobileMenu.classList.remove('translate-y-0');
       mobileMenu.setAttribute('aria-hidden', 'true');
       mobileMenuButton.setAttribute('aria-expanded', 'false');
       if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
