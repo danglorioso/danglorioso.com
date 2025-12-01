@@ -2,6 +2,23 @@
 import Monogram from './Monogram.astro';
 import SocialIcons from './SocialIconsDuo.tsx';
 import NavBar from './NavBarDark.astro';
+
+// Navigation items (shared with mobile menu)
+const navItems = [
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+
+// Get current pathname for active state
+const pathname = Astro.url.pathname;
+
+// Helper function to determine if a nav item is active
+const isActive = (href: string) => {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+};
 ---
 
 <header class="w-full py-4 border-b border-gray-800 bg-slate-900/80 backdrop-blur-sm">
@@ -23,19 +40,144 @@ import NavBar from './NavBarDark.astro';
 
       <!-- Mobile Hamburger Menu -->
       <div class="md:hidden">
-      <button 
-        class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-slate-800/60 transition-colors duration-200"
-        aria-label="Open mobile menu"
-      >
-        <!-- Hamburger icon -->
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+        <button 
+          id="mobile-menu-button"
+          class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-slate-800/60 transition-colors duration-200"
+          aria-label="Toggle mobile menu"
+          aria-expanded="false"
+        >
+          <!-- Hamburger icon -->
+          <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <!-- Close icon (hidden by default) -->
+          <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
     </div>
-
   </div>
+
+
 </header>
+
+<script is:inline>
+  // Mobile menu functionality
+  function initMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+    const header = document.querySelector('header');
+
+    if (!mobileMenuButton || !mobileMenu) {
+      console.log('Mobile menu elements not found');
+      return;
+    }
+
+    // Populate mobile menu with navigation items
+    const desktopNav = document.querySelector('nav ul');
+    const mobileNavContainer = document.getElementById('mobile-nav-links');
+    
+    if (desktopNav && mobileNavContainer) {
+      // Clone navigation items from desktop nav
+      const navItems = [
+        { href: '/about', label: 'About' },
+        { href: '/projects', label: 'Projects' },
+        { href: '/blog', label: 'Blog' },
+        { href: '/contact', label: 'Contact' }
+      ];
+
+      const currentPath = window.location.pathname;
+      
+      navItems.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.href;
+        a.textContent = item.label;
+        
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        
+        a.className = `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+          isActive
+            ? 'bg-blue-600 text-white'
+            : 'text-gray-300 hover:text-white hover:bg-slate-800/60'
+        }`;
+        
+        li.appendChild(a);
+        mobileNavContainer.appendChild(li);
+      });
+    }
+
+    function openMobileMenu() {
+      console.log('Opening mobile menu');
+      // Position menu below header
+      if (header) {
+        const headerHeight = header.offsetHeight;
+        mobileMenu.style.top = headerHeight + 'px';
+      }
+      
+      mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.add('translate-y-0', 'opacity-100');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      mobileMenuButton.setAttribute('aria-expanded', 'true');
+      if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
+      if (closeIcon) closeIcon.classList.remove('hidden');
+    }
+
+    function closeMobileMenu() {
+      console.log('Closing mobile menu');
+      mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      mobileMenuButton.setAttribute('aria-expanded', 'false');
+      if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
+      if (closeIcon) closeIcon.classList.add('hidden');
+    }
+
+    // Toggle menu on hamburger button click
+    mobileMenuButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('Mobile menu button clicked');
+      const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    // Close menu when clicking backdrop
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    if (backdrop) {
+      backdrop.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenuButton.getAttribute('aria-expanded') === 'true') {
+        closeMobileMenu();
+      }
+    });
+
+    // Close menu on navigation (delegate event since links are created dynamically)
+    mobileMenu.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') {
+        closeMobileMenu();
+      }
+    });
+
+    console.log('Mobile menu initialized');
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+</script>
 
 <style>
   /* Animation to nav pills */
