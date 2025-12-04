@@ -1,18 +1,20 @@
 ---
 const { viewBox = "0 0 128 86", width = "128px", height = "86px" } = Astro.props;
 ---
-<div class="monogram-container group relative">
-	<!-- Outer glow effect -->
-	<div class="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
+<div class="group relative">
+	<!-- Glow effect -->
+	<div class="absolute inset-0 opacity-0 group-hover:opacity-60 bg-gradient-to-br from-blue-500/60 to-indigo-600/60 blur-lg duration-500 pointer-events-none">
+		<div class="absolute inset-0"></div>
+	</div>
 
 	<svg
 		id="monogram"
-		class="monogram glow-on-load relative z-10"
+		class="monogram relative z-10"
 		viewBox={viewBox}
 		width={width}
 		height={height}
 		xmlns="http://www.w3.org/2000/svg"
-		aria-label="Dan Glorioso Monogram"
+		aria-label="Monogram"
 		role="img"
 	>
 	<g transform="scale(0.32)">
@@ -45,7 +47,7 @@ const { viewBox = "0 0 128 86", width = "128px", height = "86px" } = Astro.props
 	.monogram-container {
 		position: relative;
 		left: 50%;
-		transform: translateX(-50%);
+		/* transform: translateX(-50%); */
 		width: 100%;
 		height: 100%;
 		display: inline-block;
@@ -56,26 +58,26 @@ const { viewBox = "0 0 128 86", width = "128px", height = "86px" } = Astro.props
 		display: inline-block;
 	}
 	.monogram .path-body {
-		animation: fillBlue 2.5s ease-out forwards;
+		/* animation: fillBlue 2.5s ease-out forwards; */
 		fill: #141414;
-        transition: fill 0.20s ease-in;
+        /* transition: fill 0.20s ease-in; */
 	}
 	.monogram .path-border {
 		fill: #bab9c3;
 	}
 	.monogram .path-shadow {
 		fill: #0E0E0E;
-        animation: fillBlueShadow 2.5s ease-out forwards;
-        transition: fill 0.20s ease-in;
+        /* animation: fillBlueShadow 2.5s ease-out forwards; */
+        /* transition: fill 0.20s ease-in; */
 	}
 
     /* Hover states - faster transitions */
     .group:hover .monogram path#body {
 		animation: none;
-		fill: #0404e3 !important;
+		/* fill: #0404e3 !important; */
 	}
 	.group:hover .monogram path#shadow {
 		animation: none;
-		fill: #04048d !important;
+		/* fill: #04048d !important; */
 	}
 </style>
