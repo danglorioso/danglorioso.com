@@ -23,63 +23,65 @@ const { title, description } = Astro.props;
 		<title>{title} | Dan Glorioso</title>
 	</head>
 	
-	<body class="min-h-screen flex flex-col">
+	<body class="min-h-screen">
 		<canvas id="neural-canvas" class="fixed top-0 left-0 w-full h-full"></canvas>
 
 		<!-- Vercel Speed Insights -->
 		<SpeedInsights />
-		
-		<!-- Header -->
-		<Header />
 
-		<!-- Header spacer to prevent content from being hidden behind fixed header -->
-		<div class="h-20 sm:h-22"></div>
+		<div class="flex flex-col gap-4">
+			<!-- Header -->
+			<Header />
 
-		<!-- Mobile Menu (slides from behind header) -->
-		<div 
-			id="mobile-menu" 
-			class="md:hidden fixed left-0 right-0 z-[100] transform -translate-y-full transition-all duration-300 ease-in-out pointer-events-none"
-			aria-hidden="true"
-		>
-			<!-- Full Screen Backdrop -->
-			<div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30" id="mobile-menu-backdrop"></div>
-			
-			<!-- Menu Panel that slides from behind header -->
-			<div class="relative z-50 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20">
-				
-				<!-- Navigation Links -->
-				<nav class="px-6 py-8">
-					<ul class="space-y-2" id="mobile-nav-links">
-						<!-- Navigation items will be populated by JavaScript -->
-					</ul>
-				</nav>
-			</div>
-		</div>
+			<!-- Header spacer to prevent content from being hidden behind fixed header -->
+			<div class="h-20 sm:h-22"></div>
 
-		<!-- Page Content -->
-		<main class="flex-1 max-w-5xl px-8 py-8 mx-auto w-full relative z-0">
-			<slot />
-		</main>
-
-		<!-- Back to Top Button -->
-		<button 
-			id="back-to-top"
-			class="fixed bottom-6 right-6 p-3 z-[100] bg-slate-850/90 hover:bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none group"
-			aria-label="Back to top"
-		>
-			<svg 
-				class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200" 
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
+			<!-- Mobile Menu (slides from behind header) -->
+			<div 
+				id="mobile-menu" 
+				class="md:hidden fixed left-0 right-0 z-[100] transform -translate-y-full transition-all duration-300 ease-in-out pointer-events-none"
+				aria-hidden="true"
 			>
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-			</svg>
-		</button>
+				<!-- Full Screen Backdrop -->
+				<div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30" id="mobile-menu-backdrop"></div>
+				
+				<!-- Menu Panel that slides from behind header -->
+				<div class="relative z-50 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20">
+					
+					<!-- Navigation Links -->
+					<nav class="px-6 py-8">
+						<ul class="space-y-2" id="mobile-nav-links">
+							<!-- Navigation items will be populated by JavaScript -->
+						</ul>
+					</nav>
+				</div>
+			</div>
 
+			<!-- Page Content -->
+			<main class="flex flex-col max-w-5xl px-8 md:px-16 py-8 mx-auto w-full relative z-0">
+				<slot />
+			</main>-1
 		<!-- Footer -->
 		<Footer />
 
+	</div>
+
+	<!-- Back to Top Button -->
+	<button 
+		id="back-to-top"
+		class="fixed bottom-6 right-6 p-3 z-[100] bg-slate-850/90 hover:bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none group"
+		aria-label="Back to top"
+	>
+		<svg 
+			class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200" 
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+		</svg>
+	</button>
+	
 		<script is:inline>
 			// Dynamic Neural Network Animation System
 			class DynamicNeuralNetwork {
