@@ -216,6 +216,9 @@ const isActive = (href: string) => {
             // First time showing: instantly position it above viewport, then slide down
             header.style.transition = 'none';
             header.style.position = 'fixed';
+            header.style.top = '0';
+            header.style.left = '0';
+            header.style.right = '0';
             header.style.transform = 'translateY(-100%)';
             
             // Force reflow to apply the hidden state before animating
@@ -227,19 +230,30 @@ const isActive = (href: string) => {
             isHeaderFixed = true;
           } else {
             // Already fixed, keep it visible
+            header.style.transition = ''; // Ensure transition is enabled
             header.style.position = 'fixed';
+            header.style.top = '0';
+            header.style.left = '0';
+            header.style.right = '0';
             header.style.transform = 'translateY(0)';
           }
         }
-        // If scrolling down, keep absolute so it scrolls naturally off screen
-        else if (!isHeaderFixed) {
-          header.style.position = 'absolute';
-          header.style.transform = 'translateY(0)';
-        }
-        // If scrolling down but header is currently fixed, keep it fixed (user hasn't reached top yet)
+        // If scrolling down
         else {
-          header.style.position = 'fixed';
-          header.style.transform = 'translateY(0)';
+          if (isHeaderFixed) {
+            // Header is currently fixed and user is scrolling down - slide it up and hide with animation
+            header.style.transition = ''; // Ensure transition is enabled for slide up
+            header.style.position = 'fixed';
+            header.style.top = '0';
+            header.style.left = '0';
+            header.style.right = '0';
+            header.style.transform = 'translateY(-100%)';
+            // Keep isHeaderFixed true but header is now hidden
+          } else {
+            // Header not fixed, keep absolute so it scrolls naturally off screen
+            header.style.position = 'absolute';
+            header.style.transform = 'translateY(0)';
+          }
         }
       }
 
