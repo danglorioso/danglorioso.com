@@ -32,6 +32,9 @@ const { title, description } = Astro.props;
 		<!-- Header -->
 		<Header />
 
+		<!-- Header spacer to prevent content from being hidden behind fixed header -->
+		<div class="h-20 sm:h-22"></div>
+
 		<!-- Mobile Menu (slides from behind header) -->
 		<div 
 			id="mobile-menu" 
