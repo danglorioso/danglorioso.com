@@ -188,11 +188,27 @@ const isActive = (href: string) => {
 
       // When at the very top (essentially scrolled to 0), use absolute positioning (natural flow)
       if (currentScrollY < 5) {
+        // Disable transition when switching from fixed to absolute to avoid glitch
+        if (isHeaderFixed) {
+          header.style.transition = 'none';
+        }
+        header.style.position = 'absolute';
+        header.style.transform = 'translateY(0)';
+        isHeaderFixed = false;
+        // Re-enable transition after a frame
+        if (header.style.transition === 'none') {
+          requestAnimationFrame(() => {
+            header.style.transition = '';
+          });
+        }
+      }
+      // When header is still partially visible AND not currently fixed (scrolled down but not past the header completely)
+      else if (currentScrollY <= headerHeight && !isHeaderFixed) {
         header.style.position = 'absolute';
         header.style.transform = 'translateY(0)';
         isHeaderFixed = false;
       }
-      // When scrolled past the top
+      // When scrolled completely past the header OR header is already fixed
       else {
         // If scrolling up, make it fixed and visible at top
         if (!scrollingDown) {
