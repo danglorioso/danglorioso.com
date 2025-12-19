@@ -186,13 +186,13 @@ const isActive = (href: string) => {
       const currentScrollY = window.scrollY;
       const scrollingDown = currentScrollY > lastScrollY;
 
-      // When at the very top, use absolute positioning (natural flow)
-      if (currentScrollY <= headerHeight) {
+      // When at the very top (essentially scrolled to 0), use absolute positioning (natural flow)
+      if (currentScrollY < 5) {
         header.style.position = 'absolute';
         header.style.transform = 'translateY(0)';
         isHeaderFixed = false;
       }
-      // When scrolled past header
+      // When scrolled past the top
       else {
         // If scrolling up, make it fixed and visible at top
         if (!scrollingDown) {
