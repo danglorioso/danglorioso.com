@@ -1,77 +1,41 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import BlogCard from '../components/BlogCard.astro';
 
 // Get all blog posts that aren't drafts and sort by date (with newest first)
 const allPosts = await getCollection('blog', ({ data }) => {
-  return data.draft !== true;
+	return data.draft !== true;
 });
 
-const blogPosts = allPosts.sort((a, b) => {
-  return b.data.pubDate.getTime() - a.data.pubDate.getTime();
-}).map(post => ({
-  id: post.slug,
-  title: post.data.title,
-  excerpt: post.data.description,
-  date: post.data.pubDate,
-  tags: post.data.tags,
-  slug: post.slug,
-  category: post.data.category,
-  featured: post.data.featured
-}));
-
-// Format date function - works directly with the Date object from frontmatter
-const formatDate = (date: Date) => {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC' // Force UTC to avoid timezone shifts
-  });
-};
+const sortedPosts = allPosts.sort((a, b) => {
+	return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+});
 ---
 
-<Layout title="Blog" description="Thoughts on tech, development, and computer science">
-  <section id="blog">
-    <div class="h-full w-full flex flex-col gap-6">
-      <!-- Page Header -->
-      <section class="">
-        <h1 class="text-4xl font-bold">
-          Blog
-        </h1>
-      </section>
+<Layout title="Blog" description="">
+	<section id="blog">
+		<div class="h-full w-full flex flex-col gap-6">
+			<!-- Page Header -->
+			<section class="">
+				<h1 class="text-4xl font-bold">
+					Blog
+				</h1>
+			</section>
 
-      <div class="flex flex-col gap-6">
-        {blogPosts.map((post, index) => (
-          <a href={`/blog/${post.slug}`} class="block group">
-            <article class="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-lg flex flex-col p-4 gap-3 hover:border-accent-primary/50 transition-all duration-200 cursor-pointer">
-              <!-- Post Title and Date -->
-              <div class="flex items-center justify-between gap-4">
-                <h2 class="text-2xl font-semibold group-hover:text-accent-primary transition-colors flex-1">
-                  {post.title}
-                </h2>
-                <time datetime={post.date.toISOString().split('T')[0]} class="text-sm text-slate-400 whitespace-nowrap flex-shrink-0">
-                  {formatDate(post.date)}
-                </time>
-              </div>
-
-              <!-- Excerpt -->
-              <p class="text-slate-400 text-md leading-relaxed">
-                {post.excerpt}
-              </p>
-
-              <!-- Tags -->
-              <div class="flex flex-wrap gap-2">
-                {(post.tags ?? []).map(tag => (
-                  <span class="px-2 py-1 bg-slate-800/60 text-slate-300 text-sm rounded-md border border-slate-600/50 uppercase tracking-wide">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </article>
-          </a>
-        ))}
-      </div>
+			<div class="flex flex-col gap-6">
+				{sortedPosts.map((post) => (
+					<a href={`/blog/${post.slug}`} class="block group">
+						<BlogCard 
+							title={post.data.title}
+							description={post.data.description}
+							pubDate={post.data.pubDate.toISOString()}
+							tags={post.data.tags ?? []}
+							category={post.data.category}
+						/>
+					</a>
+				))}
+			</div>
 
       <!-- Newsletter Signup -->
       <section class="mt-8 pt-16 border-t border-slate-700/50">
@@ -97,6 +61,8 @@ const formatDate = (date: Date) => {
           </form>
         </div>
       </section>
+
+      
     </div>
   </section>
 </Layout>
