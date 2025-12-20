@@ -9,8 +9,6 @@ featured: false
 draft: false
 ---
 
-# React Performance Optimization: A Practical Guide
-
 React applications can become slow if not optimized properly. Here's a comprehensive guide to keeping your React apps fast and responsive.
 
 ## 1. Use React.memo for Component Memoization

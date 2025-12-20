@@ -10,8 +10,6 @@ draft: false
 heroImage: "/images/blog/neural-networks-js.jpg"
 ---
 
-# Building Neural Networks in JavaScript: A Complete Guide
-
 Neural networks might seem like magic, but they're actually just sophisticated pattern recognition systems. In this guide, we'll build one from scratch using vanilla JavaScript.
 
 ## What You'll Learn
