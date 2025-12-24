@@ -460,9 +460,9 @@ const { title, description } = Astro.props;
 				animate() {
 					this.time += 16;
 					
-					// Clear canvas with dark background
-					// this.ctx.fillStyle = 'rgba(2, 6, 23, 0.95)';
-					this.ctx.fillStyle = '#0f172a';
+					// Clear canvas with dark background using CSS variable
+					const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim();
+					this.ctx.fillStyle = bgColor || '#0f172a';
 					this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 					
 					// Update and draw the neural network
@@ -534,19 +534,18 @@ const { title, description } = Astro.props;
 	}
 	
 	body {
-		/* background: linear-gradient(135deg, #170202 0%, #0f172a 50%, #1e293b 100%); */
-		background: #0f172a;
+		background: var(--bg-primary);
 		min-height: 100vh;
 	}
 	
 	/* Text selection highlight color */
 	::selection {
-		background-color: rgb(59, 130, 246); /* blue-500 */
-		color: rgb(255, 255, 255);
+		background-color: var(--accent-primary);
+		color: var(--text-primary);
 	}
 	
 	::-moz-selection {
-		background-color: rgb(59, 130, 246);
-		color: rgb(255, 255, 255);
+		background-color: var(--accent-primary);
+		color: var(--text-primary);
 	}
 </style>

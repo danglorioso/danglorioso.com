@@ -27,26 +27,26 @@ const formatDate = (dateString: string) => {
 };
 ---
 
-<div class="group bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-lg flex flex-col p-4 gap-3 hover:border-blue-500/20 transition-all duration-200 cursor-pointer">
+<div class="group bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg flex flex-col p-4 gap-3 hover:border-border-accent transition-all duration-200 cursor-pointer">
   <!-- Post Title and Date -->
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
-    <h2 class="text-2xl font-semibold group-hover:text-accent-primary transition-colors flex-1">
+    <h2 class="text-2xl font-semibold text-text-primary group-hover:text-accent-primary transition-colors flex-1">
       {title}
     </h2>
-    <time datetime={pubDate} class="text-sm text-slate-400 whitespace-nowrap flex-shrink-0">
+    <time datetime={pubDate} class="text-sm text-text-secondary whitespace-nowrap flex-shrink-0">
       {formatDate(pubDate)}
     </time>
   </div>
 
   <!-- Excerpt -->
-  <p class="text-slate-400 text-md leading-relaxed">
+  <p class="text-text-secondary text-md leading-relaxed">
     {description}
   </p>
 
   <!-- Tags -->
   <div class="flex flex-wrap gap-2">
     {tags.map((tag) => (
-      <span class="px-2 py-1 bg-slate-800/60 text-slate-300 text-sm rounded-md border border-slate-600/50 uppercase tracking-wide">
+      <span class="px-2 py-1 bg-bg-overlay text-text-tertiary text-sm rounded-md border border-border-tertiary uppercase tracking-wide">
         {tag}
       </span>
     ))}

@@ -31,27 +31,27 @@ const {
 // Status styling
 const statusConfig = {
   completed: { 
-    bg: 'bg-green-500/20', 
-    text: 'text-green-400', 
-    border: 'border-green-500/30',
+    bg: 'bg-status-success-bg', 
+    text: 'text-status-success-text', 
+    border: 'border-status-success-border',
     label: 'Completed' 
   },
   'in-progress': { 
-    bg: 'bg-blue-500/20', 
-    text: 'text-blue-400', 
-    border: 'border-blue-500/30',
+    bg: 'bg-status-info-bg', 
+    text: 'text-status-info-text', 
+    border: 'border-status-info-border',
     label: 'In Progress' 
   },
   planned: { 
-    bg: 'bg-yellow-500/20', 
-    text: 'text-yellow-400', 
-    border: 'border-yellow-500/30',
+    bg: 'bg-status-warning-bg', 
+    text: 'text-status-warning-text', 
+    border: 'border-status-warning-border',
     label: 'Planned' 
   },
   archived: { 
-    bg: 'bg-gray-500/20', 
-    text: 'text-gray-400', 
-    border: 'border-gray-500/30',
+    bg: 'bg-status-neutral-bg', 
+    text: 'text-status-neutral-text', 
+    border: 'border-status-neutral-border',
     label: 'Archived' 
   }
 };
@@ -59,7 +59,7 @@ const statusConfig = {
 const currentStatus = statusConfig[status] || statusConfig['in-progress'];
 ---
 
-<div class="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-lg flex flex-col p-4 gap-3 group-hover:border-blue-500/20 transition-all duration-200 cursor-pointer">
+<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg flex flex-col p-4 gap-3 group-hover:border-border-accent transition-all duration-200 cursor-pointer">
   <!-- Header with Favicon, Title and Status -->
   <div class="flex items-center justify-between">
     <div class="flex flex-1 items-center gap-3 min-w-0">
@@ -73,7 +73,7 @@ const currentStatus = statusConfig[status] || statusConfig['in-progress'];
           onerror="this.style.display='none'"
         />
       )}
-      <h3 class="text-2xl font-semibold group-hover:text-accent-primary transition-colors line-clamp-2 flex-1">
+      <h3 class="text-2xl font-semibold text-text-primary group-hover:text-accent-primary transition-colors line-clamp-2 flex-1">
         {title}
       </h3>
     </div>
@@ -83,21 +83,21 @@ const currentStatus = statusConfig[status] || statusConfig['in-progress'];
   </div>
       
   <!-- Description -->
-  <p class="text-slate-400 text-md leading-relaxed line-clamp-3">
+  <p class="text-text-secondary text-md leading-relaxed line-clamp-3">
     {description}
   </p>
 
   <!-- Tech Stack -->
   <div class="flex flex-wrap gap-2">
     {technologies.map((tech) => (
-      <span class="px-2 py-1 bg-slate-800/60 text-slate-300 text-sm rounded-md border border-slate-600/50">
+      <span class="px-2 py-1 bg-bg-overlay text-text-tertiary text-sm rounded-md border border-border-tertiary">
         {tech}
       </span>
     ))}
   </div>
 
   <!-- Timeline -->
-  <div class="text-xs text-slate-400">
+  <div class="text-xs text-text-secondary">
     {new Date(startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
     {endDate && ` — ${new Date(endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`}
   </div>

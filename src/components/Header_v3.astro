@@ -21,7 +21,7 @@ const isActive = (href: string) => {
 };
 ---
 
-<header id="main-header" class="w-full py-4 border-b border-slate-800/50 bg-slate-900/90 backdrop-blur-md absolute top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
+<header id="main-header" class="w-full py-4 border-b border-border-secondary bg-bg-card-hover backdrop-blur-md absolute top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
   <div class="max-w-5xl mx-auto px-8 flex items-center justify-between">
     
     <!-- Logo -->
@@ -42,7 +42,7 @@ const isActive = (href: string) => {
       <div class="md:hidden">
         <button 
           id="mobile-menu-button"
-          class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-slate-800/60 transition-colors duration-200"
+          class="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors duration-200"
           aria-label="Toggle mobile menu"
           aria-expanded="false"
         >
@@ -100,8 +100,8 @@ const isActive = (href: string) => {
         
         a.className = `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
           isActive
-            ? 'bg-blue-600 text-white'
-            : 'text-gray-300 hover:text-white hover:bg-slate-800/60'
+            ? 'bg-accent-secondary text-text-primary'
+            : 'text-text-tertiary hover:text-text-primary hover:bg-bg-overlay'
         }`;
         
         li.appendChild(a);
@@ -290,7 +290,7 @@ const isActive = (href: string) => {
     position: absolute;
     inset: 0;
     border-radius: 0.5rem;
-    background: rgba(59, 130, 246, 0.1);
+    background: var(--status-info-bg);
     opacity: 0;
     transition: opacity 0.2s ease;
   }

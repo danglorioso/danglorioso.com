@@ -18,7 +18,7 @@ const sortedPosts = allPosts.sort((a, b) => {
 		<div class="h-full w-full flex flex-col gap-6">
 			<!-- Page Header -->
 			<section class="">
-				<h1 class="text-4xl font-bold">
+				<h1 class="text-4xl font-bold text-text-primary">
 					Blog
 				</h1>
 			</section>
@@ -38,10 +38,10 @@ const sortedPosts = allPosts.sort((a, b) => {
 			</div>
 
       <!-- Newsletter Signup -->
-      <section class="mt-8 pt-16 border-t border-slate-700/50">
+      <section class="mt-8 pt-16 border-t border-border-primary">
         <div class="text-center">
-          <h3 class="text-3xl font-bold text-white mb-4">Subscribe to the newsletter</h3>
-          <p class="text-gray-300 mb-8 max-w-md mx-auto">
+          <h3 class="text-3xl font-bold text-text-primary mb-4">Subscribe to the newsletter</h3>
+          <p class="text-text-tertiary mb-8 max-w-md mx-auto">
             Get notified when I publish new posts about development, computer science, and technology.
           </p>
           
@@ -49,12 +49,12 @@ const sortedPosts = allPosts.sort((a, b) => {
             <input 
               type="email" 
               placeholder="Email address" 
-              class="flex-1 bg-slate-800/60 backdrop-blur-sm border border-slate-600/50 text-white placeholder:text-gray-400 rounded-md px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+              class="flex-1 bg-bg-overlay backdrop-blur-sm border border-border-tertiary text-text-primary placeholder:text-text-secondary rounded-md px-4 py-3 focus:ring-2 focus:ring-accent-primary focus:border-accent-primary transition-all duration-200"
               required
             />
             <button 
               type="submit"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-all duration-200 hover:scale-105"
+              class="bg-accent-secondary hover:bg-accent-hover text-text-primary font-semibold py-3 px-6 rounded-md transition-all duration-200 hover:scale-105"
             >
               Sign up
             </button>
