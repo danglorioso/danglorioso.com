@@ -1,0 +1,152 @@
+---
+import '../globals.css';
+import SpeedInsights from '@vercel/speed-insights/astro';
+import Header from '../components/Header_v3.astro';
+import Footer from '../components/Footer.tsx';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | Dan Glorioso</title>
+  </head>
+  
+  <body class="min-h-screen">
+    <!-- Static background pattern layer -->
+    <div class="fixed inset-0 -z-10 portfolio-static-bg"></div>
+
+    <!-- Vercel Speed Insights -->
+    <SpeedInsights />
+
+    <div class="flex flex-col gap-4">
+      <!-- Header -->
+      <Header />
+
+      <!-- Header spacer to prevent content from being hidden behind fixed header -->
+      <div class="h-20 sm:h-22"></div>
+
+      <!-- Mobile Menu (slides from behind header) -->
+      <div 
+        id="mobile-menu" 
+        class="md:hidden fixed left-0 right-0 z-40 transform -translate-y-full transition-all duration-300 ease-in-out pointer-events-none"
+        aria-hidden="true"
+      >
+        <!-- Full Screen Backdrop -->
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30" id="mobile-menu-backdrop"></div>
+        
+        <!-- Menu Panel that slides from behind header -->
+        <div class="relative z-40 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20">
+          <!-- Navigation Links -->
+          <nav class="px-6 py-6">
+            <ul class="space-y-2" id="mobile-nav-links">
+              <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Page Content -->
+      <main class="flex flex-col max-w-5xl px-8 md:px-16 py-8 mx-auto w-full relative z-0">
+        <slot />
+      </main>
+
+      <!-- Footer -->
+      <Footer />
+    </div>
+
+    <!-- Back to Top Button -->
+    <button 
+      id="back-to-top"
+      class="fixed bottom-6 right-6 p-3 z-[100] bg-slate-850/90 hover:bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none group"
+      aria-label="Back to top"
+    >
+      <svg 
+        class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200" 
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+      </svg>
+    </button>
+
+    <script is:inline>
+      // Back to Top Button Functionality (same as other layouts)
+      function initBackToTop() {
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (!backToTopBtn) return;
+
+        function toggleButtonVisibility() {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          if (scrollTop > 300) {
+            backToTopBtn.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+            backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+          } else {
+            backToTopBtn.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+            backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+          }
+        }
+
+        function scrollToTop() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+
+        window.addEventListener('scroll', toggleButtonVisibility);
+        backToTopBtn.addEventListener('click', scrollToTop);
+        toggleButtonVisibility();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          initBackToTop();
+        });
+      } else {
+        initBackToTop();
+      }
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .portfolio-static-bg {
+    background:
+      /* base gradient */
+      radial-gradient(circle at top left, rgba(148, 163, 184, 0.14), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.16), transparent 55%),
+      radial-gradient(circle at top right, rgba(129, 140, 248, 0.18), transparent 55%),
+      /* subtle grid */
+      linear-gradient(
+        to right,
+        rgba(148, 163, 184, 0.08) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(148, 163, 184, 0.08) 1px,
+        transparent 1px
+      );
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      64px 64px,
+      64px 64px;
+    background-color: var(--bg-primary);
+    opacity: 0.9;
+  }
+</style>
