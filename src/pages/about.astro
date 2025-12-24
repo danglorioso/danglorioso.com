@@ -1,14 +1,200 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from "../components/Hero.astro";
 import ContactForm from '../components/ContactForm.astro';
 ---
 
-<Layout title="About" description="CS Student @ Tufts">
+<Layout title="About" description="Learn more about Dan Glorioso - CS Student @ Tufts, Full-Stack Developer, and passionate technologist">
 	<section id="about">
-		<div class="h-full w-full flex flex-col gap-8">
-			<Hero />
-			<ContactForm />
+		<div class="h-full w-full flex flex-col gap-12 md:gap-16">
+			
+			<!-- Hero Section -->
+			<div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+				<!-- Left: Photo -->
+				<div class="flex-shrink-0">
+					<div class="w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden shadow-xl border border-border-primary">
+						<img src="/me.jpeg" alt="Dan Glorioso" class="h-full w-full object-cover"/>
+					</div>
+				</div>
+				
+				<!-- Right: Intro -->
+				<div class="flex-1">
+					<h1 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+						Hey, I'm Dan
+					</h1>
+					<p class="text-xl md:text-2xl text-text-secondary mb-4">
+						CS Student @ Tufts • Full-Stack Developer
+					</p>
+					<p class="text-lg text-text-tertiary leading-relaxed">
+						I'm passionate about building things that matter—whether that's elegant web applications, 
+						open-source projects, or creative solutions to real-world problems. When I'm not coding, 
+						you'll find me exploring new technologies, working on side projects, or diving into my hobbies.
+					</p>
+				</div>
+			</div>
+
+			<!-- About Me Section -->
+			<div class="flex flex-col gap-6">
+				<h2 class="text-3xl font-bold text-text-primary">About Me</h2>
+				<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 md:p-8">
+					<div class="prose prose-invert max-w-none">
+						<p class="text-text-tertiary text-lg leading-relaxed mb-4">
+							I'm currently pursuing my Computer Science degree at Tufts University, where I'm diving deep into 
+							algorithms, systems design, and software engineering principles. What excites me most about CS is the 
+							ability to turn ideas into reality—to write code that solves problems and creates value for people.
+						</p>
+						<p class="text-text-tertiary text-lg leading-relaxed mb-4">
+							My journey in tech started with curiosity and a desire to understand how things work. Over time, 
+							that curiosity evolved into a passion for building web applications, optimizing performance, and 
+							creating user experiences that feel seamless and intuitive.
+						</p>
+						<p class="text-text-tertiary text-lg leading-relaxed">
+							I believe great software comes from understanding both the technical and human sides of development. 
+							That's why I focus not just on writing clean, efficient code, but also on creating solutions that 
+							are accessible, maintainable, and genuinely useful.
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Interests & Hobbies Section -->
+			<div class="flex flex-col gap-6">
+				<h2 class="text-3xl font-bold text-text-primary">Interests & Hobbies</h2>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					
+					<!-- Interest Card 1 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+								</svg>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-text-primary mb-2">Open Source</h3>
+								<p class="text-text-secondary leading-relaxed">
+									I love contributing to open-source projects and building tools that help other developers. 
+									There's something rewarding about code that lives beyond a single project.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Interest Card 2 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+								</svg>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-text-primary mb-2">Learning & Experimentation</h3>
+								<p class="text-text-secondary leading-relaxed">
+									I'm always exploring new technologies, frameworks, and programming paradigms. 
+									Currently diving into performance optimization, TypeScript patterns, and modern web APIs.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Interest Card 3 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+								</svg>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-text-primary mb-2">Reading & Writing</h3>
+								<p class="text-text-secondary leading-relaxed">
+									I enjoy reading technical blogs, documentation, and books about software engineering. 
+									I also write about my learnings and share them on my blog.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Interest Card 4 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+								</svg>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-text-primary mb-2">Music & Creative Projects</h3>
+								<p class="text-text-secondary leading-relaxed">
+									I have a deep appreciation for music and enjoy working on creative projects. 
+									I've built websites for musicians and love exploring the intersection of tech and art.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Interest Card 5 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+								</svg>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-text-primary mb-2">Collaboration</h3>
+								<p class="text-text-secondary leading-relaxed">
+									I thrive in collaborative environments and enjoy working with others to solve complex problems. 
+									Some of my best work comes from bouncing ideas off teammates and learning from different perspectives.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Interest Card 6 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+								</svg>
+							</div>
+							<div>
+								<h3 class="text-xl font-semibold text-text-primary mb-2">Side Projects</h3>
+								<p class="text-text-secondary leading-relaxed">
+									I'm always working on side projects—from web apps to developer tools. 
+									These projects let me experiment with new ideas and technologies in a low-stakes environment.
+								</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- What I'm Looking For Section -->
+			<div class="flex flex-col gap-6">
+				<h2 class="text-3xl font-bold text-text-primary">What I'm Looking For</h2>
+				<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 md:p-8">
+					<p class="text-text-tertiary text-lg leading-relaxed mb-4">
+						I'm always open to connecting with fellow developers, potential collaborators, and opportunities 
+						that align with my interests. Whether you're working on an interesting project, looking for a 
+						collaborator, or just want to chat about tech, feel free to reach out!
+					</p>
+					<p class="text-text-tertiary text-lg leading-relaxed">
+						I'm particularly interested in opportunities where I can work on meaningful problems, learn from 
+						experienced engineers, and contribute to projects that have real impact. If you think we'd be a 
+						good fit, I'd love to hear from you.
+					</p>
+				</div>
+			</div>
+
+			<!-- Contact Form -->
+			<div class="flex flex-col gap-6">
+				<h2 class="text-3xl font-bold text-text-primary">Get In Touch</h2>
+				<ContactForm />
+			</div>
+
 		</div>
 	</section>
 </Layout>
