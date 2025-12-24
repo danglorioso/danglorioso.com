@@ -21,7 +21,7 @@ const isActive = (href: string) => {
 };
 ---
 
-<header id="main-header" class="w-full py-4 border-b border-gray-800 bg-slate-900/80 backdrop-blur-sm absolute top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
+<header id="main-header" class="w-full py-4 border-b border-slate-800/50 bg-slate-900/90 backdrop-blur-md absolute top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
   <div class="max-w-5xl mx-auto px-8 flex items-center justify-between">
     
     <!-- Logo -->
@@ -280,22 +280,22 @@ const isActive = (href: string) => {
 </script>
 
 <style>
-  /* Animation to nav pills */
+  /* Navigation hover effects */
   nav a {
     position: relative;
   }
   
-  nav a::before {
+  nav a:not(:has(span))::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 9999px;
-    background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    border-radius: 0.5rem;
+    background: rgba(59, 130, 246, 0.1);
     opacity: 0;
     transition: opacity 0.2s ease;
   }
   
-  nav a:hover::before {
+  nav a:not(:has(span)):hover::before {
     opacity: 1;
   }
 </style>

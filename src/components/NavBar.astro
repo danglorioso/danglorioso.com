@@ -1,10 +1,8 @@
 ---
 // Navigation items
 const navItems = [
-//   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/projects', label: 'Projects' },
-  // { href: '/hobbies', label: 'Hobbies' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -20,18 +18,26 @@ const isActive = (href: string) => {
 ---
 <!-- Desktop Nav -->
 <nav class="hidden md:flex items-center">
-  <div class="flex gap-2 rounded-full px-3 py-2 border border-slate-700/50">
-    {navItems.map((item) => (
-      <a
-        href={item.href}
-        class={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-          isActive(item.href)
-            ? 'bg-accent-primary text-white'
-            : 'text-gray-300 hover:text-white hover:bg-slate-800/60 transition-all duration-300'
-        }`}
-      >
-        {item.label}
-      </a>
-    ))}
-  </div>
+  <ul class="flex items-center gap-1">
+    {navItems.map((item) => {
+      const active = isActive(item.href);
+      return (
+        <li>
+          <a
+            href={item.href}
+            class={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+              active
+                ? 'text-white'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            {item.label}
+            {active && (
+              <span class="absolute inset-x-0 -bottom-1 h-0.5 bg-blue-500 rounded-full"></span>
+            )}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
 </nav>
