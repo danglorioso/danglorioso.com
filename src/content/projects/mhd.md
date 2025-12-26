@@ -7,6 +7,7 @@ status: "in-progress"
 technologies: ["React", "Next.js", "TypeScript", "YouTube API", "Tailwind CSS", "Vercel"]
 category: "Entertainment"
 liveUrl: "https://masshistday.vercel.app"
+githubUrl: "https://github.com/jumbocode/mhd"
 draft: true
 favicon: "cotl.png"
 priority: 6

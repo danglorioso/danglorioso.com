@@ -7,8 +7,8 @@ technologies: ["React", "Next.js", "Three.js", "WebGL", "WebAssembly", "TypeScri
 category: "Experimental"
 featured: false
 draft: true
-githubUrl: "https://github.com/danglorioso/demo"
 liveUrl: "https://demo.danglorioso.com"
+githubUrl: "https://github.com/danglorioso/demo"
 favicon: "demo.png"
 priority: 8
 achievements: ["50+ interactive demos", "WebGL performance benchmarks", "Featured in tech communities", "10k+ developer visits"]

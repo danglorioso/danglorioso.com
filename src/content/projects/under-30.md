@@ -9,7 +9,7 @@ technologies: ["TypeScript", "VSCode Extension API", "Node.js", "JSON Schema", "
 category: "Developer Tools"
 featured: true
 draft: false
-githubUrl: "https://github.com/danglorioso/under-30-vscode"
+githubUrl: "https://github.com/danglorioso/under-30"
 liveUrl: "https://danglorioso.com/under-30"
 favicon: "under-30.png"
 priority: 9

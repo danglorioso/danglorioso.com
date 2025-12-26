@@ -7,7 +7,7 @@ status: "completed"
 technologies: ["TypeScript", "VSCode API", "Node.js", "Regular Expressions"]
 category: "Developer Tools"
 featured: true
-githubUrl: "https://github.com/danglorioso/header-hero-vscode"
+githubUrl: "https://github.com/danglorioso/header-hero"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.header-hero"
 favicon: "header-hero.png"
 priority: 8

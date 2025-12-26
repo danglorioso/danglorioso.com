@@ -7,6 +7,7 @@ status: "completed"
 technologies: ["React", "Next.js", "TypeScript", "YouTube API", "Tailwind CSS", "Vercel"]
 category: "Entertainment"
 liveUrl: "https://cotl.danglorioso.com"
+githubUrl: "https://github.com/danglorioso/comedyontheloose"
 favicon: "cotl.png"
 priority: 6
 achievements: ["100k+ episode views", "Featured on comedy blogs", "Social media integration", "Fan community growth"]

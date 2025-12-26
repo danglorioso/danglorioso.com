@@ -8,6 +8,7 @@ category: "Music Technology"
 featured: false
 draft: false
 liveUrl: "https://lyrics.danglorioso.com"
+githubUrl: "https://github.com/danglorioso/lyrics"
 favicon: "lyrics.ico"
 priority: 5
 achievements: ["500k+ songs indexed", "15k+ monthly searches", "Featured on music blogs", "Artist collaboration tools"]
