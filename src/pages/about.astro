@@ -27,7 +27,7 @@ import ContactForm from '../components/ContactForm.astro';
 					<p class="text-lg text-text-tertiary leading-relaxed">
 						I'm passionate about building things that matter—whether that's elegant web applications, 
 						open-source projects, or creative solutions to real-world problems. When I'm not coding, 
-						you'll find me exploring new technologies, working on side projects, or diving into my hobbies.
+						you'll find me exploring brand new technologies, working on side projects, or diving into some of my hobbies.
 					</p>
 				</div>
 			</div>
@@ -38,7 +38,7 @@ import ContactForm from '../components/ContactForm.astro';
 				<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 md:p-8">
 					<div class="prose prose-invert max-w-none">
 						<p class="text-text-tertiary text-lg leading-relaxed mb-4">
-							I'm currently pursuing my Computer Science degree at Tufts University, where I'm diving deep into 
+							I'm currently a senior at Tufts University studying Computer Science, where I'm diving deep into 
 							algorithms, systems design, and software engineering principles. What excites me most about CS is the 
 							ability to turn ideas into reality—to write code that solves problems and creates value for people.
 						</p>
@@ -97,58 +97,73 @@ import ContactForm from '../components/ContactForm.astro';
 						</div>
 					</div>
 
-					<!-- Interest Card 3 -->
+					<!-- Interest Card 3: Aviation Data -->
 					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
-						<div class="flex items-start gap-4">
-							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
-								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-								</svg>
+						<div class="flex flex-col gap-4">
+							<!-- Optional image area for future aviation photo / screenshot -->
+							<div class="w-full h-32 md:h-40 rounded-md bg-bg-overlay/40 border border-border-tertiary/60 flex items-center justify-center text-text-secondary text-sm italic">
+								<span class="opacity-70">Aviation tracking photo or screenshot can go here</span>
 							</div>
-							<div>
-								<h3 class="text-xl font-semibold text-text-primary mb-2">Reading & Writing</h3>
-								<p class="text-text-secondary leading-relaxed">
-									I enjoy reading technical blogs, documentation, and books about software engineering. 
-									I also write about my learnings and share them on my blog.
-								</p>
+							<div class="flex items-start gap-4">
+								<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+									<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.5 3L21 5l-5.5 14L11 14l-5 4z"></path>
+									</svg>
+								</div>
+								<div>
+									<h3 class="text-xl font-semibold text-text-primary mb-2">Aviation Data & ADS-B</h3>
+									<p class="text-text-secondary leading-relaxed">
+										I run two Raspberry Pi ADS-B receivers that continuously upload overhead aircraft traffic to
+										Flightradar24. I love knowing that my little corner of the network helps power tools used by
+										pilots, enthusiasts, and anyone curious about what's flying overhead.
+									</p>
+								</div>
 							</div>
 						</div>
 					</div>
 
-					<!-- Interest Card 4 -->
+					<!-- Interest Card 4: Weather Station -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex flex-col gap-4">
+							<!-- Optional image area for future weather station / camera photo -->
+							<div class="w-full h-32 md:h-40 rounded-md bg-bg-overlay/40 border border-border-tertiary/60 flex items-center justify-center text-text-secondary text-sm italic">
+								<span class="opacity-70">Weather station or sky camera photo can go here</span>
+							</div>
+							<div class="flex items-start gap-4">
+								<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+									<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M5 12h14M8 19h8"></path>
+									</svg>
+								</div>
+								<div>
+									<h3 class="text-xl font-semibold text-text-primary mb-2">Weather Station & Camera</h3>
+									<p class="text-text-secondary leading-relaxed">
+										At home I operate an Ambient Weather WS-2000 station and a weather camera, sharing real-time
+										conditions with the community. Contributing this data for meteorologists, local pilots,
+										and other weather nerds gives me a genuine sense of purpose and connection to something
+										bigger than myself.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Interest Card 5: Reading & Writing -->
 					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
 								</svg>
-							</div>
-							<div>
+						</div>
+						<div>
 								<h3 class="text-xl font-semibold text-text-primary mb-2">Music & Creative Projects</h3>
 								<p class="text-text-secondary leading-relaxed">
 									I have a deep appreciation for music and enjoy working on creative projects. 
 									I've built websites for musicians and love exploring the intersection of tech and art.
-								</p>
-							</div>
+							</p>
 						</div>
 					</div>
-
-					<!-- Interest Card 5 -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
-						<div class="flex items-start gap-4">
-							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
-								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-								</svg>
-							</div>
-							<div>
-								<h3 class="text-xl font-semibold text-text-primary mb-2">Collaboration</h3>
-								<p class="text-text-secondary leading-relaxed">
-									I thrive in collaborative environments and enjoy working with others to solve complex problems. 
-									Some of my best work comes from bouncing ideas off teammates and learning from different perspectives.
-								</p>
-							</div>
-						</div>
 					</div>
 
 					<!-- Interest Card 6 -->
@@ -156,17 +171,35 @@ import ContactForm from '../components/ContactForm.astro';
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm6 3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM7 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"></path>
+								</svg>
+						</div>
+						<div>
+							<h3 class="text-xl font-semibold text-text-primary mb-2">Collaboration</h3>
+							<p class="text-text-secondary leading-relaxed">
+								I thrive in collaborative environments and enjoy working with others to solve complex problems. 
+								Some of my best work comes from bouncing ideas off teammates and learning from different perspectives.
+							</p>
+						</div>
+					</div>
+					</div>
+
+					<!-- Interest Card 7 -->
+					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex items-start gap-4">
+							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
 								</svg>
-							</div>
-							<div>
-								<h3 class="text-xl font-semibold text-text-primary mb-2">Side Projects</h3>
-								<p class="text-text-secondary leading-relaxed">
-									I'm always working on side projects—from web apps to developer tools. 
-									These projects let me experiment with new ideas and technologies in a low-stakes environment.
-								</p>
-							</div>
 						</div>
+						<div>
+							<h3 class="text-xl font-semibold text-text-primary mb-2">Side Projects</h3>
+							<p class="text-text-secondary leading-relaxed">
+								I'm always working on side projects—from web apps to developer tools. 
+								These projects let me experiment with new ideas and technologies in a low-stakes environment.
+							</p>
+						</div>
+					</div>
 					</div>
 
 				</div>
