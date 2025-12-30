@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
+import ComingSoonBox from '../components/ComingSoonBox.astro';
 ---
 
 <Layout title="About" description="Learn more about Dan Glorioso - CS Student @ Tufts, Full-Stack Developer, and passionate technologist">
@@ -25,9 +26,10 @@ import ContactForm from '../components/ContactForm.astro';
 						CS Student @ Tufts • Full-Stack Developer
 					</p>
 					<p class="text-lg text-text-tertiary leading-relaxed">
-						I'm passionate about building things that matter—whether that's elegant web applications, 
-						open-source projects, or creative solutions to real-world problems. When I'm not coding, 
-						you'll find me exploring brand new technologies, working on side projects, or diving into some of my hobbies.
+						I'm passionate about building things that matter—whether that's elegant web apps, 
+						open-source projects, or creative solutions to real-world problems. 
+						When I'm not coding, you'll find me exploring brand new technologies, 
+						working on side projects, or diving into some of my hobbies.
 					</p>
 				</div>
 			</div>
@@ -38,31 +40,38 @@ import ContactForm from '../components/ContactForm.astro';
 				<div class="bg-indigo-950/15 backdrop-blur-sm border border-border-primary rounded-lg p-6 md:p-8">
 					<div class="prose prose-invert max-w-none">
 						<p class="text-text-tertiary text-lg leading-relaxed mb-4">
-							I'm currently a senior at Tufts University studying Computer Science, where I'm diving deep into 
-							algorithms, systems design, and software engineering principles. What excites me most about CS is the 
-							ability to turn ideas into reality—to write code that solves problems and creates value for people.
+							I'm currently a senior at Tufts University studying Computer Science, where I work as a 
+							teaching assistant for Algorithms and serve as a project manager for JumboCode—a student 
+							organization that builds pro bono software for local non-profits. I'm currently leading a 
+							team of 10 developers creating a data analysis web application for a client.
 						</p>
 						<p class="text-text-tertiary text-lg leading-relaxed mb-4">
-							My journey in tech started with curiosity and a desire to understand how things work. Over time, 
-							that curiosity evolved into a passion for building web applications, optimizing performance, and 
-							creating user experiences that feel seamless and intuitive.
+							My fascination with technology started at 8 years old when I built my first website using 
+							iWeb on an iBook G4 for a snack business I ran out of my house, aptly named Dan's Snack Shack. 
+							Even though it was just a static menu page and blog, I became enthralled by the ways in which 
+							you could creatively leverage technology for a purpose. That curiosity kept me poking around 
+							and teaching myself new things. By 4th grade, I was running a Minecraft server for kids in my 
+							grade and reading Java how-to books to teach myself how to code-up custom plugins and 
+							mini-games for my friends to play. 
 						</p>
 						<p class="text-text-tertiary text-lg leading-relaxed">
-							I believe great software comes from understanding both the technical and human sides of development. 
-							That's why I focus not just on writing clean, efficient code, but also on creating solutions that 
-							are accessible, maintainable, and genuinely useful.
+							These days, I'm most excited by creating solution that people will actually use and that will 
+							improve their lives. What's always drawn me to technology is its potential to solve real problems
+							and meet genuine human needs. At its core, that's what draws me to technology and while the scale
+							and complexity may have changed, the core appeal for me remains the same.
+
 						</p>
 					</div>
 				</div>
 			</div>
 
 			<!-- Interests & Hobbies Section -->
-			<div class="flex flex-col gap-6">
+			<!-- <div class="flex flex-col gap-6">
 				<h2 class="text-3xl font-bold text-text-primary">Interests & Hobbies</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6"> -->
 					
 					<!-- Interest Card 1 -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,10 +86,10 @@ import ContactForm from '../components/ContactForm.astro';
 								</p>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Interest Card 2 -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,13 +104,13 @@ import ContactForm from '../components/ContactForm.astro';
 								</p>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Interest Card 3: Aviation Data -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
-						<div class="flex flex-col gap-4">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200"> -->
+						<!-- <div class="flex flex-col gap-4"> -->
 							<!-- Optional image area for future aviation photo / screenshot -->
-							<div class="w-full h-32 md:h-40 rounded-md bg-bg-overlay/40 border border-border-tertiary/60 flex items-center justify-center text-text-secondary text-sm italic">
+							<!-- <div class="w-full h-32 md:h-40 rounded-md bg-bg-overlay/40 border border-border-tertiary/60 flex items-center justify-center text-text-secondary text-sm italic">
 								<span class="opacity-70">Aviation tracking photo or screenshot can go here</span>
 							</div>
 							<div class="flex items-start gap-4">
@@ -120,13 +129,13 @@ import ContactForm from '../components/ContactForm.astro';
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Interest Card 4: Weather Station -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
-						<div class="flex flex-col gap-4">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+						<div class="flex flex-col gap-4"> -->
 							<!-- Optional image area for future weather station / camera photo -->
-							<div class="w-full h-32 md:h-40 rounded-md bg-bg-overlay/40 border border-border-tertiary/60 flex items-center justify-center text-text-secondary text-sm italic">
+							<!-- <div class="w-full h-32 md:h-40 rounded-md bg-bg-overlay/40 border border-border-tertiary/60 flex items-center justify-center text-text-secondary text-sm italic">
 								<span class="opacity-70">Weather station or sky camera photo can go here</span>
 							</div>
 							<div class="flex items-start gap-4">
@@ -146,10 +155,10 @@ import ContactForm from '../components/ContactForm.astro';
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Interest Card 5: Reading & Writing -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,12 +171,12 @@ import ContactForm from '../components/ContactForm.astro';
 									I have a deep appreciation for music and enjoy working on creative projects. 
 									I've built websites for musicians and love exploring the intersection of tech and art.
 							</p>
-						</div>
-					</div>
-					</div>
+						</div> -->
+					<!-- </div> -->
+					<!-- </div> -->
 
 					<!-- Interest Card 6 -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,10 +191,10 @@ import ContactForm from '../components/ContactForm.astro';
 							</p>
 						</div>
 					</div>
-					</div>
+					</div> -->
 
 					<!-- Interest Card 7 -->
-					<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
+					<!-- <div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 hover:border-border-accent transition-all duration-200">
 						<div class="flex items-start gap-4">
 							<div class="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-primary/20 flex items-center justify-center">
 								<svg class="w-6 h-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,18 +209,18 @@ import ContactForm from '../components/ContactForm.astro';
 							</p>
 						</div>
 					</div>
-					</div>
+					</div> -->
 
-				</div>
-			</div>
+				<!-- </div>
+			</div> -->
 
 			<!-- What I'm Looking For Section -->
-			<div class="flex flex-col gap-6">
+			<!-- <div class="flex flex-col gap-6">
 				<h2 class="text-3xl font-bold text-text-primary">What I'm Looking For</h2>
 				<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 md:p-8">
 					<p class="text-text-tertiary text-lg leading-relaxed mb-4">
-						I'm always open to connecting with fellow developers, potential collaborators, and opportunities 
-						that align with my interests. Whether you're working on an interesting project, looking for a 
+						I'm always open to connecting with fellow developers, potential collaborators, and exploring new opportunities. 
+						Whether you're working on an interesting project, looking for a 
 						collaborator, or just want to chat about tech, feel free to reach out!
 					</p>
 					<p class="text-text-tertiary text-lg leading-relaxed">
@@ -220,7 +229,10 @@ import ContactForm from '../components/ContactForm.astro';
 						good fit, I'd love to hear from you.
 					</p>
 				</div>
-			</div>
+			</div> -->
+
+			<!-- Coming Soon Section -->
+			 <ComingSoonBox />
 
 			<!-- Contact Form -->
 			<div class="flex flex-col gap-6">
