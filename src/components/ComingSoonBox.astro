@@ -16,49 +16,74 @@
         <!-- Mailchimp -->
         <div class="space-y-4">				
             <form
-                action="https://danglorioso.us8.list-manage.com/subscribe/post?u=42029d7584bb873f929cad8e6&amp;id=c2b984f044&amp;f_id=00f2c2e1f0"
-                method="post"
-                target="_blank"
+                id="coming-soon-form"
                 class="space-y-2"
             >
                 <div class="mc-field-group">
-                    <!-- <label for="mce-EMAIL" class="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address
-                    </label> -->
                     <input
                         type="email"
-                        name="EMAIL"
-                        id="mce-EMAIL"
+                        name="email"
+                        id="coming-soon-email"
                         required
                         class="w-full bg-slate-700/50 border border-slate-500/50 text-white placeholder:text-gray-400 rounded-md px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         placeholder="Email address"
                     />
                 </div>
 
-                <div id="mce-responses" class="clear foot">
-                    <div class="response text-red-400 text-sm" id="mce-error-response" style="display:none;"></div>
-                    <div class="response text-green-400 text-sm" id="mce-success-response" style="display:none;"></div>
-                </div>
-                
-                <div aria-hidden="true" style="position: absolute; left: -5000px;">
-                    <input
-                        type="text"
-                        name="b_d3c507093f7b2f71584f684c0_25ebfbc332"
-                        tabindex="-1"
-                        value=""
-                    />
-                </div>
+                <p id="coming-soon-message" class="text-sm"></p>
 
                 <button
                     type="submit"
-                    name="subscribe"
-                    id="mc-embedded-subscribe"
+                    id="coming-soon-subscribe"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-all duration-200"
                 >
                     Notify Me
                 </button>
             </form>
         </div>
+        
+        <script>
+            const form = document.getElementById("coming-soon-form") as HTMLFormElement | null;
+            const message = document.getElementById("coming-soon-message") as HTMLParagraphElement | null;
+          
+            if (form && message) {
+              form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+          
+                const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+                const email = emailInput?.value;
+          
+                if (!email) {
+                  message.textContent = "Please enter an email address.";
+                  message.className = "text-sm text-red-400";
+                  return;
+                }
+          
+                try {
+                  const res = await fetch("/api/subscribe", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email }),
+                  });
+          
+                  const data = await res.json();
+          
+                  if (res.ok) {
+                    message.textContent = "Thanks for subscribing!";
+                    message.className = "text-sm text-green-400";
+                    form.reset();
+                  } else {
+                    message.textContent =
+                      data?.detail || data?.error || "Something went wrong. Try again.";
+                    message.className = "text-sm text-red-400";
+                  }
+                } catch (error) {
+                  message.textContent = "Something went wrong. Try again.";
+                  message.className = "text-sm text-red-400";
+                }
+              });
+            }
+        </script>
     </div>
 </div>
 
