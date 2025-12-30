@@ -14,7 +14,6 @@ const blog = defineCollection({
     category: z.string().optional(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
-    toc: z.boolean().default(false), // Table of contents
     relatedPosts: z.array(reference('blog')).optional(),
   }),
 });

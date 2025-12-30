@@ -45,8 +45,9 @@ const sortedPosts = allPosts.sort((a, b) => {
             Get notified when I publish new posts about development, computer science, and technology.
           </p>
           
-          <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input 
+              name="email"
               type="email" 
               placeholder="Email address" 
               class="flex-1 bg-bg-overlay backdrop-blur-sm border border-border-tertiary text-text-primary placeholder:text-text-secondary rounded-md px-4 py-3 focus:ring-2 focus:ring-accent-primary focus:border-accent-primary transition-all duration-200"
@@ -59,6 +60,51 @@ const sortedPosts = allPosts.sort((a, b) => {
               Sign up
             </button>
           </form>
+          
+          <p id="form-message" class="mt-4 text-sm"></p>
+          
+          <script>
+            const form = document.getElementById("newsletter-form") as HTMLFormElement | null;
+            const message = document.getElementById("form-message") as HTMLParagraphElement | null;
+          
+            if (form && message) {
+              form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+          
+                const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+                const email = emailInput?.value;
+          
+                if (!email) {
+                  message.textContent = "Please enter an email address.";
+                  message.className = "mt-4 text-sm text-red-400";
+                  return;
+                }
+          
+                try {
+                  const res = await fetch("/api/subscribe", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email }),
+                  });
+          
+                  const data = await res.json();
+          
+                  if (res.ok) {
+                    message.textContent = "Thanks for subscribing!";
+                    message.className = "mt-4 text-sm text-green-400";
+                    form.reset();
+                  } else {
+                    message.textContent =
+                      data?.detail || data?.error || "Something went wrong. Try again.";
+                    message.className = "mt-4 text-sm text-red-400";
+                  }
+                } catch (error) {
+                  message.textContent = "Something went wrong. Try again.";
+                  message.className = "mt-4 text-sm text-red-400";
+                }
+              });
+            }
+          </script>          
         </div>
       </section>
 
