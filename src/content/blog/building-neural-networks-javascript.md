@@ -5,8 +5,8 @@ pubDate: 2024-12-15
 category: "Machine Learning"
 tags: ["JavaScript", "AI", "Neural Networks", "Machine Learning"]
 readTime: "8 min read"
-featured: true
-draft: false
+featured: false
+draft: true
 heroImage: "/images/blog/neural-networks-js.jpg"
 ---
 

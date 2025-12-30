@@ -6,7 +6,7 @@ category: "React"
 tags: ["React", "Performance", "Optimization", "JavaScript"]
 readTime: "10 min read"
 featured: false
-draft: false
+draft: true
 ---
 
 React applications can become slow if not optimized properly. Here's a comprehensive guide to keeping your React apps fast and responsive.

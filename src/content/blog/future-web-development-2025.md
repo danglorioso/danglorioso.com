@@ -6,7 +6,7 @@ category: "Web Development"
 tags: ["Web Development", "Trends", "AI", "Performance", "React", "TypeScript"]
 readTime: "6 min read"
 featured: false
-draft: false
+draft: true
 ---
 
 The web development landscape evolves rapidly. Here are the trends that will define 2025 and beyond.
