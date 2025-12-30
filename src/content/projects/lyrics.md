@@ -1,6 +1,6 @@
 ---
 title: "Lyrics Search Engine - Hooked On"
-description: "An intelligent lyric discovery tool that enables deep searches across entire artist discographies, finding specific phrases, themes, and word patterns with advanced text analysis and music streaming integration."
+description: "A lyric discovery tool that deep dives into entire artist discographies, finding specific phrases, themes, and word patterns with advanced text analysis and music streaming integration."
 startDate: 2025-03-21
 status: "in-progress"
 technologies: ["Python", "FastAPI", "React", "TypeScript", "Elasticsearch", "Spotify API", "Web Scraping", "NLP"]

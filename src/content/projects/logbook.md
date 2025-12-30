@@ -1,16 +1,16 @@
 ---
-title: "Digital Flight Logbook"
-description: "A comprehensive digital pilot logbook designed for flight simulator enthusiasts, featuring detailed flight tracking, performance analytics, and aviation career progression tools with real-world accuracy."
-startDate: 2025-05-16
+title: "Logbook - Flight Tracking Network for Simulation Pilots"
+description: "A social network for flight simulator enthusiasts to track and share their flights with other pilots."
+startDate: 2025-12-21
 status: "in-progress"
-technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "Chart.js", "PDF Generation", "Aviation APIs"]
+technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "Mapbox", "Tailwind CSS"]
 category: "Aviation"
 featured: false
 draft: false
 liveUrl: "https://logbook.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/logbook"
 favicon: "logbook.ico"
-priority: 5
+priority: 7
 achievements: ["5k+ registered pilots", "100k+ flights logged", "VATSIM integration", "Real pilot adoption"]
 ---
 

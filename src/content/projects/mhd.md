@@ -1,17 +1,15 @@
 ---
 title: "Massachusetts History Day"
-description: "The digital presence for sketch comedy TV show Comedy on the Loose, featuring episode archives, airing schedule integration, and promotional content."
-startDate: 2025-06-04
-endDate: 2025-08-12
+description: "A data visualization web application for Massachusetts Historical Society to track annual student participation. Led as project manager, built for JumboCode project."
+startDate: 2025-09-05
 status: "in-progress"
-technologies: ["React", "Next.js", "TypeScript", "YouTube API", "Tailwind CSS", "Vercel"]
-category: "Entertainment"
+technologies: ["React", "Next.js", "TypeScript", "D3.js", "Mapbox", "Tailwind CSS", "Vercel", "Drizzle ORM"]
+category: "Non-profit"
 liveUrl: "https://masshistday.vercel.app"
 githubUrl: "https://github.com/jumbocode/mhd"
-draft: true
-favicon: "cotl.png"
+draft: false
+favicon: "mhd.png"
 priority: 6
-achievements: ["100k+ episode views", "Featured on comedy blogs", "Social media integration", "Fan community growth"]
 ---
 
 ## Project Overview

@@ -8,7 +8,7 @@ technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "Tailwind CSS", "
 category: "Non-profit"
 githubUrl: "https://github.com/JumboCode/Theatre-At-First"
 favicon: "theatre.jpg"
-priority: 8
+priority: 4
 achievements: ["Streamlined inventory tracking for 500+ items", "Reduced search time by 80%", "Photo upload & categorization system", "Location-based organization", "Condition tracking workflow"]
 ---
 

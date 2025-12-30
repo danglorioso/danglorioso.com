@@ -10,7 +10,7 @@ featured: true
 githubUrl: "https://github.com/danglorioso/header-hero"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.header-hero"
 favicon: "header-hero.png"
-priority: 8
+priority: 7
 achievements: ["3k+ active users", "Featured in extension roundup", "Multi-language template support", "Enterprise adoption"]
 ---
 

@@ -11,7 +11,7 @@ draft: false
 liveUrl: "https://track.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/track-records-upload"
 favicon: "track.ico"
-priority: 8
+priority: 6
 achievements: ["Processed 500+ meet results", "99.2% accuracy rate", "Used by 15+ athletic programs", "Reduced processing time by 95%"]
 ---
 

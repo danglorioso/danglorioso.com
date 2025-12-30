@@ -8,7 +8,7 @@ technologies: ["React", "Next.js", "Node.js", "PostgreSQL", "Neon", "Clerk"]
 category: "Non-profit"
 githubUrl: "https://github.com/JumboCode/Somerville-Museum"
 favicon: "museum.jpg"
-priority: 7
+priority: 4
 achievements: ["Digital preservation of historical artifacts", "Advanced search & filtering system", "User-friendly museum staff interface", "Scalable inventory management"]
 ---
 
