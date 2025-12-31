@@ -7,8 +7,9 @@ import Footer from '../components/Footer';
 interface Props {
 	title: string;
 	description?: string;
+	homepage?: boolean;
 }
-const { title, description } = Astro.props;
+const { title, description, homepage } = Astro.props;
 ---
 
 <!doctype html>
@@ -20,7 +21,7 @@ const { title, description } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title} | Dan Glorioso</title>
+		<title>{homepage ? title : `${title} | Dan Glorioso`}</title>
 	</head>
 	
 	<body class="min-h-screen flex flex-col">
