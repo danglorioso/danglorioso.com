@@ -5,7 +5,7 @@ startDate: 2025-12-27
 status: "in-progress"
 technologies: ["React", "TypeScript", "Node.js", "Leaflet", "PostgreSQL", "Drizzle ORM"]
 category: "Travel"
-featured: false
+featured: true
 draft: false
 liveUrl: "https://parkquest.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/park-quest"

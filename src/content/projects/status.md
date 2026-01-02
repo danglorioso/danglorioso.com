@@ -6,7 +6,6 @@ endDate: 2025-12-01
 status: "completed"
 technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSockets", "Monitoring APIs"]
 category: "DevOps"
-featured: true
 draft: false
 liveUrl: "https://status.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/status"

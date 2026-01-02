@@ -6,7 +6,6 @@ endDate: 2025-05-25
 status: "in-progress"
 technologies: ["Python", "FastAPI", "React", "TypeScript", "Pandas", "OpenCV", "Machine Learning", "PostgreSQL", "Docker"]
 category: "Data Processing"
-featured: true
 draft: false
 liveUrl: "https://track.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/track-records-upload"

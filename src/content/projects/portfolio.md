@@ -6,7 +6,6 @@ endDate: 2024-03-20
 status: "in-progress"
 technologies: ["Astro", "TypeScript", "Tailwind CSS", "Markdown", "Vercel", "Git"]
 category: "Web Development"
-featured: true
 githubUrl: "https://github.com/danglorioso/danglorioso.com"
 liveUrl: "https://danglorioso.com/"
 favicon: "www.ico"
