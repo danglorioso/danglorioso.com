@@ -2,7 +2,7 @@
 title: "DG Portfolio Website"
 description: "My personal portfolio website showcasing my projects, skills, and experience. Built in Astro."
 startDate: 2024-01-15
-endDate: 2024-03-20
+endDate: 2025-12-30
 status: "in-progress"
 technologies: ["Astro", "TypeScript", "Tailwind CSS", "Markdown", "Vercel", "Git"]
 category: "Web Development"
