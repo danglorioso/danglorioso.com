@@ -32,6 +32,7 @@ const sortedPosts = allPosts.sort((a, b) => {
 							pubDate={post.data.pubDate.toISOString()}
 							tags={post.data.tags ?? []}
 							category={post.data.category}
+              featured={post.data.featured}
 						/>
 					</a>
 				))}
