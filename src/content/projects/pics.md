@@ -8,7 +8,7 @@ category: "Photography"
 liveUrl: "https://pics.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/pics"
 favicon: "pics.ico"
-priority: 5
+priority: 2
 achievements: ["Featured photographer spotlight", "10k+ image views monthly", "Professional client inquiries", "Mobile-optimized galleries"]
 ---
 

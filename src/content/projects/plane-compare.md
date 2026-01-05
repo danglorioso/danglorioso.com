@@ -10,7 +10,7 @@ draft: false
 liveUrl: "https://planes.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/plane-compare"
 favicon: "planes.ico"
-priority: 5
+priority: 2
 ---
 
 ## Project Overview

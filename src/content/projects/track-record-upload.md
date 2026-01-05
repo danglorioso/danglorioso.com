@@ -1,6 +1,6 @@
 ---
 title: "Track Record Upload System"
-description: "An intelligent web application that automatically detects, parses, and standardizes track meet results from various formats into clean, analyzable CSV reports for athletic performance analysis."
+description: "An intelligent web application that automatically detects, parses, and standardizes track meet results of various formats into clean, analyzable CSV reports for athletic performance analysis."
 startDate: 2025-01-02
 endDate: 2025-05-25
 status: "in-progress"
@@ -10,8 +10,7 @@ draft: false
 liveUrl: "https://track.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/track-records-upload"
 favicon: "track.ico"
-priority: 6
-achievements: ["Processed 500+ meet results", "99.2% accuracy rate", "Used by 15+ athletic programs", "Reduced processing time by 95%"]
+priority: 4
 ---
 
 ## Project Overview

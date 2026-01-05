@@ -10,7 +10,7 @@ draft: false
 liveUrl: "https://board.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/departure-board"
 favicon: "board.ico"
-priority: 5
+priority: 2
 ---
 
 ## Project Overview
