@@ -5,7 +5,7 @@ interface Props {
   description: string;
   status: "completed" | "in-progress" | "planned" | "archived";
   technologies: string[];
-  category: string;
+  category?: string;
   featured?: boolean;
   githubUrl?: string;
   liveUrl?: string;
@@ -19,16 +19,15 @@ interface Props {
 
 const {
   slug="",
-  title = "Project Title", 
-  description = "Project description", 
+  title = "", 
+  description = "", 
   status = "in-progress", 
   technologies = [], 
-  category = "Development", 
   featured = false,
   favicon,
   githubUrl, 
   liveUrl,
-  startDate = "2024-01-01",
+  startDate = "",
   endDate 
 } = Astro.props;
 

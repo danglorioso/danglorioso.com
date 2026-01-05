@@ -12,7 +12,7 @@ const blog = defineCollection({
     updatedDate: z.date().optional(),
     tags: z.array(z.string()).optional(),
     category: z.string().optional(),
-    featured: z.boolean().default(false),
+    featured: z.boolean().default(false).optional(),
     draft: z.boolean().default(false),
     relatedPosts: z.array(reference('blog')).optional(),
   }),
