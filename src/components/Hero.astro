@@ -1,42 +1,22 @@
-<!-- Main Content -->
-<main class="grid grid-cols-1 lg:grid-cols-2 items-center">
-	<!-- Left Side - Name and Title -->
-	<div class="w-full max-w-2xl text-left">
-		<div class="mb-4">
-			<!-- Pretitle -->
-			<!-- <p class="text-2xl text-gray-400 font-semibold italic mx-2">
-				Hey, I'm 
-			</p> -->
-			<p class="text-xl text-gray-300 font-medium mb-2">
-				<span class="bg-gradient-to-r from-indigo-500/30 to-blue-500/30 px-2 py-1 rounded">
-					Hey, I'm
-				</span>
-			</p>
-
-			<!-- Name -->
-			<h1 class="text-7xl font-bold text-white leading-none tracking-tight mb-2">
-				DAN
-			</h1>
-			<div class="inline-block bg-slate-300 px-2 py-2 rounded-sm">
-				<span class="text-slate-900 text-6xl font-bold tracking-tight">
-					GLORIOSO
-				</span>
-			</div>
-		</div>
-		
-		<!-- Subtitle -->
-		<p class="text-xl md:text-2xl text-gray-300 font-normal flex items-center justify-center lg:justify-start">
-			<!-- <span class="flex items-center mb-1">&#123;</span> -->
-			<!-- <span class="mx-2">Full-Stack Developer + CS @ Tufts</span> -->
-			<!-- <span class="flex items-center mb-1">&#125;</span> -->
-		</p>
-	</div>
-
-
-	<!-- Right Side - Portrait -->
-	<div class="w-full">
-		<div class="h-80 w-full rounded-lg overflow-hidden shadow-2xl">
-			<img src="/me.jpeg" alt="Dan Glorioso" class="h-full w-full object-cover scale-110"/>
-		</div>
-	</div>
-</main>
+<div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+    <!-- Left: Photo -->
+    <div class="flex-shrink-0">
+        <div class="w-48 h-48 md:w-64 md:h-64 rounded-lg overflow-hidden shadow-xl border border-border-primary">
+            <img src="/me.webp" alt="Dan Glorioso" class="h-full w-full object-cover"/>
+        </div>
+    </div>
+    
+    <!-- Right: Intro -->
+    <div class="flex-1">
+        <h1 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+            Hey, I'm Dan
+        </h1>
+        <p class="text-xl md:text-2xl text-text-secondary mb-4">
+            CS Student @ Tufts • Full-Stack Developer
+        </p>
+        <p class="text-lg text-text-tertiary leading-relaxed">
+            I'm passionate about building things that matter—whether that's useful web apps, 
+            open-source projects, or creative solutions to real-world problems. 
+        </p>
+    </div>
+</div>
