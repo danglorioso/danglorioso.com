@@ -1,55 +1,57 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
 
 // Get all projects and sort
-const allProjects = await getCollection('projects', ({ data }) => {
-	// Only non-draft projects returned
-	return data.draft !== true;
+const allProjects = await getCollection("projects", ({ data }) => {
+  // Only non-draft projects returned
+  return data.draft !== true;
 });
 
 // Sort projects by priority (higher first), then by start date (newer first)
 const sortedProjects = allProjects.sort((a, b) => {
-	if (a.data.priority !== b.data.priority) {
-		 // Higher priority first
-		return b.data.priority - a.data.priority;
-	}
-	// Newer first
-	return new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime();
+  if (a.data.priority !== b.data.priority) {
+    // Higher priority first
+    return b.data.priority - a.data.priority;
+  }
+  // Newer first
+  return (
+    new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime()
+  );
 });
 ---
 
 <Layout title="Projects" description="">
-	<section id="projects">
-		<div class="h-full w-full flex flex-col gap-6">
-			<!-- Page Header -->
-			<section class="">
-				<h1 class="text-4xl font-bold text-text-primary">
-				Projects
-				</h1>
-			</section>
+  <section id="projects">
+    <div class="h-full w-full flex flex-col gap-6">
+      <!-- Page Header -->
+      <section class="">
+        <h1 class="text-4xl font-bold text-text-primary">Projects</h1>
+      </section>
 
-			<div class="flex flex-col gap-6">
-				{sortedProjects.map((project) => (
-					<ProjectCard
-						slug={project.slug}
-						title={project.data.title}
-						description={project.data.description}
-						status={project.data.status}
-						technologies={project.data.technologies}
-						category={project.data.category}
-						featured={project.data.featured}
-						githubUrl={project.data.githubUrl}
-						liveUrl={project.data.liveUrl}
-						imageUrl={project.data.imageUrl}
-						favicon={project.data.favicon}
-						achievements={project.data.achievements}
-						startDate={project.data.startDate.toISOString()}
-						endDate={project.data.endDate?.toISOString()}
-					/>
-				))}
-			</div>
-		</div>
-	</section>
+      <div class="flex flex-col gap-6">
+        {
+          sortedProjects.map((project) => (
+            <ProjectCard
+              slug={project.slug}
+              title={project.data.title}
+              description={project.data.description}
+              status={project.data.status}
+              technologies={project.data.technologies}
+              category={project.data.category}
+              featured={project.data.featured}
+              githubUrl={project.data.githubUrl}
+              liveUrl={project.data.liveUrl}
+              imageUrl={project.data.imageUrl}
+              favicon={project.data.favicon}
+              achievements={project.data.achievements}
+              startDate={project.data.startDate.toISOString()}
+              endDate={project.data.endDate?.toISOString()}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </Layout>

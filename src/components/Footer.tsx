@@ -5,16 +5,14 @@ export default function Footer() {
   return (
     <footer className="w-full py-6 border-t border-gray-800 z-50 mt-auto bg-slate-900/80">
       <div className="max-w-5xl mx-auto px-8">
-        
         {/* MOBILE - Stack with social icons on top */}
         <div className="sm:hidden flex flex-col gap-4 items-center">
           {/* Mobile Social Icons at top */}
-            <SocialIcons />
+          <SocialIcons />
 
           {/* Copyright */}
           <p className="text-md text-gray-300 text-center">
-            Copyright © {new Date().getFullYear()}. 
-            <br></br> 
+            Copyright © {new Date().getFullYear()}.<br></br>
             Created by{" "}
             <a
               href="https://danglorioso.com"
@@ -26,7 +24,7 @@ export default function Footer() {
             </a>
             .
           </p>
-          
+
           {/* Status Links */}
           <div className="flex justify-center">
             <p className="text-sm text-gray-500 flex items-center">

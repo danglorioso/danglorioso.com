@@ -1,45 +1,53 @@
 ---
-import Monogram from '../Monogram.astro';
+import Monogram from "../Monogram.astro";
 
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/hobbies', label: 'Hobbies' },
-  { href: '/posts', label: 'Posts' },
-  { href: '/contact', label: 'Contact' },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/projects", label: "Projects" },
+  { href: "/hobbies", label: "Hobbies" },
+  { href: "/posts", label: "Posts" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const pathname = Astro.url.pathname;
 
 const isActive = (href: string) => {
-  if (href === '/') return pathname === '/';
+  if (href === "/") return pathname === "/";
   return pathname.startsWith(href);
 };
 ---
 
-<header class="rounded-lg mx-auto max-w-screen-4xl px-6 py-4 flex items-center justify-between mt-4">
-
+<header
+  class="rounded-lg mx-auto max-w-screen-4xl px-6 py-4 flex items-center justify-between mt-4"
+>
   <!-- Logo (with Link) -->
-  <a href="/" class="pr-6 sm:pr-30 cursor-pointer w-24 h-14 sm:w-28 sm:h-20 block">
-      <Monogram width="128px" height="86px"/>
+  <a
+    href="/"
+    class="pr-6 sm:pr-30 cursor-pointer w-24 h-14 sm:w-28 sm:h-20 block"
+  >
+    <Monogram width="128px" height="86px" />
   </a>
 
   <!-- Desktop Navigation -->
   <nav class="flex-grow flex justify-center">
-    <div class="hidden md:flex space-x-1 bg-slate-950 rounded-full px-3 py-2 backdrop-blur-sm">
-      {navItems.map((item) => (
-        <a
-          href={item.href}
-          class={`relative px-4 py-2 rounded-full text-md font-medium transition-all duration-300 ease-in-out flex items-center justify-center ${
-            isActive(item.href)
-              ? 'text-blue-500 hover:bg-blue-600/20 hover:scale-100'
-              : 'text-gray-300 hover:text-white hover:bg-blue-600/20 hover:scale-100'
-          }`}
-        >
-          <span class="relative z-10">{item.label}</span>
-        </a>
-      ))}
+    <div
+      class="hidden md:flex space-x-1 bg-slate-950 rounded-full px-3 py-2 backdrop-blur-sm"
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class={`relative px-4 py-2 rounded-full text-md font-medium transition-all duration-300 ease-in-out flex items-center justify-center ${
+              isActive(item.href)
+                ? "text-blue-500 hover:bg-blue-600/20 hover:scale-100"
+                : "text-gray-300 hover:text-white hover:bg-blue-600/20 hover:scale-100"
+            }`}
+          >
+            <span class="relative z-10">{item.label}</span>
+          </a>
+        ))
+      }
     </div>
   </nav>
 
@@ -51,18 +59,25 @@ const isActive = (href: string) => {
         target="LinkedIn"
         aria-label="LinkedIn"
       >
-        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-8 h-8 hover:scale-110 transition-transform duration-300" />
+        <img
+          src="/icons/linkedin.svg"
+          alt="LinkedIn"
+          class="w-8 h-8 hover:scale-110 transition-transform duration-300"
+        />
       </a>
       <a
         href="https://github.com/danglorioso"
         target="GitHub"
         aria-label="GitHub"
       >
-        <img src="/icons/github.svg" alt="GitHub" class="w-8 h-8 hover:scale-110 transition-transform duration-300" />
+        <img
+          src="/icons/github.svg"
+          alt="GitHub"
+          class="w-8 h-8 hover:scale-110 transition-transform duration-300"
+        />
       </a>
     </div>
   </div>
 
   <!-- Mobile Hamburger Button -->
 </header>
-

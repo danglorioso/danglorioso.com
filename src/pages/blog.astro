@@ -1,102 +1,115 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import BlogCard from "../components/BlogCard.astro";
 
 // Get all blog posts that aren't drafts and sort by date (with newest first)
-const allPosts = await getCollection('blog', ({ data }) => {
-	return data.draft !== true;
+const allPosts = await getCollection("blog", ({ data }) => {
+  return data.draft !== true;
 });
 
 const sortedPosts = allPosts.sort((a, b) => {
-	return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+  return b.data.pubDate.getTime() - a.data.pubDate.getTime();
 });
 ---
 
 <Layout title="Blog" description="">
-	<section id="blog">
-		<div class="h-full w-full flex flex-col gap-6">
-			<!-- Page Header -->
-			<section class="">
-				<h1 class="text-4xl font-bold text-text-primary">
-					Blog
-				</h1>
-			</section>
+  <section id="blog">
+    <div class="h-full w-full flex flex-col gap-6">
+      <!-- Page Header -->
+      <section class="">
+        <h1 class="text-4xl font-bold text-text-primary">Blog</h1>
+      </section>
 
-			<div class="flex flex-col gap-6">
-				{sortedPosts.map((post) => (
-					<a href={`/blog/${post.slug}`} class="block group">
-						<BlogCard 
-							title={post.data.title}
-							description={post.data.description}
-							pubDate={post.data.pubDate.toISOString()}
-							tags={post.data.tags ?? []}
-							category={post.data.category}
-              featured={post.data.featured}
-						/>
-					</a>
-				))}
-			</div>
+      <div class="flex flex-col gap-6">
+        {
+          sortedPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="block group">
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate.toISOString()}
+                tags={post.data.tags ?? []}
+                category={post.data.category}
+                featured={post.data.featured}
+              />
+            </a>
+          ))
+        }
+      </div>
 
       <!-- Newsletter Signup -->
       <section class="mt-8 pt-16 border-t border-border-primary">
         <div class="text-center">
-          <h3 class="text-3xl font-bold text-text-primary mb-4">Subscribe to the newsletter</h3>
+          <h3 class="text-3xl font-bold text-text-primary mb-4">
+            Subscribe to my newsletter
+          </h3>
           <p class="text-text-tertiary mb-8 max-w-md mx-auto">
             Get notified when I publish new posts.
           </p>
-          
-          <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input 
+
+          <form
+            id="newsletter-form"
+            class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+          >
+            <input
               name="email"
-              type="email" 
-              placeholder="Email address" 
+              type="email"
+              placeholder="Email address"
               class="flex-1 bg-bg-overlay backdrop-blur-sm border border-border-tertiary text-text-primary placeholder:text-text-secondary rounded-md px-4 py-3 focus:ring-2 focus:ring-accent-primary focus:border-accent-primary transition-all duration-200"
               required
             />
-            <button 
+            <button
               type="submit"
               class="bg-accent-secondary hover:bg-accent-hover text-text-primary font-semibold py-3 px-6 rounded-md transition-all duration-200 hover:scale-105"
             >
               Sign up
             </button>
           </form>
-          
+
           <p id="form-message" class="mt-4 text-sm"></p>
-          
+
           <script>
-            const form = document.getElementById("newsletter-form") as HTMLFormElement | null;
-            const message = document.getElementById("form-message") as HTMLParagraphElement | null;
-          
+            const form = document.getElementById(
+              "newsletter-form"
+            ) as HTMLFormElement | null;
+            const message = document.getElementById(
+              "form-message"
+            ) as HTMLParagraphElement | null;
+
             if (form && message) {
               form.addEventListener("submit", async (e) => {
                 e.preventDefault();
-          
-                const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+
+                const emailInput = form.elements.namedItem(
+                  "email"
+                ) as HTMLInputElement;
                 const email = emailInput?.value;
-          
+
                 if (!email) {
                   message.textContent = "Please enter an email address.";
                   message.className = "mt-4 text-sm text-red-400";
                   return;
                 }
-          
+
                 try {
                   const res = await fetch("/api/subscribe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email }),
                   });
-          
+
                   const data = await res.json();
-          
+
                   if (res.ok) {
                     message.textContent = "Thanks for subscribing!";
                     message.className = "mt-4 text-sm text-green-400";
                     form.reset();
                   } else {
                     message.textContent =
-                      data?.detail || data?.error || "Something went wrong. Try again.";
+                      data?.detail ||
+                      data?.error ||
+                      "Something went wrong. Try again.";
                     message.className = "mt-4 text-sm text-red-400";
                   }
                 } catch (error) {
@@ -105,11 +118,9 @@ const sortedPosts = allPosts.sort((a, b) => {
                 }
               });
             }
-          </script>          
+          </script>
         </div>
       </section>
-
-      
     </div>
   </section>
 </Layout>

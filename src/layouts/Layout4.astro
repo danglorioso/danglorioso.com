@@ -1,316 +1,348 @@
 ---
-import '../globals.css';
-import SpeedInsights from '@vercel/speed-insights/astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer';
+import "../globals.css";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer";
 
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
 const { title, description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title} | Dan Glorioso</title>
-	</head>
-	
-	<body class="min-h-screen">
-		<canvas id="wave-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none" style="background: var(--bg-primary, #0f172a);"></canvas>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | Dan Glorioso</title>
+  </head>
 
-		<!-- Vercel Speed Insights -->
-		<SpeedInsights />
+  <body class="min-h-screen">
+    <canvas
+      id="wave-canvas"
+      class="fixed top-0 left-0 w-full h-full pointer-events-none"
+      style="background: var(--bg-primary, #0f172a);"></canvas>
 
-		<div class="flex flex-col gap-4">
-			<!-- Header -->
-			<Header />
+    <!-- Vercel Speed Insights -->
+    <SpeedInsights />
 
-			<!-- Header spacer to prevent content from being hidden behind fixed header -->
-			<div class="h-20 sm:h-22"></div>
+    <div class="flex flex-col gap-4">
+      <!-- Header -->
+      <Header />
 
-			<!-- Mobile Menu (slides from behind header) -->
-			<div 
-				id="mobile-menu" 
-				class="md:hidden fixed left-0 right-0 z-40 transform -translate-y-full transition-all duration-300 ease-in-out pointer-events-none"
-				aria-hidden="true"
-			>
-				<!-- Full Screen Backdrop -->
-				<div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30" id="mobile-menu-backdrop"></div>
-				
-				<!-- Menu Panel that slides from behind header -->
-				<div class="relative z-40 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20">
-					
-					<!-- Navigation Links -->
-					<nav class="px-6 py-6">
-						<ul class="space-y-2" id="mobile-nav-links">
-							<!-- Navigation items will be populated by JavaScript -->
-						</ul>
-					</nav>
-				</div>
-			</div>
+      <!-- Header spacer to prevent content from being hidden behind fixed header -->
+      <div class="h-20 sm:h-22"></div>
 
-			<!-- Page Content -->
-			<main class="flex flex-col max-w-5xl px-8 md:px-16 py-8 mx-auto w-full relative z-0">
-				<slot />
-			</main>
-		<!-- Footer -->
-		<Footer />
+      <!-- Mobile Menu (slides from behind header) -->
+      <div
+        id="mobile-menu"
+        class="md:hidden fixed left-0 right-0 z-40 transform -translate-y-full transition-all duration-300 ease-in-out pointer-events-none"
+        aria-hidden="true"
+      >
+        <!-- Full Screen Backdrop -->
+        <div
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
+          id="mobile-menu-backdrop"
+        >
+        </div>
 
-	</div>
+        <!-- Menu Panel that slides from behind header -->
+        <div
+          class="relative z-40 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20"
+        >
+          <!-- Navigation Links -->
+          <nav class="px-6 py-6">
+            <ul class="space-y-2" id="mobile-nav-links">
+              <!-- Navigation items will be populated by JavaScript -->
+            </ul>
+          </nav>
+        </div>
+      </div>
 
-	<!-- Back to Top Button -->
-	<button 
-		id="back-to-top"
-		class="fixed bottom-6 right-6 p-3 z-[100] bg-slate-850/90 hover:bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none group"
-		aria-label="Back to top"
-	>
-		<svg 
-			class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200" 
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-		>
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-		</svg>
-	</button>
-	
-		<script is:inline>
-			// Flowing Wave Pattern Background
-			class WavePattern {
-				constructor() {
-					this.canvas = document.getElementById('wave-canvas');
-					this.ctx = this.canvas.getContext('2d');
-					this.time = 0;
-					this.bgColor = this.getBackgroundColor();
-					this.waves = [];
-					
-					this.resize();
-					this.createWaves();
-					this.bindEvents();
-					this.animate();
-				}
-				
-				getBackgroundColor() {
-					const bgColor = getComputedStyle(document.documentElement)
-						.getPropertyValue('--bg-primary')
-						.trim();
-					return bgColor || '#0f172a';
-				}
-				
-				getAccentColor() {
-					const accentColor = getComputedStyle(document.documentElement)
-						.getPropertyValue('--accent-primary')
-						.trim() || 'rgb(59, 130, 246)';
-					
-					// Convert to rgb values
-					let r, g, b;
-					if (accentColor.startsWith('oklch')) {
-						r = 59; g = 130; b = 246;
-					} else if (accentColor.startsWith('#')) {
-						const hex = accentColor.slice(1);
-						r = parseInt(hex.slice(0, 2), 16);
-						g = parseInt(hex.slice(2, 4), 16);
-						b = parseInt(hex.slice(4, 6), 16);
-					} else if (accentColor.startsWith('rgb')) {
-						const matches = accentColor.match(/\d+/g);
-						r = parseInt(matches[0]);
-						g = parseInt(matches[1]);
-						b = parseInt(matches[2]);
-					} else {
-						r = 59; g = 130; b = 246;
-					}
-					
-					return { r, g, b };
-				}
-				
-				resize() {
-					this.canvas.width = window.innerWidth;
-					this.canvas.height = window.innerHeight;
-				}
-				
-				createWaves() {
-					this.waves = [];
-					const waveCount = 3;
-					const accent = this.getAccentColor();
-					
-					for (let i = 0; i < waveCount; i++) {
-						this.waves.push({
-							amplitude: 30 + Math.random() * 40,
-							frequency: 0.001 + Math.random() * 0.002,
-							speed: 0.0001 + Math.random() * 0.0002,
-							phase: Math.random() * Math.PI * 2,
-							yOffset: (this.canvas.height / (waveCount + 1)) * (i + 1),
-							opacity: 0.08 + (i * 0.04),
-							color: accent,
-							thickness: 1 + i * 0.5
-						});
-					}
-				}
-				
-				bindEvents() {
-					window.addEventListener('resize', () => {
-						this.resize();
-						this.createWaves();
-					});
-				}
-				
-				drawWave(wave) {
-					this.ctx.beginPath();
-					this.ctx.strokeStyle = `rgba(${wave.color.r}, ${wave.color.g}, ${wave.color.b}, ${wave.opacity})`;
-					this.ctx.lineWidth = wave.thickness;
-					this.ctx.lineCap = 'round';
-					this.ctx.lineJoin = 'round';
-					
-					const points = [];
-					const segments = Math.floor(this.canvas.width / 2);
-					
-					for (let i = 0; i <= segments; i++) {
-						const x = (i / segments) * this.canvas.width;
-						const y = wave.yOffset + 
-							Math.sin(x * wave.frequency + this.time * wave.speed + wave.phase) * wave.amplitude;
-						points.push({ x, y });
-					}
-					
-					// Draw smooth curve through points
-					this.ctx.moveTo(points[0].x, points[0].y);
-					
-					for (let i = 1; i < points.length; i++) {
-						const prev = points[i - 1];
-						const curr = points[i];
-						const next = points[i + 1] || curr;
-						
-						const cp1x = prev.x + (curr.x - prev.x) * 0.5;
-						const cp1y = prev.y;
-						const cp2x = curr.x - (next.x - curr.x) * 0.5;
-						const cp2y = curr.y;
-						
-						this.ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, curr.x, curr.y);
-					}
-					
-					this.ctx.stroke();
-				}
-				
-				drawGrid() {
-					const accent = this.getAccentColor();
-					const gridSize = 80;
-					const opacity = 0.03;
-					
-					this.ctx.strokeStyle = `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${opacity})`;
-					this.ctx.lineWidth = 0.5;
-					
-					// Vertical lines
-					for (let x = 0; x < this.canvas.width; x += gridSize) {
-						this.ctx.beginPath();
-						this.ctx.moveTo(x, 0);
-						this.ctx.lineTo(x, this.canvas.height);
-						this.ctx.stroke();
-					}
-					
-					// Horizontal lines
-					for (let y = 0; y < this.canvas.height; y += gridSize) {
-						this.ctx.beginPath();
-						this.ctx.moveTo(0, y);
-						this.ctx.lineTo(this.canvas.width, y);
-						this.ctx.stroke();
-					}
-				}
-				
-				animate() {
-					this.time += 16;
-					
-					// Clear canvas
-					this.ctx.fillStyle = this.bgColor;
-					this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-					
-					// Draw subtle grid
-					this.drawGrid();
-					
-					// Draw waves
-					this.waves.forEach(wave => {
-						this.drawWave(wave);
-					});
-					
-					requestAnimationFrame(() => this.animate());
-				}
-			}
+      <!-- Page Content -->
+      <main
+        class="flex flex-col max-w-5xl px-8 md:px-16 py-8 mx-auto w-full relative z-0"
+      >
+        <slot />
+      </main>
+      <!-- Footer -->
+      <Footer />
+    </div>
 
-			// Back to Top Button Functionality
-			function initBackToTop() {
-				const backToTopBtn = document.getElementById('back-to-top');
-				if (!backToTopBtn) return;
+    <!-- Back to Top Button -->
+    <button
+      id="back-to-top"
+      class="fixed bottom-6 right-6 p-3 z-[100] bg-slate-850/90 hover:bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none group"
+      aria-label="Back to top"
+    >
+      <svg
+        class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+      </svg>
+    </button>
 
-				function toggleButtonVisibility() {
-					const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-					
-					if (scrollTop > 300) {
-						backToTopBtn.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
-						backToTopBtn.classList.add('opacity-100', 'translate-y-0');
-					} else {
-						backToTopBtn.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
-						backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
-					}
-				}
+    <script is:inline>
+      // Flowing Wave Pattern Background
+      class WavePattern {
+        constructor() {
+          this.canvas = document.getElementById("wave-canvas");
+          this.ctx = this.canvas.getContext("2d");
+          this.time = 0;
+          this.bgColor = this.getBackgroundColor();
+          this.waves = [];
 
-				function scrollToTop() {
-					window.scrollTo({
-						top: 0,
-						behavior: 'smooth'
-					});
-				}
+          this.resize();
+          this.createWaves();
+          this.bindEvents();
+          this.animate();
+        }
 
-				window.addEventListener('scroll', toggleButtonVisibility);
-				backToTopBtn.addEventListener('click', scrollToTop);
-				toggleButtonVisibility();
-			}
-			
-			// Initialize when DOM is loaded
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', () => {
-					new WavePattern();
-					initBackToTop();
-				});
-			} else {
-				new WavePattern();
-				initBackToTop();
-			}
-		</script>
-	</body>
+        getBackgroundColor() {
+          const bgColor = getComputedStyle(document.documentElement)
+            .getPropertyValue("--bg-primary")
+            .trim();
+          return bgColor || "#0f172a";
+        }
+
+        getAccentColor() {
+          const accentColor =
+            getComputedStyle(document.documentElement)
+              .getPropertyValue("--accent-primary")
+              .trim() || "rgb(59, 130, 246)";
+
+          // Convert to rgb values
+          let r, g, b;
+          if (accentColor.startsWith("oklch")) {
+            r = 59;
+            g = 130;
+            b = 246;
+          } else if (accentColor.startsWith("#")) {
+            const hex = accentColor.slice(1);
+            r = parseInt(hex.slice(0, 2), 16);
+            g = parseInt(hex.slice(2, 4), 16);
+            b = parseInt(hex.slice(4, 6), 16);
+          } else if (accentColor.startsWith("rgb")) {
+            const matches = accentColor.match(/\d+/g);
+            r = parseInt(matches[0]);
+            g = parseInt(matches[1]);
+            b = parseInt(matches[2]);
+          } else {
+            r = 59;
+            g = 130;
+            b = 246;
+          }
+
+          return { r, g, b };
+        }
+
+        resize() {
+          this.canvas.width = window.innerWidth;
+          this.canvas.height = window.innerHeight;
+        }
+
+        createWaves() {
+          this.waves = [];
+          const waveCount = 3;
+          const accent = this.getAccentColor();
+
+          for (let i = 0; i < waveCount; i++) {
+            this.waves.push({
+              amplitude: 30 + Math.random() * 40,
+              frequency: 0.001 + Math.random() * 0.002,
+              speed: 0.0001 + Math.random() * 0.0002,
+              phase: Math.random() * Math.PI * 2,
+              yOffset: (this.canvas.height / (waveCount + 1)) * (i + 1),
+              opacity: 0.08 + i * 0.04,
+              color: accent,
+              thickness: 1 + i * 0.5,
+            });
+          }
+        }
+
+        bindEvents() {
+          window.addEventListener("resize", () => {
+            this.resize();
+            this.createWaves();
+          });
+        }
+
+        drawWave(wave) {
+          this.ctx.beginPath();
+          this.ctx.strokeStyle = `rgba(${wave.color.r}, ${wave.color.g}, ${wave.color.b}, ${wave.opacity})`;
+          this.ctx.lineWidth = wave.thickness;
+          this.ctx.lineCap = "round";
+          this.ctx.lineJoin = "round";
+
+          const points = [];
+          const segments = Math.floor(this.canvas.width / 2);
+
+          for (let i = 0; i <= segments; i++) {
+            const x = (i / segments) * this.canvas.width;
+            const y =
+              wave.yOffset +
+              Math.sin(
+                x * wave.frequency + this.time * wave.speed + wave.phase
+              ) *
+                wave.amplitude;
+            points.push({ x, y });
+          }
+
+          // Draw smooth curve through points
+          this.ctx.moveTo(points[0].x, points[0].y);
+
+          for (let i = 1; i < points.length; i++) {
+            const prev = points[i - 1];
+            const curr = points[i];
+            const next = points[i + 1] || curr;
+
+            const cp1x = prev.x + (curr.x - prev.x) * 0.5;
+            const cp1y = prev.y;
+            const cp2x = curr.x - (next.x - curr.x) * 0.5;
+            const cp2y = curr.y;
+
+            this.ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, curr.x, curr.y);
+          }
+
+          this.ctx.stroke();
+        }
+
+        drawGrid() {
+          const accent = this.getAccentColor();
+          const gridSize = 80;
+          const opacity = 0.03;
+
+          this.ctx.strokeStyle = `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${opacity})`;
+          this.ctx.lineWidth = 0.5;
+
+          // Vertical lines
+          for (let x = 0; x < this.canvas.width; x += gridSize) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, 0);
+            this.ctx.lineTo(x, this.canvas.height);
+            this.ctx.stroke();
+          }
+
+          // Horizontal lines
+          for (let y = 0; y < this.canvas.height; y += gridSize) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(this.canvas.width, y);
+            this.ctx.stroke();
+          }
+        }
+
+        animate() {
+          this.time += 16;
+
+          // Clear canvas
+          this.ctx.fillStyle = this.bgColor;
+          this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+          // Draw subtle grid
+          this.drawGrid();
+
+          // Draw waves
+          this.waves.forEach((wave) => {
+            this.drawWave(wave);
+          });
+
+          requestAnimationFrame(() => this.animate());
+        }
+      }
+
+      // Back to Top Button Functionality
+      function initBackToTop() {
+        const backToTopBtn = document.getElementById("back-to-top");
+        if (!backToTopBtn) return;
+
+        function toggleButtonVisibility() {
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+
+          if (scrollTop > 300) {
+            backToTopBtn.classList.remove(
+              "opacity-0",
+              "translate-y-2",
+              "pointer-events-none"
+            );
+            backToTopBtn.classList.add("opacity-100", "translate-y-0");
+          } else {
+            backToTopBtn.classList.add(
+              "opacity-0",
+              "translate-y-2",
+              "pointer-events-none"
+            );
+            backToTopBtn.classList.remove("opacity-100", "translate-y-0");
+          }
+        }
+
+        function scrollToTop() {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }
+
+        window.addEventListener("scroll", toggleButtonVisibility);
+        backToTopBtn.addEventListener("click", scrollToTop);
+        toggleButtonVisibility();
+      }
+
+      // Initialize when DOM is loaded
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          new WavePattern();
+          initBackToTop();
+        });
+      } else {
+        new WavePattern();
+        initBackToTop();
+      }
+    </script>
+  </body>
 </html>
 
 <style is:global>
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-	
-	html, body {
-		font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif;
-		overflow-x: hidden;
-	}
-	
-	body {
-		background: var(--bg-primary);
-		min-height: 100vh;
-	}
-	
-	/* Text selection highlight color */
-	::selection {
-		background-color: var(--accent-primary);
-		color: var(--text-primary);
-	}
-	
-	::-moz-selection {
-		background-color: var(--accent-primary);
-		color: var(--text-primary);
-	}
-</style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
+  html,
+  body {
+    font-family:
+      -apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--bg-primary);
+    min-height: 100vh;
+  }
+
+  /* Text selection highlight color */
+  ::selection {
+    background-color: var(--accent-primary);
+    color: var(--text-primary);
+  }
+
+  ::-moz-selection {
+    background-color: var(--accent-primary);
+    color: var(--text-primary);
+  }
+</style>

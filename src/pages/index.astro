@@ -1,26 +1,30 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import AboutMe from '../components/AboutMe.astro';
-import Interests from '../components/Interests.astro';
-import ContactForm from '../components/ContactForm.astro';
-import ComingSoonBox from '../components/ComingSoonBox.astro';
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import AboutMe from "../components/AboutMe.astro";
+import Interests from "../components/Interests.astro";
+import ContactForm from "../components/ContactForm.astro";
+import ComingSoonBox from "../components/ComingSoonBox.astro";
 ---
 
-<Layout title="Dan Glorioso | CS Student @ Tufts" description="Learn more about Dan Glorioso - CS Student @ Tufts, Full-Stack Developer, and passionate technologist" homepage={true}>
-	<section id="home">
-		<div class="h-full w-full flex flex-col gap-12 md:gap-16">
-			<!-- Hero Section -->
-			<Hero />
+<Layout
+  title="Dan Glorioso | CS Student @ Tufts"
+  description="Learn more about Dan Glorioso - CS Student @ Tufts, Full-Stack Developer, and passionate technologist"
+  homepage={true}
+>
+  <section id="home">
+    <div class="h-full w-full flex flex-col gap-12 md:gap-16">
+      <!-- Hero Section -->
+      <Hero />
 
-			<!-- About Me Section -->
-			<AboutMe />
+      <!-- About Me Section -->
+      <AboutMe />
 
-			<!-- Interests & Hobbies Section -->
-			<!-- <Interests /> -->
+      <!-- Interests & Hobbies Section -->
+      <!-- <Interests /> -->
 
-			<!-- What I'm Looking For Section -->
-			<!-- <div class="flex flex-col gap-6">
+      <!-- What I'm Looking For Section -->
+      <!-- <div class="flex flex-col gap-6">
 				<h2 class="text-3xl font-bold text-text-primary">What I'm Looking For</h2>
 				<div class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg p-6 md:p-8">
 					<p class="text-text-tertiary text-lg leading-relaxed mb-4">
@@ -36,14 +40,14 @@ import ComingSoonBox from '../components/ComingSoonBox.astro';
 				</div>
 			</div> -->
 
-			<!-- Coming Soon Section -->
-			 <ComingSoonBox />
+      <!-- Coming Soon Section -->
+      <ComingSoonBox />
 
-			<!-- Contact Form -->
-			<div class="flex flex-col gap-6">
-				<h2 class="text-3xl font-bold text-text-primary">Get In Touch</h2>
-				<ContactForm />
-			</div>
-		</div>
-	</section>
+      <!-- Contact Form -->
+      <div class="flex flex-col gap-6">
+        <h2 class="text-3xl font-bold text-text-primary">Get In Touch</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
 </Layout>

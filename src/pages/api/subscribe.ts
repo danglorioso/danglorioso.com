@@ -5,10 +5,9 @@ export const POST: APIRoute = async ({ request }) => {
   const { email } = await request.json();
 
   if (!email) {
-    return new Response(
-      JSON.stringify({ error: "Email is required" }),
-      { status: 400 }
-    );
+    return new Response(JSON.stringify({ error: "Email is required" }), {
+      status: 400,
+    });
   }
 
   const subscriberHash = crypto
@@ -38,8 +37,5 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify(error), { status: 400 });
   }
 
-  return new Response(
-    JSON.stringify({ success: true }),
-    { status: 200 }
-  );
+  return new Response(JSON.stringify({ success: true }), { status: 200 });
 };

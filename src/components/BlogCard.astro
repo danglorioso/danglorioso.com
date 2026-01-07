@@ -8,9 +8,9 @@ interface Props {
   featured?: boolean;
 }
 
-const { 
-  title = "", 
-  description = "", 
+const {
+  title = "",
+  description = "",
   pubDate,
   tags = [],
   category = "",
@@ -20,71 +20,104 @@ const {
 // Format date function
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC'
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
   });
 };
 
 // Format date for short display
 const formatDateShort = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC'
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
   });
 };
 ---
 
-<div class="group relative bg-bg-card backdrop-blur-sm border border-border-primary rounded-xl flex flex-col p-5 gap-4 hover:border-border-accent hover:shadow-lg hover:shadow-accent-primary/10 transition-all duration-300 cursor-pointer overflow-hidden">
+<div
+  class="group relative bg-bg-card backdrop-blur-sm border border-border-primary rounded-xl flex flex-col p-5 gap-4 hover:border-border-accent hover:shadow-lg hover:shadow-accent-primary/10 transition-all duration-300 cursor-pointer overflow-hidden"
+>
   <!-- Accent gradient bar on hover -->
   <!-- <div 
     class="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
     style="background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary), var(--accent-primary));"
   ></div> -->
-  
+
   <!-- Header: Date badge, title, and description -->
   <div class="flex items-center gap-4">
     <!-- Date badge with full date -->
-    <div class="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-bg-overlay border border-border-tertiary group-hover:border-accent-primary/50 group-hover:bg-accent-primary/10 transition-all duration-300 p-2">
-      <time datetime={pubDate} class="text-xs font-semibold text-text-tertiary transition-colors text-center leading-tight">
-        {formatDateShort(pubDate).split(' ')[0]}
+    <div
+      class="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-bg-overlay border border-border-tertiary group-hover:border-accent-primary/50 group-hover:bg-accent-primary/10 transition-all duration-300 p-2"
+    >
+      <time
+        datetime={pubDate}
+        class="text-xs font-semibold text-text-tertiary transition-colors text-center leading-tight"
+      >
+        {formatDateShort(pubDate).split(" ")[0]}
       </time>
-      <time datetime={pubDate} class="text-xl font-bold text-text-primary transition-colors">
-        {formatDateShort(pubDate).split(' ')[1]}
+      <time
+        datetime={pubDate}
+        class="text-xl font-bold text-text-primary transition-colors"
+      >
+        {formatDateShort(pubDate).split(" ")[1]}
       </time>
-      <time datetime={pubDate} class="text-xs text-text-secondary group-hover:text-accent-primary/80 transition-colors">
+      <time
+        datetime={pubDate}
+        class="text-xs text-text-secondary group-hover:text-accent-primary/80 transition-colors"
+      >
         {new Date(pubDate).getFullYear()}
       </time>
     </div>
-    
+
     <!-- Title and description -->
     <div class="flex-1 min-w-0 flex flex-col gap-2 justify-center">
-      <div class="text-2xl font-bold text-text-primary group-hover:text-accent-primary transition-colors flex items-center gap-2">
+      <div
+        class="text-2xl font-bold text-text-primary group-hover:text-accent-primary transition-colors flex items-center gap-2"
+      >
         {title}
-        {featured && (
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-label="Featured">
-            <title>Featured</title>
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-      )}
+        {
+          featured && (
+            <svg
+              class="w-4 h-4 fill-current"
+              viewBox="0 0 20 20"
+              aria-label="Featured"
+            >
+              <title>Featured</title>
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          )
+        }
       </div>
-      
-      <p class="text-text-secondary text-base leading-relaxed group-hover:text-text-tertiary transition-colors">
+
+      <p
+        class="text-text-secondary text-base leading-relaxed group-hover:text-text-tertiary transition-colors"
+      >
         {description}
       </p>
     </div>
-    <div class="flex items-center justify-end gap-1 text-accent-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <div
+      class="flex items-center justify-end gap-1 text-accent-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+    >
       <span class="text-sm font-medium">Read</span>
-      <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      <svg
+        class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"></path>
       </svg>
     </div>
   </div>
 
   <!-- Read more indicator -->
-  
 </div>

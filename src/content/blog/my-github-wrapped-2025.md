@@ -6,6 +6,7 @@ category: ""
 featured: false
 draft: true
 ---
+
 I don’t usually make New Year’s Resolutions. They have a pretty bad track record, after all. Only about [9% are followed through](https://fisher.osu.edu/blogs/leadreadtoday/why-most-new-years-resolutions-fail) each year, which doesn’t sound like great odds to me. Rather than chasing some dramatic transformation, I prefer to focus on making consistent progress. Making small improvements repeated often enough tends to be far more effective than one ambitious promise made on January 1st and inevitably forgotten by February.
 
 That being said, I _did_ set out one New Year's Resolution for 2025. As nerdy as it may sound coming from a computer science college student, I set a goal to code something new every day. Whether that meant adding a few pieces to an existing project or creating something entirely new off my ever-growing “to-code” list, the goal was to write _something_ daily. And what better way to track that–and hold myself accountable–than with my [contribution graph](https://danglorioso.com/github) on GitHub.
@@ -18,6 +19,7 @@ In the context of my 2025 goal, my aim was to color the _entire_ map green—and
 This year, I logged a total of **2,354 contributions**—almost a 400% increase over the previous year! As the darker green squares suggest, I had some intense days, like March 30 where I somehow managed 102 contributions in a single day working on a group project. In the end, I only missed 10 days the entire year, giving me an A+ score of 355/365 = 97.3%, which I’ll gladly take considering vacations, final exams, and going outside here and there. My longest contribution streak was 93 days, which honestly surprised me more than anything.
 
 Some other fun stats:
+
 - **My busiest day**: Sunday with an average of 7 commits/Sunday
 - **Total stars gained**: 23
 - **Top 1% of GitHub contributors** (according to git-wrapped.com)
@@ -28,4 +30,4 @@ Below is a breakdown of my contributions by month. March is classically known as
 And check out how things shook out by weekday, too:
 ![Dan's GitHub Contributions by Weekday 2025](/blog/github-wrapped-2025/github_contr_by_weekday_2025.png "Dan's GitHub Contributions by Weekday 2025")
 
-Overall, I'm really proud of the progress I made this year. Coding something every day forced me to stay consistent, even on days where I was particularly busy, and really helped me refine my skills. Looking ahead to 2026, I plan to keep up the momentum and continue coding regularly. 
+Overall, I'm really proud of the progress I made this year. Coding something every day forced me to stay consistent, even on days where I was particularly busy, and really helped me refine my skills. Looking ahead to 2026, I plan to keep up the momentum and continue coding regularly.

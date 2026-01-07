@@ -1,302 +1,459 @@
 ---
-import SpeedInsights from '@vercel/speed-insights/astro';
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
 const { title, description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title} - {description}</title>
-	</head>
-	<body>
-		<div class="gradient-background"></div>
-		<slot />
-		<SpeedInsights />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="512x512" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} - {description}</title>
+  </head>
+  <body>
+    <div class="gradient-background"></div>
+    <slot />
+    <SpeedInsights />
+  </body>
 </html>
 
 <style is:global>
-	:root {
-		--accent: 70, 80, 234;
-		--accent-light: 156, 172, 250;
-		--accent-dark: 2, 0, 70;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 40%,
-			white 60%
-		);
-	}
-	
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-	
-	html, body {
-		height: 100%;
-		font-family: system-ui, sans-serif;
-		overflow-x: hidden;
-	}
-	
-	body {
-		position: relative;
-	}
-	
-	/* Add a third layer for more depth */
-	.gradient-background {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -2;
-		background: 
-			linear-gradient(135deg, 
-				#0b0f16 0%, 
-				#151922 20%, 
-				#1f242e 40%, 
-				#151922 70%, 
-				#0b0f16 100%
-			);
-	}
-	
-	.gradient-background::before {
-		content: '';
-		position: absolute;
-		top: -100%;
-		left: -100%;
-		width: 300%;
-		height: 300%;
-		background: 
-			radial-gradient(circle at 20% 30%, rgba(20, 28, 50, 0.12) 0%, transparent 35%),
-			radial-gradient(circle at 80% 20%, rgba(35, 30, 65, 0.09) 0%, transparent 40%),
-			radial-gradient(circle at 40% 70%, rgba(18, 35, 70, 0.15) 0%, transparent 30%),
-			radial-gradient(circle at 90% 80%, rgba(45, 20, 55, 0.11) 0%, transparent 45%),
-			radial-gradient(circle at 10% 90%, rgba(22, 40, 75, 0.13) 0%, transparent 38%),
-			radial-gradient(circle at 95% 15%, rgba(20, 28, 50, 0.08) 0%, transparent 50%),
-			radial-gradient(circle at 5% 95%, rgba(35, 30, 65, 0.1) 0%, transparent 42%),
-			radial-gradient(circle at 60% 45%, rgba(25, 45, 80, 0.07) 0%, transparent 55%),
-			radial-gradient(circle at 25% 15%, rgba(40, 25, 60, 0.09) 0%, transparent 48%);
-		filter: blur(1px);
-		animation: lavaBlob1 65s ease-in-out infinite;
-	}
-	
-	.gradient-background::after {
-		content: '';
-		position: absolute;
-		top: -100%;
-		left: -100%;
-		width: 300%;
-		height: 300%;
-		background: 
-			radial-gradient(ellipse at 60% 10%, rgba(35, 50, 85, 0.16) 0%, transparent 45%),
-			radial-gradient(ellipse at 15% 60%, rgba(50, 45, 80, 0.12) 0%, transparent 40%),
-			radial-gradient(ellipse at 85% 40%, rgba(18, 35, 70, 0.14) 0%, transparent 35%),
-			radial-gradient(ellipse at 35% 85%, rgba(35, 30, 65, 0.11) 0%, transparent 50%),
-			radial-gradient(ellipse at 90% 5%, rgba(35, 50, 85, 0.13) 0%, transparent 48%),
-			radial-gradient(ellipse at 5% 85%, rgba(50, 45, 80, 0.09) 0%, transparent 44%),
-			radial-gradient(ellipse at 75% 60%, rgba(28, 42, 75, 0.1) 0%, transparent 52%),
-			radial-gradient(ellipse at 30% 25%, rgba(42, 35, 70, 0.08) 0%, transparent 46%);
-		filter: blur(1.5px);
-		animation: lavaBlob2 55s ease-in-out infinite reverse;
-	}
-	
-	.gradient-background::before {
-		content: '';
-		position: absolute;
-		top: -100%;
-		left: -100%;
-		width: 300%;
-		height: 300%;
-		background: 
-			radial-gradient(circle at 20% 30%, rgba(20, 28, 50, 0.12) 0%, transparent 35%),
-			radial-gradient(circle at 80% 20%, rgba(35, 30, 65, 0.09) 0%, transparent 40%),
-			radial-gradient(circle at 40% 70%, rgba(18, 35, 70, 0.15) 0%, transparent 30%),
-			radial-gradient(circle at 90% 80%, rgba(45, 20, 55, 0.11) 0%, transparent 45%),
-			radial-gradient(circle at 10% 90%, rgba(22, 40, 75, 0.13) 0%, transparent 38%),
-			radial-gradient(circle at 95% 15%, rgba(20, 28, 50, 0.08) 0%, transparent 50%),
-			radial-gradient(circle at 5% 95%, rgba(35, 30, 65, 0.1) 0%, transparent 42%),
-			radial-gradient(circle at 60% 45%, rgba(25, 45, 80, 0.07) 0%, transparent 55%),
-			radial-gradient(circle at 25% 15%, rgba(40, 25, 60, 0.09) 0%, transparent 48%);
-		filter: blur(1px);
-		animation: lavaBlob1 58s ease-in-out infinite;
-	}
-	
-	.gradient-background::after {
-		content: '';
-		position: absolute;
-		top: -100%;
-		left: -100%;
-		width: 300%;
-		height: 300%;
-		background: 
-			radial-gradient(ellipse at 60% 10%, rgba(35, 50, 85, 0.16) 0%, transparent 45%),
-			radial-gradient(ellipse at 15% 60%, rgba(50, 45, 80, 0.12) 0%, transparent 40%),
-			radial-gradient(ellipse at 85% 40%, rgba(18, 35, 70, 0.14) 0%, transparent 35%),
-			radial-gradient(ellipse at 35% 85%, rgba(35, 30, 65, 0.11) 0%, transparent 50%),
-			radial-gradient(ellipse at 90% 5%, rgba(35, 50, 85, 0.13) 0%, transparent 48%),
-			radial-gradient(ellipse at 5% 85%, rgba(50, 45, 80, 0.09) 0%, transparent 44%),
-			radial-gradient(ellipse at 75% 60%, rgba(28, 42, 75, 0.1) 0%, transparent 52%),
-			radial-gradient(ellipse at 30% 25%, rgba(42, 35, 70, 0.08) 0%, transparent 46%);
-		filter: blur(1.5px);
-		animation: lavaBlob2 192s ease-in-out infinite reverse;
-	}
-	
-	/* Add a third animated layer */
-	.content-wrapper::before {
-		content: '';
-		position: fixed;
-		top: -100%;
-		left: -100%;
-		width: 300%;
-		height: 300%;
-		z-index: -1;
-		background: 
-			radial-gradient(circle at 45% 55%, rgba(30, 55, 95, 0.06) 0%, transparent 60%),
-			radial-gradient(circle at 75% 25%, rgba(55, 40, 85, 0.04) 0%, transparent 65%),
-			radial-gradient(circle at 25% 75%, rgba(20, 50, 90, 0.07) 0%, transparent 55%),
-			radial-gradient(circle at 85% 85%, rgba(45, 35, 75, 0.05) 0%, transparent 70%),
-			radial-gradient(circle at 15% 25%, rgba(25, 60, 100, 0.06) 0%, transparent 58%);
-		filter: blur(2px);
-		animation: lavaBlob3 170s ease-in-out infinite;
-		pointer-events: none;
-	}
-	
-	.content-wrapper {
-		position: relative;
-		z-index: 1;
-		min-height: 100vh;
-	}
-	@keyframes lavaBlob1 {
-		0% {
-			transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
-		}
-		8% {
-			transform: translate(-3%, 2%) rotate(12deg) scale(1.08) skew(2deg);
-		}
-		16% {
-			transform: translate(2%, -3%) rotate(-8deg) scale(0.92) skew(-3deg);
-		}
-		25% {
-			transform: translate(-4%, -1%) rotate(18deg) scale(1.05) skew(1deg);
-		}
-		33% {
-			transform: translate(3%, 4%) rotate(-12deg) scale(0.96) skew(-2deg);
-		}
-		41% {
-			transform: translate(-2%, 3%) rotate(22deg) scale(1.1) skew(3deg);
-		}
-		50% {
-			transform: translate(4%, -2%) rotate(-6deg) scale(0.94) skew(-1deg);
-		}
-		58% {
-			transform: translate(-3%, -4%) rotate(15deg) scale(1.03) skew(2deg);
-		}
-		66% {
-			transform: translate(1%, 3%) rotate(-18deg) scale(0.98) skew(-3deg);
-		}
-		75% {
-			transform: translate(-4%, 1%) rotate(25deg) scale(1.07) skew(1deg);
-		}
-		83% {
-			transform: translate(3%, -3%) rotate(-10deg) scale(0.95) skew(-2deg);
-		}
-		91% {
-			transform: translate(-1%, 2%) rotate(8deg) scale(1.02) skew(3deg);
-		}
-		100% {
-			transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
-		}
-	}
-	
-	@keyframes lavaBlob2 {
-		0% {
-			transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
-		}
-		10% {
-			transform: translate(4%, -2%) rotate(-15deg) scale(1.06) skew(-2deg);
-		}
-		20% {
-			transform: translate(-2%, 4%) rotate(10deg) scale(0.93) skew(3deg);
-		}
-		30% {
-			transform: translate(3%, 1%) rotate(-20deg) scale(1.04) skew(-1deg);
-		}
-		40% {
-			transform: translate(-3%, -3%) rotate(16deg) scale(0.97) skew(2deg);
-		}
-		50% {
-			transform: translate(1%, 4%) rotate(-12deg) scale(1.09) skew(-3deg);
-		}
-		60% {
-			transform: translate(-4%, 2%) rotate(24deg) scale(0.91) skew(1deg);
-		}
-		70% {
-			transform: translate(2%, -4%) rotate(-8deg) scale(1.05) skew(-2deg);
-		}
-		80% {
-			transform: translate(-1%, 3%) rotate(14deg) scale(0.99) skew(3deg);
-		}
-		90% {
-			transform: translate(3%, -1%) rotate(-18deg) scale(1.01) skew(-1deg);
-		}
-		100% {
-			transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
-		}
-	}
-	
-	@keyframes lavaBlob3 {
-		0% {
-			transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
-		}
-		12% {
-			transform: translate(-5%, 3%) rotate(20deg) scale(1.12) skew(4deg);
-		}
-		25% {
-			transform: translate(3%, -5%) rotate(-14deg) scale(0.88) skew(-3deg);
-		}
-		37% {
-			transform: translate(-6%, -2%) rotate(28deg) scale(1.08) skew(2deg);
-		}
-		50% {
-			transform: translate(4%, 6%) rotate(-16deg) scale(0.92) skew(-4deg);
-		}
-		62% {
-			transform: translate(-3%, 4%) rotate(32deg) scale(1.15) skew(3deg);
-		}
-		75% {
-			transform: translate(5%, -3%) rotate(-10deg) scale(0.85) skew(-2deg);
-		}
-		87% {
-			transform: translate(-4%, -5%) rotate(24deg) scale(1.06) skew(4deg);
-		}
-		100% {
-			transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
-		}
-	}
-	
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
+  :root {
+    --accent: 70, 80, 234;
+    --accent-light: 156, 172, 250;
+    --accent-dark: 2, 0, 70;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 40%,
+      white 60%
+    );
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+    font-family: system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    position: relative;
+  }
+
+  /* Add a third layer for more depth */
+  .gradient-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: linear-gradient(
+      135deg,
+      #0b0f16 0%,
+      #151922 20%,
+      #1f242e 40%,
+      #151922 70%,
+      #0b0f16 100%
+    );
+  }
+
+  .gradient-background::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background:
+      radial-gradient(
+        circle at 20% 30%,
+        rgba(20, 28, 50, 0.12) 0%,
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(35, 30, 65, 0.09) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 40% 70%,
+        rgba(18, 35, 70, 0.15) 0%,
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 90% 80%,
+        rgba(45, 20, 55, 0.11) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 10% 90%,
+        rgba(22, 40, 75, 0.13) 0%,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 95% 15%,
+        rgba(20, 28, 50, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 5% 95%,
+        rgba(35, 30, 65, 0.1) 0%,
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 60% 45%,
+        rgba(25, 45, 80, 0.07) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 25% 15%,
+        rgba(40, 25, 60, 0.09) 0%,
+        transparent 48%
+      );
+    filter: blur(1px);
+    animation: lavaBlob1 65s ease-in-out infinite;
+  }
+
+  .gradient-background::after {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background:
+      radial-gradient(
+        ellipse at 60% 10%,
+        rgba(35, 50, 85, 0.16) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        ellipse at 15% 60%,
+        rgba(50, 45, 80, 0.12) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        ellipse at 85% 40%,
+        rgba(18, 35, 70, 0.14) 0%,
+        transparent 35%
+      ),
+      radial-gradient(
+        ellipse at 35% 85%,
+        rgba(35, 30, 65, 0.11) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at 90% 5%,
+        rgba(35, 50, 85, 0.13) 0%,
+        transparent 48%
+      ),
+      radial-gradient(
+        ellipse at 5% 85%,
+        rgba(50, 45, 80, 0.09) 0%,
+        transparent 44%
+      ),
+      radial-gradient(
+        ellipse at 75% 60%,
+        rgba(28, 42, 75, 0.1) 0%,
+        transparent 52%
+      ),
+      radial-gradient(
+        ellipse at 30% 25%,
+        rgba(42, 35, 70, 0.08) 0%,
+        transparent 46%
+      );
+    filter: blur(1.5px);
+    animation: lavaBlob2 55s ease-in-out infinite reverse;
+  }
+
+  .gradient-background::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background:
+      radial-gradient(
+        circle at 20% 30%,
+        rgba(20, 28, 50, 0.12) 0%,
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(35, 30, 65, 0.09) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 40% 70%,
+        rgba(18, 35, 70, 0.15) 0%,
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 90% 80%,
+        rgba(45, 20, 55, 0.11) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 10% 90%,
+        rgba(22, 40, 75, 0.13) 0%,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 95% 15%,
+        rgba(20, 28, 50, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 5% 95%,
+        rgba(35, 30, 65, 0.1) 0%,
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 60% 45%,
+        rgba(25, 45, 80, 0.07) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 25% 15%,
+        rgba(40, 25, 60, 0.09) 0%,
+        transparent 48%
+      );
+    filter: blur(1px);
+    animation: lavaBlob1 58s ease-in-out infinite;
+  }
+
+  .gradient-background::after {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background:
+      radial-gradient(
+        ellipse at 60% 10%,
+        rgba(35, 50, 85, 0.16) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        ellipse at 15% 60%,
+        rgba(50, 45, 80, 0.12) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        ellipse at 85% 40%,
+        rgba(18, 35, 70, 0.14) 0%,
+        transparent 35%
+      ),
+      radial-gradient(
+        ellipse at 35% 85%,
+        rgba(35, 30, 65, 0.11) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at 90% 5%,
+        rgba(35, 50, 85, 0.13) 0%,
+        transparent 48%
+      ),
+      radial-gradient(
+        ellipse at 5% 85%,
+        rgba(50, 45, 80, 0.09) 0%,
+        transparent 44%
+      ),
+      radial-gradient(
+        ellipse at 75% 60%,
+        rgba(28, 42, 75, 0.1) 0%,
+        transparent 52%
+      ),
+      radial-gradient(
+        ellipse at 30% 25%,
+        rgba(42, 35, 70, 0.08) 0%,
+        transparent 46%
+      );
+    filter: blur(1.5px);
+    animation: lavaBlob2 192s ease-in-out infinite reverse;
+  }
+
+  /* Add a third animated layer */
+  .content-wrapper::before {
+    content: "";
+    position: fixed;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    z-index: -1;
+    background:
+      radial-gradient(
+        circle at 45% 55%,
+        rgba(30, 55, 95, 0.06) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at 75% 25%,
+        rgba(55, 40, 85, 0.04) 0%,
+        transparent 65%
+      ),
+      radial-gradient(
+        circle at 25% 75%,
+        rgba(20, 50, 90, 0.07) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 85% 85%,
+        rgba(45, 35, 75, 0.05) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at 15% 25%,
+        rgba(25, 60, 100, 0.06) 0%,
+        transparent 58%
+      );
+    filter: blur(2px);
+    animation: lavaBlob3 170s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+  }
+  @keyframes lavaBlob1 {
+    0% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
+    }
+    8% {
+      transform: translate(-3%, 2%) rotate(12deg) scale(1.08) skew(2deg);
+    }
+    16% {
+      transform: translate(2%, -3%) rotate(-8deg) scale(0.92) skew(-3deg);
+    }
+    25% {
+      transform: translate(-4%, -1%) rotate(18deg) scale(1.05) skew(1deg);
+    }
+    33% {
+      transform: translate(3%, 4%) rotate(-12deg) scale(0.96) skew(-2deg);
+    }
+    41% {
+      transform: translate(-2%, 3%) rotate(22deg) scale(1.1) skew(3deg);
+    }
+    50% {
+      transform: translate(4%, -2%) rotate(-6deg) scale(0.94) skew(-1deg);
+    }
+    58% {
+      transform: translate(-3%, -4%) rotate(15deg) scale(1.03) skew(2deg);
+    }
+    66% {
+      transform: translate(1%, 3%) rotate(-18deg) scale(0.98) skew(-3deg);
+    }
+    75% {
+      transform: translate(-4%, 1%) rotate(25deg) scale(1.07) skew(1deg);
+    }
+    83% {
+      transform: translate(3%, -3%) rotate(-10deg) scale(0.95) skew(-2deg);
+    }
+    91% {
+      transform: translate(-1%, 2%) rotate(8deg) scale(1.02) skew(3deg);
+    }
+    100% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
+    }
+  }
+
+  @keyframes lavaBlob2 {
+    0% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
+    }
+    10% {
+      transform: translate(4%, -2%) rotate(-15deg) scale(1.06) skew(-2deg);
+    }
+    20% {
+      transform: translate(-2%, 4%) rotate(10deg) scale(0.93) skew(3deg);
+    }
+    30% {
+      transform: translate(3%, 1%) rotate(-20deg) scale(1.04) skew(-1deg);
+    }
+    40% {
+      transform: translate(-3%, -3%) rotate(16deg) scale(0.97) skew(2deg);
+    }
+    50% {
+      transform: translate(1%, 4%) rotate(-12deg) scale(1.09) skew(-3deg);
+    }
+    60% {
+      transform: translate(-4%, 2%) rotate(24deg) scale(0.91) skew(1deg);
+    }
+    70% {
+      transform: translate(2%, -4%) rotate(-8deg) scale(1.05) skew(-2deg);
+    }
+    80% {
+      transform: translate(-1%, 3%) rotate(14deg) scale(0.99) skew(3deg);
+    }
+    90% {
+      transform: translate(3%, -1%) rotate(-18deg) scale(1.01) skew(-1deg);
+    }
+    100% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
+    }
+  }
+
+  @keyframes lavaBlob3 {
+    0% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
+    }
+    12% {
+      transform: translate(-5%, 3%) rotate(20deg) scale(1.12) skew(4deg);
+    }
+    25% {
+      transform: translate(3%, -5%) rotate(-14deg) scale(0.88) skew(-3deg);
+    }
+    37% {
+      transform: translate(-6%, -2%) rotate(28deg) scale(1.08) skew(2deg);
+    }
+    50% {
+      transform: translate(4%, 6%) rotate(-16deg) scale(0.92) skew(-4deg);
+    }
+    62% {
+      transform: translate(-3%, 4%) rotate(32deg) scale(1.15) skew(3deg);
+    }
+    75% {
+      transform: translate(5%, -3%) rotate(-10deg) scale(0.85) skew(-2deg);
+    }
+    87% {
+      transform: translate(-4%, -5%) rotate(24deg) scale(1.06) skew(4deg);
+    }
+    100% {
+      transform: translate(0%, 0%) rotate(0deg) scale(1) skew(0deg);
+    }
+  }
+
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
 </style>

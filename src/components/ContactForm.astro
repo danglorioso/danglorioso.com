@@ -1,263 +1,298 @@
 <section class="">
-    <div class="bg-bg-card backdrop-blur-sm border border-border-tertiary rounded-lg p-8 shadow-xl">
-        <form id="contact-form" action="https://formspree.io/f/mvgqjlgv" method="POST" novalidate>
-        
-            <!-- Title -->
-            <!-- <h2 class="text-3xl lg:text-2xl font-bold text-text-primary mb-2">
+  <div
+    class="bg-bg-card backdrop-blur-sm border border-border-tertiary rounded-lg p-8 shadow-xl"
+  >
+    <form
+      id="contact-form"
+      action="https://formspree.io/f/mvgqjlgv"
+      method="POST"
+      novalidate
+    >
+      <!-- Title -->
+      <!-- <h2 class="text-3xl lg:text-2xl font-bold text-text-primary mb-2">
                 Contact Me
             </h2> -->
 
-            <!-- <p class="text-text-tertiary text-lg lg:text-sm leading-relaxed mb-6"> -->
-                <!-- Interested in working together on a project, exploring opportunities, or have questions? Feel free to send me a message, and I'll respond as soon as possible! -->
-                <!-- Interested in chatting about a project, collaborating on something new, or have questions? Leave me a message, and I'll respond as soon as possible! -->
-            <!-- </p> -->
+      <!-- <p class="text-text-tertiary text-lg lg:text-sm leading-relaxed mb-6"> -->
+      <!-- Interested in working together on a project, exploring opportunities, or have questions? Feel free to send me a message, and I'll respond as soon as possible! -->
+      <!-- Interested in chatting about a project, collaborating on something new, or have questions? Leave me a message, and I'll respond as soon as possible! -->
+      <!-- </p> -->
 
-            <!-- Honeypot -->
-            <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
-            <input type="hidden" name="_subject" value="New message from danglorioso.com" />
+      <!-- Honeypot -->
+      <input
+        type="text"
+        name="_gotcha"
+        class="hidden"
+        tabindex="-1"
+        autocomplete="off"
+      />
+      <input
+        type="hidden"
+        name="_subject"
+        value="New message from danglorioso.com"
+      />
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-primary">
-                <!-- Left Column -->
-                <div class="flex flex-col gap-2 justify-between" style="height: 11rem;">
-                    
-                    <!-- Name -->
-                    <div>
-                        <input 
-                            type="text" 
-                            required
-                            name="name" 
-                            placeholder="Name"
-                            class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary"
-                            />
-                        <div id="name-error" class="text-red-400 text-sm mt-1"></div>
-                    </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-primary">
+        <!-- Left Column -->
+        <div class="flex flex-col gap-2 justify-between" style="height: 11rem;">
+          <!-- Name -->
+          <div>
+            <input
+              type="text"
+              required
+              name="name"
+              placeholder="Name"
+              class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary"
+            />
+            <div id="name-error" class="text-red-400 text-sm mt-1"></div>
+          </div>
 
-                    <!-- Email -->
-                    <div>
-                        <input 
-                            type="email"
-                            required
-                            autocomplete="email"
-                            name="email" 
-                            placeholder="Email address"
-                            class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary"
-                        />
-                        <div id="email-error" class="text-red-400 text-sm mt-1"></div>
-                    </div>
-                    
-                    <!-- Company -->
-                    <div>
-                        <input 
-                            type="text"
-                            name="company"
-                            placeholder="Company (optional)"
-                            class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary"
-                        />
-                    </div>
+          <!-- Email -->
+          <div>
+            <input
+              type="email"
+              required
+              autocomplete="email"
+              name="email"
+              placeholder="Email address"
+              class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary"
+            />
+            <div id="email-error" class="text-red-400 text-sm mt-1"></div>
+          </div>
+
+          <!-- Company -->
+          <div>
+            <input
+              type="text"
+              name="company"
+              placeholder="Company (optional)"
+              class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary"
+            />
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="flex flex-col gap-2">
+          <!-- Message Block -->
+          <div>
+            <textarea
+              name="message"
+              required
+              style="height: 11rem;"
+              placeholder="Message"
+              class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary resize-none"
+            ></textarea>
+            <div id="message-error" class="text-red-400 text-sm mt-1"></div>
+          </div>
+
+          <!-- Status Message -->
+          <div id="form-status" class="text-sm"></div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-end">
+            <div class="relative">
+              <button
+                type="submit"
+                id="submit-btn"
+                disabled
+                title="Please fill out all required fields"
+                class="bg-accent-secondary hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-text-primary font-normal py-3 px-6 rounded-md transition-all duration-200"
+              >
+                <span id="btn-text">Send Message</span>
+              </button>
+              <div
+                id="submit-tooltip"
+                class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-bg-primary text-text-primary text-sm rounded-md whitespace-nowrap opacity-0 invisible transition-all duration-200 pointer-events-none z-10 border border-border-primary"
+              >
+                Please fill out all required fields
+                <div
+                  class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent"
+                  style="border-top-color: var(--border-primary);"
+                >
                 </div>
-                
-                <!-- Right Column -->
-                <div class="flex flex-col gap-2">
-                    <!-- Message Block -->
-                    <div>
-                        <textarea 
-                            name="message" 
-                            required
-                            style="height: 11rem;"
-                            placeholder="Message"
-                            class="bg-bg-overlay px-4 py-3 w-full rounded-md border border-border-tertiary text-text-primary placeholder:text-text-secondary focus:outline focus:outline-accent-primary focus:border focus:border-accent-primary resize-none"
-                        ></textarea>
-                        <div id="message-error" class="text-red-400 text-sm mt-1"></div>
-                    </div>
-
-                    <!-- Status Message -->
-                    <div id="form-status" class="text-sm"></div>
-
-                    <!-- Submit Button -->
-                    <div class="flex justify-end">
-                        <div class="relative">
-                            <button 
-                                type="submit" 
-                                id="submit-btn"
-                                disabled
-                                title="Please fill out all required fields"
-                                class="bg-accent-secondary hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-text-primary font-normal py-3 px-6 rounded-md transition-all duration-200"
-                            >
-                                <span id="btn-text">Send Message</span>
-                            </button>
-                            <div 
-                                id="submit-tooltip" 
-                                class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-bg-primary text-text-primary text-sm rounded-md whitespace-nowrap opacity-0 invisible transition-all duration-200 pointer-events-none z-10 border border-border-primary"
-                            >
-                                Please fill out all required fields
-                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent" style="border-top-color: var(--border-primary);"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </section>
 
 <script is:inline>
-    (function () {
-        const form = document.getElementById('contact-form');
-        const statusEl = document.getElementById('form-status');
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = document.getElementById('btn-text');
-        
-        if (!form || !statusEl || !submitBtn || !btnText) return;
+  (function () {
+    const form = document.getElementById("contact-form");
+    const statusEl = document.getElementById("form-status");
+    const submitBtn = document.getElementById("submit-btn");
+    const btnText = document.getElementById("btn-text");
 
-        function setStatus(text, type = 'info') {
-            statusEl.textContent = text;
-            statusEl.className = 'text-sm ' + (
-                type === 'error' ? 'text-red-400' : 
-                type === 'success' ? 'text-status-success-text' : 
-                'text-text-secondary'
-            );
+    if (!form || !statusEl || !submitBtn || !btnText) return;
+
+    function setStatus(text, type = "info") {
+      statusEl.textContent = text;
+      statusEl.className =
+        "text-sm " +
+        (type === "error"
+          ? "text-red-400"
+          : type === "success"
+            ? "text-status-success-text"
+            : "text-text-secondary");
+    }
+
+    function setFieldError(fieldName, message) {
+      const errorEl = document.getElementById(`${fieldName}-error`);
+      if (errorEl) {
+        errorEl.textContent = message;
+      }
+    }
+
+    function clearFieldErrors() {
+      ["name", "email", "message"].forEach((fieldName) => {
+        setFieldError(fieldName, "");
+      });
+    }
+
+    function setButtonState(isSubmitting) {
+      if (isSubmitting) {
+        submitBtn.disabled = true;
+        btnText.textContent = "Sending...";
+        submitBtn.classList.add("opacity-50", "cursor-not-allowed");
+      } else {
+        submitBtn.disabled = false;
+        btnText.textContent = "Send Message";
+        submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      }
+    }
+
+    function checkRequiredFields() {
+      const name = form.querySelector('input[name="name"]').value.trim();
+      const email = form.querySelector('input[name="email"]').value.trim();
+      const message = form
+        .querySelector('textarea[name="message"]')
+        .value.trim();
+
+      const allRequiredFieldsFilled = name && email && message;
+      submitBtn.disabled = !allRequiredFieldsFilled;
+
+      // Update tooltip and title attribute based on button state
+      if (allRequiredFieldsFilled) {
+        submitBtn.removeAttribute("title");
+      } else {
+        submitBtn.setAttribute("title", "Please fill out all required fields");
+      }
+    }
+
+    // Form validation
+    function validateForm() {
+      clearFieldErrors();
+      setStatus("");
+
+      const name = form.querySelector('input[name="name"]').value.trim();
+      const email = form.querySelector('input[name="email"]').value.trim();
+      const message = form
+        .querySelector('textarea[name="message"]')
+        .value.trim();
+
+      let isValid = true;
+
+      if (!name) {
+        setFieldError("name", "Name is required.");
+        isValid = false;
+      }
+
+      if (!email) {
+        setFieldError("email", "Email is required.");
+        isValid = false;
+      } else {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          setFieldError("email", "Please enter a valid email address.");
+          isValid = false;
         }
+      }
 
-        function setFieldError(fieldName, message) {
-            const errorEl = document.getElementById(`${fieldName}-error`);
-            if (errorEl) {
-                errorEl.textContent = message;
-            }
+      if (!message) {
+        setFieldError("message", "Message is required.");
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    // Clear individual field errors on input and check required fields
+    ["name", "email", "message"].forEach((fieldName) => {
+      const field = form.querySelector(`[name="${fieldName}"]`);
+      if (field) {
+        field.addEventListener("input", function () {
+          setFieldError(fieldName, "");
+          checkRequiredFields();
+        });
+      }
+    });
+
+    // Initial check of required fields
+    checkRequiredFields();
+
+    // Tooltip functionality for disabled button
+    const tooltip = document.getElementById("submit-tooltip");
+    if (tooltip) {
+      submitBtn.addEventListener("mouseenter", function () {
+        if (submitBtn.disabled) {
+          tooltip.classList.remove("opacity-0", "invisible");
+          tooltip.classList.add("opacity-100", "visible");
         }
+      });
 
-        function clearFieldErrors() {
-            ['name', 'email', 'message'].forEach(fieldName => {
-                setFieldError(fieldName, '');
-            });
-        }
+      submitBtn.addEventListener("mouseleave", function () {
+        tooltip.classList.remove("opacity-100", "visible");
+        tooltip.classList.add("opacity-0", "invisible");
+      });
+    }
 
-        function setButtonState(isSubmitting) {
-            if (isSubmitting) {
-                submitBtn.disabled = true;
-                btnText.textContent = 'Sending...';
-                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                submitBtn.disabled = false;
-                btnText.textContent = 'Send Message';
-                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        function checkRequiredFields() {
-            const name = form.querySelector('input[name="name"]').value.trim();
-            const email = form.querySelector('input[name="email"]').value.trim();
-            const message = form.querySelector('textarea[name="message"]').value.trim();
-            
-            const allRequiredFieldsFilled = name && email && message;
-            submitBtn.disabled = !allRequiredFieldsFilled;
-            
-            // Update tooltip and title attribute based on button state
-            if (allRequiredFieldsFilled) {
-                submitBtn.removeAttribute('title');
-            } else {
-                submitBtn.setAttribute('title', 'Please fill out all required fields');
-            }
-        }
+      // Validate form
+      if (!validateForm()) {
+        return;
+      }
 
-        // Form validation
-        function validateForm() {
-            clearFieldErrors();
-            setStatus('');
-            
-            const name = form.querySelector('input[name="name"]').value.trim();
-            const email = form.querySelector('input[name="email"]').value.trim();
-            const message = form.querySelector('textarea[name="message"]').value.trim();
+      setStatus("Sending your message...");
+      setButtonState(true);
 
-            let isValid = true;
-
-            if (!name) {
-                setFieldError('name', 'Name is required.');
-                isValid = false;
-            }
-            
-            if (!email) {
-                setFieldError('email', 'Email is required.');
-                isValid = false;
-            } else {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    setFieldError('email', 'Please enter a valid email address.');
-                    isValid = false;
-                }
-            }
-            
-            if (!message) {
-                setFieldError('message', 'Message is required.');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        // Clear individual field errors on input and check required fields
-        ['name', 'email', 'message'].forEach(fieldName => {
-            const field = form.querySelector(`[name="${fieldName}"]`);
-            if (field) {
-                field.addEventListener('input', function() {
-                    setFieldError(fieldName, '');
-                    checkRequiredFields();
-                });
-            }
+      try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
         });
 
-        // Initial check of required fields
-        checkRequiredFields();
+        const data = await response.json().catch(() => ({}));
 
-        // Tooltip functionality for disabled button
-        const tooltip = document.getElementById('submit-tooltip');
-        if (tooltip) {
-            submitBtn.addEventListener('mouseenter', function() {
-                if (submitBtn.disabled) {
-                    tooltip.classList.remove('opacity-0', 'invisible');
-                    tooltip.classList.add('opacity-100', 'visible');
-                }
-            });
-
-            submitBtn.addEventListener('mouseleave', function() {
-                tooltip.classList.remove('opacity-100', 'visible');
-                tooltip.classList.add('opacity-0', 'invisible');
-            });
+        if (response.ok) {
+          setStatus(
+            "Thank you! Your message has been sent successfully.",
+            "success"
+          );
+          form.reset();
+          clearFieldErrors();
+        } else {
+          const errorMsg =
+            (data &&
+              (data.error ||
+                (data.errors && data.errors[0] && data.errors[0].message))) ||
+            "Something went wrong. Please try again later.";
+          setStatus(errorMsg, "error");
         }
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Validate form
-            if (!validateForm()) {
-                return;
-            }
-
-            setStatus('Sending your message...');
-            setButtonState(true);
-
-            try {
-                const formData = new FormData(form);
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json' },
-                    body: formData
-                });
-
-                const data = await response.json().catch(() => ({}));
-                
-                if (response.ok) {
-                    setStatus('Thank you! Your message has been sent successfully.', 'success');
-                    form.reset();
-                    clearFieldErrors();
-                } else {
-                    const errorMsg = (data && (data.error || (data.errors && data.errors[0] && data.errors[0].message))) || 'Something went wrong. Please try again later.';
-                    setStatus(errorMsg, 'error');
-                }
-            } catch (error) {
-                setStatus('Network error. Please check your connection and try again.', 'error');
-            } finally {
-                setButtonState(false);
-            }
-        });
-    })();
+      } catch (error) {
+        setStatus(
+          "Network error. Please check your connection and try again.",
+          "error"
+        );
+      } finally {
+        setButtonState(false);
+      }
+    });
+  })();
 </script>

@@ -1,8 +1,8 @@
 ---
-import '../globals.css';
-import SpeedInsights from '@vercel/speed-insights/astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer';
+import "../globals.css";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer";
 
 interface Props {
   title: string;
@@ -22,9 +22,12 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Dan Glorioso</title>
   </head>
-  
+
   <body class="min-h-screen">
-    <canvas id="navigation-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none" style="background: var(--bg-primary, #0f172a);"></canvas>
+    <canvas
+      id="navigation-canvas"
+      class="fixed top-0 left-0 w-full h-full pointer-events-none"
+      style="background: var(--bg-primary, #0f172a);"></canvas>
 
     <!-- Vercel Speed Insights -->
     <SpeedInsights />
@@ -37,16 +40,22 @@ const { title, description } = Astro.props;
       <div class="h-20 sm:h-22"></div>
 
       <!-- Mobile Menu (slides from behind header) -->
-      <div 
-        id="mobile-menu" 
+      <div
+        id="mobile-menu"
         class="md:hidden fixed left-0 right-0 z-40 transform -translate-y-full transition-all duration-300 ease-in-out pointer-events-none"
         aria-hidden="true"
       >
         <!-- Full Screen Backdrop -->
-        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30" id="mobile-menu-backdrop"></div>
-        
+        <div
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
+          id="mobile-menu-backdrop"
+        >
+        </div>
+
         <!-- Menu Panel that slides from behind header -->
-        <div class="relative z-40 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20">
+        <div
+          class="relative z-40 bg-slate-900 border-b border-slate-700/50 shadow-2xl pt-20"
+        >
           <!-- Navigation Links -->
           <nav class="px-6 py-6">
             <ul class="space-y-2" id="mobile-nav-links">
@@ -57,7 +66,9 @@ const { title, description } = Astro.props;
       </div>
 
       <!-- Page Content -->
-      <main class="flex flex-col max-w-5xl px-8 md:px-16 py-8 mx-auto w-full relative z-0">
+      <main
+        class="flex flex-col max-w-5xl px-8 md:px-16 py-8 mx-auto w-full relative z-0"
+      >
         <slot />
       </main>
 
@@ -66,18 +77,22 @@ const { title, description } = Astro.props;
     </div>
 
     <!-- Back to Top Button -->
-    <button 
+    <button
       id="back-to-top"
       class="fixed bottom-6 right-6 p-3 z-[100] bg-slate-850/90 hover:bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-full shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none group"
       aria-label="Back to top"
     >
-      <svg 
-        class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200" 
+      <svg
+        class="w-5 h-5 mx-auto text-gray-300 group-hover:text-white transition-colors duration-200"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
       </svg>
     </button>
 
@@ -85,8 +100,8 @@ const { title, description } = Astro.props;
       // Navigation Waypoints & Flight Paths - Aviation Chart Style
       class NavigationChart {
         constructor() {
-          this.canvas = document.getElementById('navigation-canvas');
-          this.ctx = this.canvas.getContext('2d');
+          this.canvas = document.getElementById("navigation-canvas");
+          this.ctx = this.canvas.getContext("2d");
           this.bgColor = this.getBackgroundColor();
           this.waypoints = [];
           this.flightPaths = [];
@@ -101,31 +116,36 @@ const { title, description } = Astro.props;
 
         getBackgroundColor() {
           const bgColor = getComputedStyle(document.documentElement)
-            .getPropertyValue('--bg-primary')
+            .getPropertyValue("--bg-primary")
             .trim();
-          return bgColor || '#0f172a';
+          return bgColor || "#0f172a";
         }
 
         getAccentColor() {
-          const accentColor = getComputedStyle(document.documentElement)
-            .getPropertyValue('--accent-primary')
-            .trim() || 'rgb(59, 130, 246)';
+          const accentColor =
+            getComputedStyle(document.documentElement)
+              .getPropertyValue("--accent-primary")
+              .trim() || "rgb(59, 130, 246)";
 
           let r, g, b;
-          if (accentColor.startsWith('oklch')) {
-            r = 59; g = 130; b = 246;
-          } else if (accentColor.startsWith('#')) {
+          if (accentColor.startsWith("oklch")) {
+            r = 59;
+            g = 130;
+            b = 246;
+          } else if (accentColor.startsWith("#")) {
             const hex = accentColor.slice(1);
             r = parseInt(hex.slice(0, 2), 16);
             g = parseInt(hex.slice(2, 4), 16);
             b = parseInt(hex.slice(4, 6), 16);
-          } else if (accentColor.startsWith('rgb')) {
+          } else if (accentColor.startsWith("rgb")) {
             const matches = accentColor.match(/\d+/g);
             r = parseInt(matches[0]);
             g = parseInt(matches[1]);
             b = parseInt(matches[2]);
           } else {
-            r = 59; g = 130; b = 246;
+            r = 59;
+            g = 130;
+            b = 246;
           }
 
           return { r, g, b };
@@ -142,9 +162,11 @@ const { title, description } = Astro.props;
           const spacing = Math.min(this.canvas.width, this.canvas.height) / 4;
 
           for (let i = 0; i < waypointCount; i++) {
-            const x = spacing + Math.random() * (this.canvas.width - spacing * 2);
-            const y = spacing + Math.random() * (this.canvas.height - spacing * 2);
-            
+            const x =
+              spacing + Math.random() * (this.canvas.width - spacing * 2);
+            const y =
+              spacing + Math.random() * (this.canvas.height - spacing * 2);
+
             this.waypoints.push({
               x,
               y,
@@ -163,7 +185,7 @@ const { title, description } = Astro.props;
           for (let i = 0; i < pathCount; i++) {
             const startIdx = Math.floor(Math.random() * this.waypoints.length);
             const endIdx = Math.floor(Math.random() * this.waypoints.length);
-            
+
             if (startIdx === endIdx) continue;
 
             const start = this.waypoints[startIdx];
@@ -190,7 +212,7 @@ const { title, description } = Astro.props;
         }
 
         bindEvents() {
-          window.addEventListener('resize', () => {
+          window.addEventListener("resize", () => {
             this.resize();
             this.createWaypoints();
             this.createFlightPaths();
@@ -237,14 +259,23 @@ const { title, description } = Astro.props;
         drawWaypoints() {
           const accent = this.getAccentColor();
 
-          this.waypoints.forEach(waypoint => {
-            const pulse = Math.sin(this.time * waypoint.pulseSpeed + waypoint.pulsePhase) * 0.3 + 0.7;
+          this.waypoints.forEach((waypoint) => {
+            const pulse =
+              Math.sin(this.time * waypoint.pulseSpeed + waypoint.pulsePhase) *
+                0.3 +
+              0.7;
             const currentRadius = waypoint.radius * pulse;
             const opacity = 0.3 + pulse * 0.2;
 
             // Outer ring (navigation beacon style)
             this.ctx.beginPath();
-            this.ctx.arc(waypoint.x, waypoint.y, currentRadius * 2.5, 0, Math.PI * 2);
+            this.ctx.arc(
+              waypoint.x,
+              waypoint.y,
+              currentRadius * 2.5,
+              0,
+              Math.PI * 2
+            );
             this.ctx.strokeStyle = `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${opacity * 0.3})`;
             this.ctx.lineWidth = 1;
             this.ctx.stroke();
@@ -257,14 +288,20 @@ const { title, description } = Astro.props;
 
             // Center dot
             this.ctx.beginPath();
-            this.ctx.arc(waypoint.x, waypoint.y, currentRadius * 0.4, 0, Math.PI * 2);
+            this.ctx.arc(
+              waypoint.x,
+              waypoint.y,
+              currentRadius * 0.4,
+              0,
+              Math.PI * 2
+            );
             this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.8})`;
             this.ctx.fill();
           });
         }
 
         drawFlightPaths() {
-          this.flightPaths.forEach(path => {
+          this.flightPaths.forEach((path) => {
             path.progress += path.speed * 16;
             if (path.progress > 1) path.progress = 0;
 
@@ -275,12 +312,20 @@ const { title, description } = Astro.props;
             this.ctx.lineWidth = path.width;
             this.ctx.beginPath();
             this.ctx.moveTo(path.startX, path.startY);
-            this.ctx.quadraticCurveTo(path.midX, path.midY, path.endX, path.endY);
+            this.ctx.quadraticCurveTo(
+              path.midX,
+              path.midY,
+              path.endX,
+              path.endY
+            );
             this.ctx.stroke();
 
             // Draw aircraft position
             const pos = this.getPointOnCurve(path, path.progress);
-            const ahead = this.getPointOnCurve(path, Math.min(path.progress + 0.02, 1));
+            const ahead = this.getPointOnCurve(
+              path,
+              Math.min(path.progress + 0.02, 1)
+            );
             const angle = Math.atan2(ahead.y - pos.y, ahead.x - pos.x);
 
             // Aircraft triangle
@@ -325,35 +370,44 @@ const { title, description } = Astro.props;
 
       // Back to Top Button Functionality
       function initBackToTop() {
-        const backToTopBtn = document.getElementById('back-to-top');
+        const backToTopBtn = document.getElementById("back-to-top");
         if (!backToTopBtn) return;
 
         function toggleButtonVisibility() {
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+
           if (scrollTop > 300) {
-            backToTopBtn.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
-            backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+            backToTopBtn.classList.remove(
+              "opacity-0",
+              "translate-y-2",
+              "pointer-events-none"
+            );
+            backToTopBtn.classList.add("opacity-100", "translate-y-0");
           } else {
-            backToTopBtn.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
-            backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+            backToTopBtn.classList.add(
+              "opacity-0",
+              "translate-y-2",
+              "pointer-events-none"
+            );
+            backToTopBtn.classList.remove("opacity-100", "translate-y-0");
           }
         }
 
         function scrollToTop() {
           window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
 
-        window.addEventListener('scroll', toggleButtonVisibility);
-        backToTopBtn.addEventListener('click', scrollToTop);
+        window.addEventListener("scroll", toggleButtonVisibility);
+        backToTopBtn.addEventListener("click", scrollToTop);
         toggleButtonVisibility();
       }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
           new NavigationChart();
           initBackToTop();
         });
@@ -371,26 +425,27 @@ const { title, description } = Astro.props;
     padding: 0;
     box-sizing: border-box;
   }
-  
-  html, body {
-    font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif;
+
+  html,
+  body {
+    font-family:
+      -apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif;
     overflow-x: hidden;
   }
-  
+
   body {
     background: var(--bg-primary);
     min-height: 100vh;
   }
-  
+
   /* Text selection highlight color */
   ::selection {
     background-color: var(--accent-primary);
     color: var(--text-primary);
   }
-  
+
   ::-moz-selection {
     background-color: var(--accent-primary);
     color: var(--text-primary);
   }
 </style>
-

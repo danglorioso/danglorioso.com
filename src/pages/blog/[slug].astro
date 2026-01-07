@@ -1,46 +1,46 @@
 ---
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
   try {
-    const posts = await getCollection('blog');
-    
+    const posts = await getCollection("blog");
+
     return posts
-      .filter(post => !post.data.draft)
+      .filter((post) => !post.data.draft)
       .map((post) => ({
         params: { slug: post.slug },
         props: { post },
       }));
   } catch (error) {
-    console.error('Error in getStaticPaths:', error);
+    console.error("Error in getStaticPaths:", error);
     return [];
   }
 }
 
 type Props = {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<"blog">;
 };
 
 const { post } = Astro.props;
 const { Content } = await post.render();
 
 // Get related posts (excluding current post)
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 const relatedPosts = allPosts
-  .filter(p => p.slug !== post.slug && !p.data.draft)
+  .filter((p) => p.slug !== post.slug && !p.data.draft)
   .slice(0, 3);
 
 // Format date function
 const formatDate = (date: Date) => {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC'
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
   });
 };
 ---
@@ -50,58 +50,78 @@ const formatDate = (date: Date) => {
     <div class="max-w-4xl mx-auto px-4">
       <!-- Back to blog -->
       <div class="mb-8">
-        <a 
+        <a
           href="/blog"
           class="inline-flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors duration-200"
         >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-left-icon lucide-move-left"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-move-left-icon lucide-move-left"
+            ><path d="M6 8L2 12L6 16"></path><path d="M2 12H22"></path></svg
+          >
           Back to Blog
         </a>
       </div>
 
       <!-- Article header -->
       <header class="mb-12">
-        {post.data.category && (
-          <div class="mb-4">
-            <span class="inline-block px-3 py-1 text-xs font-medium text-purple-400 bg-purple-400/10 rounded-full">
-              {post.data.category}
-            </span>
-          </div>
-        )}
-        
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-2 leading-tight">
+        {
+          post.data.category && (
+            <div class="mb-4">
+              <span class="inline-block px-3 py-1 text-xs font-medium text-purple-400 bg-purple-400/10 rounded-full">
+                {post.data.category}
+              </span>
+            </div>
+          )
+        }
+
+        <h1
+          class="text-4xl md:text-5xl font-bold text-white mb-2 leading-tight"
+        >
           {post.data.title}
         </h1>
-        
+
         <p class="text-xl text-slate-300 mb-4">
           {post.data.description}
         </p>
-        
+
         <!-- Metadata -->
         <div class="flex flex-wrap items-center gap-4 text-sm text-slate-400">
           <time datetime={post.data.pubDate.toISOString()}>
             {formatDate(post.data.pubDate)}
           </time>
-          {post.data.updatedDate && (
-            <>
-              <span>•</span>
-              <time datetime={post.data.updatedDate.toISOString()}>
-                Updated {formatDate(post.data.updatedDate)}
-              </time>
-            </>
-          )}
-          {post.data.tags && post.data.tags.length > 0 && (
-            <>
-              <span>•</span>
-              <div class="flex flex-wrap gap-2">
-                {post.data.tags.map((tag: string) => (
-                  <span class="px-2 py-1 text-xs bg-slate-700/50 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </>
-          )}
+          {
+            post.data.updatedDate && (
+              <>
+                <span>•</span>
+                <time datetime={post.data.updatedDate.toISOString()}>
+                  Updated {formatDate(post.data.updatedDate)}
+                </time>
+              </>
+            )
+          }
+          {
+            post.data.tags && post.data.tags.length > 0 && (
+              <>
+                <span>•</span>
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.map((tag: string) => (
+                    <span class="px-2 py-1 text-xs bg-slate-700/50 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )
+          }
         </div>
       </header>
 
@@ -141,34 +161,39 @@ const formatDate = (date: Date) => {
       </div> -->
 
       <!-- Related posts -->
-      {relatedPosts.length > 0 && (
-        <section class="border-t border-slate-700 pt-12">
-          <h2 class="text-2xl font-bold text-white mb-8">Related Posts</h2>
-          <div class="grid md:grid-cols-2 gap-6">
-            {relatedPosts.map((relatedPost) => (
-              <a 
-                href={`/blog/${relatedPost.slug}`}
-                class="block bg-slate-800/50 rounded-lg p-6 hover:bg-slate-700/50 transition-colors duration-200"
-              >
-                <div class="mb-3">
-                  <span class="inline-block px-2 py-1 text-xs font-medium text-blue-400 bg-blue-400/10 rounded">
-                    {relatedPost.data.category}
-                  </span>
-                </div>
-                <h3 class="text-lg font-semibold text-white mb-2 hover:text-blue-400 transition-colors">
-                  {relatedPost.data.title}
-                </h3>
-                <p class="text-slate-400 text-sm mb-3">
-                  {relatedPost.data.description}
-                </p>
-                <time class="text-xs text-slate-500" datetime={relatedPost.data.pubDate.toISOString()}>
-                  {formatDate(relatedPost.data.pubDate)}
-                </time>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
+      {
+        relatedPosts.length > 0 && (
+          <section class="border-t border-slate-700 pt-12">
+            <h2 class="text-2xl font-bold text-white mb-8">Related Posts</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+              {relatedPosts.map((relatedPost) => (
+                <a
+                  href={`/blog/${relatedPost.slug}`}
+                  class="block bg-slate-800/50 rounded-lg p-6 hover:bg-slate-700/50 transition-colors duration-200"
+                >
+                  <div class="mb-3">
+                    <span class="inline-block px-2 py-1 text-xs font-medium text-blue-400 bg-blue-400/10 rounded">
+                      {relatedPost.data.category}
+                    </span>
+                  </div>
+                  <h3 class="text-lg font-semibold text-white mb-2 hover:text-blue-400 transition-colors">
+                    {relatedPost.data.title}
+                  </h3>
+                  <p class="text-slate-400 text-sm mb-3">
+                    {relatedPost.data.description}
+                  </p>
+                  <time
+                    class="text-xs text-slate-500"
+                    datetime={relatedPost.data.pubDate.toISOString()}
+                  >
+                    {formatDate(relatedPost.data.pubDate)}
+                  </time>
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
     </div>
   </main>
 </Layout>

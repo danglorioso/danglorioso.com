@@ -1,12 +1,14 @@
 ---
-import Monogram from './Monogram.astro';
-import SocialIcons from './SocialIconsDuo';
-import NavBar from './NavBar.astro';
+import Monogram from "./Monogram.astro";
+import SocialIcons from "./SocialIconsDuo";
+import NavBar from "./NavBar.astro";
 ---
 
-<header id="main-header" class="w-full py-4 border-b border-border-secondary bg-bg-card-hover/50 backdrop-blur-md absolute top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
+<header
+  id="main-header"
+  class="w-full py-4 border-b border-border-secondary bg-bg-card-hover/50 backdrop-blur-md absolute top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out"
+>
   <div class="max-w-5xl mx-auto px-8 flex items-center justify-between">
-    
     <!-- Logo -->
     <div class="flex-shrink-0">
       <a href="/" class="block w-20 h-12 sm:w-24 sm:h-14">
@@ -23,101 +25,121 @@ import NavBar from './NavBar.astro';
 
       <!-- Mobile Hamburger Menu -->
       <div class="md:hidden">
-        <button 
+        <button
           id="mobile-menu-button"
           class="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-overlay transition-colors duration-200"
           aria-label="Toggle mobile menu"
           aria-expanded="false"
         >
           <!-- Hamburger icon -->
-          <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          <svg
+            id="hamburger-icon"
+            class="w-6 h-6 transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
           <!-- Close icon (hidden by default) -->
-          <svg id="close-icon" class="w-6 h-6 hidden transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          <svg
+            id="close-icon"
+            class="w-6 h-6 hidden transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
     </div>
   </div>
-
-
 </header>
 
 <script is:inline>
   // Mobile menu functionality
   function initMobileMenu() {
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const hamburgerIcon = document.getElementById('hamburger-icon');
-    const closeIcon = document.getElementById('close-icon');
-    const header = document.querySelector('header');
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+    const header = document.querySelector("header");
 
     if (!mobileMenuButton || !mobileMenu) {
       return;
     }
 
     // Populate mobile menu with navigation items
-    const desktopNav = document.querySelector('nav ul');
-    const mobileNavContainer = document.getElementById('mobile-nav-links');
-    
+    const desktopNav = document.querySelector("nav ul");
+    const mobileNavContainer = document.getElementById("mobile-nav-links");
+
     if (desktopNav && mobileNavContainer) {
       // Clone navigation items from desktop nav
       const navItems = [
-        { href: '/', label: 'About' },
-        { href: '/projects', label: 'Projects' },
-        { href: '/blog', label: 'Blog' },
-        { href: '/contact', label: 'Contact' }
+        { href: "/", label: "About" },
+        { href: "/projects", label: "Projects" },
+        { href: "/blog", label: "Blog" },
+        { href: "/contact", label: "Contact" },
       ];
 
       const currentPath = window.location.pathname;
-      
-      navItems.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
+
+      navItems.forEach((item) => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
         a.href = item.href;
         a.textContent = item.label;
-        
-        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
-        
+
+        const isActive =
+          currentPath === item.href ||
+          (item.href !== "/" && currentPath.startsWith(item.href));
+
         a.className = `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
           isActive
-            ? 'bg-accent-secondary text-text-primary'
-            : 'text-text-tertiary hover:text-text-primary hover:bg-bg-overlay'
+            ? "bg-accent-secondary text-text-primary"
+            : "text-text-tertiary hover:text-text-primary hover:bg-bg-overlay"
         }`;
-        
+
         li.appendChild(a);
         mobileNavContainer.appendChild(li);
       });
     }
 
     function openMobileMenu() {
-      console.log('Opening mobile menu');
+      console.log("Opening mobile menu");
       // Position menu to start from top (behind header)
-      mobileMenu.style.top = '0px';
-      
-      mobileMenu.classList.remove('-translate-y-full', 'pointer-events-none');
-      mobileMenu.classList.add('translate-y-0');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      mobileMenuButton.setAttribute('aria-expanded', 'true');
-      if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
-      if (closeIcon) closeIcon.classList.remove('hidden');
+      mobileMenu.style.top = "0px";
+
+      mobileMenu.classList.remove("-translate-y-full", "pointer-events-none");
+      mobileMenu.classList.add("translate-y-0");
+      mobileMenu.setAttribute("aria-hidden", "false");
+      mobileMenuButton.setAttribute("aria-expanded", "true");
+      if (hamburgerIcon) hamburgerIcon.classList.add("hidden");
+      if (closeIcon) closeIcon.classList.remove("hidden");
     }
 
     function closeMobileMenu() {
-      mobileMenu.classList.add('-translate-y-full', 'pointer-events-none');
-      mobileMenu.classList.remove('translate-y-0');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      mobileMenuButton.setAttribute('aria-expanded', 'false');
-      if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
-      if (closeIcon) closeIcon.classList.add('hidden');
+      mobileMenu.classList.add("-translate-y-full", "pointer-events-none");
+      mobileMenu.classList.remove("translate-y-0");
+      mobileMenu.setAttribute("aria-hidden", "true");
+      mobileMenuButton.setAttribute("aria-expanded", "false");
+      if (hamburgerIcon) hamburgerIcon.classList.remove("hidden");
+      if (closeIcon) closeIcon.classList.add("hidden");
     }
 
     // Toggle menu on hamburger button click
-    mobileMenuButton.addEventListener('click', function(e) {
+    mobileMenuButton.addEventListener("click", function (e) {
       e.preventDefault();
-      const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      const isOpen = mobileMenuButton.getAttribute("aria-expanded") === "true";
       if (isOpen) {
         closeMobileMenu();
       } else {
@@ -126,38 +148,41 @@ import NavBar from './NavBar.astro';
     });
 
     // Close menu when clicking backdrop
-    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const backdrop = document.getElementById("mobile-menu-backdrop");
     if (backdrop) {
-      backdrop.addEventListener('click', closeMobileMenu);
+      backdrop.addEventListener("click", closeMobileMenu);
     }
 
     // Close menu on escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && mobileMenuButton.getAttribute('aria-expanded') === 'true') {
+    document.addEventListener("keydown", function (e) {
+      if (
+        e.key === "Escape" &&
+        mobileMenuButton.getAttribute("aria-expanded") === "true"
+      ) {
         closeMobileMenu();
       }
     });
 
     // Close menu on navigation (delegate event since links are created dynamically)
-    mobileMenu.addEventListener('click', function(e) {
-      if (e.target.tagName === 'A') {
+    mobileMenu.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") {
         closeMobileMenu();
       }
     });
 
-    console.log('Mobile menu initialized');
+    console.log("Mobile menu initialized");
   }
 
   // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileMenu);
   } else {
     initMobileMenu();
   }
 
   // Header scroll behavior
   function initHeaderScroll() {
-    const header = document.getElementById('main-header');
+    const header = document.getElementById("main-header");
     if (!header) return;
 
     let lastScrollY = window.scrollY;
@@ -173,22 +198,22 @@ import NavBar from './NavBar.astro';
       if (currentScrollY < 5) {
         // Disable transition when switching from fixed to absolute to avoid glitch
         if (isHeaderFixed) {
-          header.style.transition = 'none';
+          header.style.transition = "none";
         }
-        header.style.position = 'absolute';
-        header.style.transform = 'translateY(0)';
+        header.style.position = "absolute";
+        header.style.transform = "translateY(0)";
         isHeaderFixed = false;
         // Re-enable transition after a frame
-        if (header.style.transition === 'none') {
+        if (header.style.transition === "none") {
           requestAnimationFrame(() => {
-            header.style.transition = '';
+            header.style.transition = "";
           });
         }
       }
       // When header is still partially visible AND not currently fixed (scrolled down but not past the header completely)
       else if (currentScrollY <= headerHeight && !isHeaderFixed) {
-        header.style.position = 'absolute';
-        header.style.transform = 'translateY(0)';
+        header.style.position = "absolute";
+        header.style.transform = "translateY(0)";
         isHeaderFixed = false;
       }
       // When scrolled completely past the header OR header is already fixed
@@ -197,45 +222,45 @@ import NavBar from './NavBar.astro';
         if (!scrollingDown) {
           if (!isHeaderFixed) {
             // First time showing: instantly position it above viewport, then slide down
-            header.style.transition = 'none';
-            header.style.position = 'fixed';
-            header.style.top = '0';
-            header.style.left = '0';
-            header.style.right = '0';
-            header.style.transform = 'translateY(-100%)';
-            
+            header.style.transition = "none";
+            header.style.position = "fixed";
+            header.style.top = "0";
+            header.style.left = "0";
+            header.style.right = "0";
+            header.style.transform = "translateY(-100%)";
+
             // Force reflow to apply the hidden state before animating
             void header.offsetHeight;
-            
+
             // Re-enable transition and slide in
-            header.style.transition = '';
-            header.style.transform = 'translateY(0)';
+            header.style.transition = "";
+            header.style.transform = "translateY(0)";
             isHeaderFixed = true;
           } else {
             // Already fixed, keep it visible
-            header.style.transition = ''; // Ensure transition is enabled
-            header.style.position = 'fixed';
-            header.style.top = '0';
-            header.style.left = '0';
-            header.style.right = '0';
-            header.style.transform = 'translateY(0)';
+            header.style.transition = ""; // Ensure transition is enabled
+            header.style.position = "fixed";
+            header.style.top = "0";
+            header.style.left = "0";
+            header.style.right = "0";
+            header.style.transform = "translateY(0)";
           }
         }
         // If scrolling down
         else {
           if (isHeaderFixed) {
             // Header is currently fixed and user is scrolling down - slide it up and hide with animation
-            header.style.transition = ''; // Ensure transition is enabled for slide up
-            header.style.position = 'fixed';
-            header.style.top = '0';
-            header.style.left = '0';
-            header.style.right = '0';
-            header.style.transform = 'translateY(-100%)';
+            header.style.transition = ""; // Ensure transition is enabled for slide up
+            header.style.position = "fixed";
+            header.style.top = "0";
+            header.style.left = "0";
+            header.style.right = "0";
+            header.style.transform = "translateY(-100%)";
             // Keep isHeaderFixed true but header is now hidden
           } else {
             // Header not fixed, keep absolute so it scrolls naturally off screen
-            header.style.position = 'absolute';
-            header.style.transform = 'translateY(0)';
+            header.style.position = "absolute";
+            header.style.transform = "translateY(0)";
           }
         }
       }
@@ -251,12 +276,12 @@ import NavBar from './NavBar.astro';
       }
     }
 
-    window.addEventListener('scroll', requestTick, { passive: true });
+    window.addEventListener("scroll", requestTick, { passive: true });
   }
 
   // Initialize header scroll behavior
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHeaderScroll);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeaderScroll);
   } else {
     initHeaderScroll();
   }
@@ -267,9 +292,9 @@ import NavBar from './NavBar.astro';
   nav a {
     position: relative;
   }
-  
+
   nav a:not(:has(span))::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border-radius: 0.5rem;
@@ -277,7 +302,7 @@ import NavBar from './NavBar.astro';
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  
+
   nav a:not(:has(span)):hover::before {
     opacity: 1;
   }
