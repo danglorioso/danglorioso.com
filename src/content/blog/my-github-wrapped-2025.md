@@ -7,7 +7,7 @@ featured: false
 draft: false
 ---
 
-I don’t usually make New Year’s Resolutions. They have a pretty bad track record, after all. Only about [9% are followed through](https://fisher.osu.edu/blogs/leadreadtoday/why-most-new-years-resolutions-fail) each year, which doesn’t sound like great odds to me. Rather than chasing some dramatic transformation, I prefer to focus on making consistent progress. Making small improvements repeated often enough tends to be far more effective than one ambitious promise made on January 1st and inevitably forgotten by February.
+I don’t usually make New Year’s Resolutions. They have a pretty bad track record, after all. Only about [9% are followed through](https://fisher.osu.edu/blogs/leadreadtoday/why-most-new-years-resolutions-fail) each year, which doesn’t sound like great odds to me. Rather than chasing some dramatic transformation, I prefer to focus on making consistent progress. Small improvements repeated often enough tends to be far more effective than one ambitious promise made on January 1st and inevitably forgotten by February.
 
 That being said, I _did_ set out one New Year's Resolution for 2025. As nerdy as it may sound coming from a computer science college student, I set a goal to code something new every day. Whether that meant adding a few pieces to an existing project or creating something entirely new off my ever-growing “to-code” list, the goal was to write _something_ daily. And what better way to track that–and hold myself accountable–than with my [contribution graph](https://danglorioso.com/github) on GitHub.
 
