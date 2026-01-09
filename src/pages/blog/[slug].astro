@@ -52,7 +52,7 @@ const formatDate = (date: Date) => {
       <div class="mb-8">
         <a
           href="/blog"
-          class="inline-flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors duration-200"
+          class="inline-flex items-center gap-2 text-slate-400 hover:text-accent-primary transition-colors duration-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -171,10 +171,6 @@ const formatDate = (date: Date) => {
                   href={`/blog/${relatedPost.slug}`}
                   class="block bg-slate-800/50 rounded-lg p-6 hover:bg-slate-700/50 transition-colors duration-200"
                 >
-                  <div class="mb-3">
-                    <span class="inline-block px-2 py-1 text-xs font-medium text-blue-400 bg-blue-400/10 rounded">
-                      {relatedPost.data.category}
-                    </span>
                   </div>
                   <h3 class="text-lg font-semibold text-white mb-2 hover:text-blue-400 transition-colors">
                     {relatedPost.data.title}
