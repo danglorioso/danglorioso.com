@@ -1,6 +1,6 @@
 ---
 title: "My GitHub Wrapped 2025"
-description: "A look back at my GitHub activity and achievements in 2025."
+description: "A look back at the goals I set for 2025 and how they turned out."
 pubDate: 2026-01-08
 category: ""
 featured: false
