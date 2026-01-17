@@ -16,7 +16,7 @@ For those unfamiliar, [GitHub](https://github.com) is the version control platfo
 In the context of my 2025 goal, my aim was to color the _entire_ map green—and as you can see below, I did a pretty good job of keeping up with that!
 ![Dan's GitHub Contribution Map 2025](/blog/github-wrapped-2025/github_contr_2025.png "Dan's GitHub Contribution Map 2025")
 
-This year, I logged a total of **2,354 contributions**—almost a 400% increase over the previous year! As the darker green squares suggest, I had some intense days, like March 30 where I somehow managed 102 contributions in a single day working on a group project. In the end, I only missed 10 days the entire year, giving me an A+ score of 355/365 = 97.3%, which I’ll gladly take considering vacations, final exams, and going outside here and there make it difficult to code every day. My longest contribution streak was 93 days, which honestly surprised me more than anything.
+This year, I logged a total of **2,354 contributions**—almost a 400% increase over the previous year! As the lighter green squares suggest, I had some intense days, like March 30 where I somehow managed 102 contributions in a single day working on a group project. In the end, I only missed 10 days the entire year, giving me an A+ score of 355/365 = 97.3%, which I’ll gladly take considering vacations, final exams, and going outside here and there make it difficult to code every day. My longest contribution streak was 93 days, which honestly surprised me more than anything.
 
 Some other fun stats:
 - **My busiest day**: Sunday with an average of 7 commits/Sunday
