@@ -26,32 +26,37 @@ const getColor = (count: number) => {
 
 ---
 <div class="flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg">
-  {contributions ? (
 
-    // Title and total contributions */}
+    <!-- Title and total contributions -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-2">
       <h2 class="text-3xl font-bold text-text-primary">Activity</h2>
       <h3 class="text-xm sm:text-base text-text-primary">{contributions.totalContributions.toLocaleString()} contributions in the last year</h3>
     </div>
 
+    <!-- Main square map -->
     <div class="bg-slate-900 rounded-md">
-      {/* Main square map */}
-      <div class="weeks overflow-x-auto py-2">
-        {contributions.weeks.map((week: any) => (
-          <div class="week">
-            {week.contributionDays.map((day: any) => (
-              <div
-                class="day"
-                style={`background-color: ${getColor(day.contributionCount)}`}
-                title={`${day.contributionCount} contributions on ${day.date}`}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      {contributions ? (
+        <div class="weeks overflow-x-auto py-2">
+          {contributions.weeks.map((week: any) => (
+            <div class="week">
+              {week.contributionDays.map((day: any) => (
+                <div
+                  class="day"
+                  style={`background-color: ${getColor(day.contributionCount)}`}
+                  title={`${day.contributionCount} contributions on ${day.date}`}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="loading">
+          <p>Loading contributions...</p>
+        </div>
+      )}
       
       <div class="flex flex-col sm:flex-row flex-col-reverse sm:justify-between items-center gap-4 mt-4 mx-2">
-        {/* Link to GitHub */}
+        <!-- Link to GitHub -->
         <div class="flex flex-row items-center justify-start sm:justify-center">
           <a
             href={'https://danglorioso.com/github'}
@@ -78,7 +83,7 @@ const getColor = (count: number) => {
           </a>
         </div>
 
-        {/* Legend */}
+        <!-- Legend -->
         <div class="flex flex-end justify-end items-center text-sm gap-2">
           <span>Less</span>
           <div class="legend-colors">
@@ -92,13 +97,7 @@ const getColor = (count: number) => {
         </div>
       </div>
     </div>
-  ) : (
-    <div class="loading">
-      <p>Loading contributions...</p>
-    </div>
-  )
 </div>
-}
 
 <style>
   .day-labels {
