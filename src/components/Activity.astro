@@ -13,7 +13,7 @@ try {
     contributions = data;
   }
 } catch (e) {
-  error = 'Failed to load contributions';
+  error = 'Could not fetch contributions.';
 }
 
 const getColor = (count: number) => {
@@ -30,7 +30,11 @@ const getColor = (count: number) => {
     <!-- Title and total contributions -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-2">
       <h2 class="text-3xl font-bold text-text-primary">Activity</h2>
-      <h3 class="text-xm sm:text-base text-text-primary">{contributions.totalContributions.toLocaleString()} contributions in the last year</h3>
+      {contributions ? (
+        <h3 class="text-xm sm:text-base text-text-primary">{contributions.totalContributions.toLocaleString()} contributions in the last year</h3>
+      ) : (
+        <h3 class=""></h3>
+      )}
     </div>
 
     <!-- Main square map -->
