@@ -222,7 +222,13 @@ const getColor = (count: number) => {
         if (!count || !date) return;
 
         // Format date as "Month Day"
-        const dateObj = new Date(date);
+        // Parse YYYY-MM-DD into a local Date to avoid UTC shifts that
+        // can display the previous day in negative timezones.
+        const parts = date.split('-');
+        const year = Number(parts[0]);
+        const monthIndex = Number(parts[1]) - 1; // JS months are 0-based
+        const dayNum = Number(parts[2]);
+        const dateObj = new Date(year, monthIndex, dayNum);
         const formattedDate = dateObj.toLocaleDateString('en-US', {
           month: 'long',
           day: 'numeric',
