@@ -13,7 +13,7 @@ try {
     contributions = data;
   }
 } catch (e) {
-  error = 'Could not fetch contributions.';
+  error = 'Failed to load contributions';
 }
 
 const getColor = (count: number) => {
@@ -30,15 +30,17 @@ const getColor = (count: number) => {
     <!-- Title and total contributions -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-2">
       <h2 class="text-3xl font-bold text-text-primary">Activity</h2>
-      {contributions ? (
+      <div class="flex items-center gap-2">
+        <div class="relative flex items-center justify-center">
+          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <div class="absolute w-2 h-2 rounded-full bg-green-500 opacity-75 animate-ping"></div>
+        </div>
         <h3 class="text-xm sm:text-base text-text-primary">{contributions.totalContributions.toLocaleString()} contributions in the last year</h3>
-      ) : (
-        <h3 class=""></h3>
-      )}
+      </div>
     </div>
 
     <!-- Main square map -->
-    <div class="bg-slate-900 rounded-md">
+    <div class="bg-slate-900 rounded-md relative">
       {contributions ? (
         <div class="weeks overflow-x-auto py-2">
           {contributions.weeks.map((week: any) => (
@@ -47,7 +49,8 @@ const getColor = (count: number) => {
                 <div
                   class="day"
                   style={`background-color: ${getColor(day.contributionCount)}`}
-                  title={`${day.contributionCount} contributions on ${day.date}`}
+                  data-count={day.contributionCount}
+                  data-date={day.date}
                 />
               ))}
             </div>
@@ -58,6 +61,11 @@ const getColor = (count: number) => {
           <p>Loading contributions...</p>
         </div>
       )}
+      
+      <!-- Tooltip -->
+      <div id="contribution-tooltip" class="tooltip hidden">
+        <div id="tooltip-content"></div>
+      </div>
       
       <div class="flex flex-col sm:flex-row flex-col-reverse sm:justify-between items-center gap-4 mt-4 mx-2">
         <!-- Link to GitHub -->
@@ -178,4 +186,72 @@ const getColor = (count: number) => {
     text-align: center;
     color: #9ca3af;
   }
+
+  .tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.856);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .tooltip.hidden {
+    display: none;
+  }
 </style>
+
+<script>
+  function initTooltip() {
+    const days = document.querySelectorAll('.day');
+    const tooltip = document.getElementById('contribution-tooltip');
+    const tooltipContent = document.getElementById('tooltip-content');
+
+    if (!tooltip || !tooltipContent) return;
+
+    days.forEach((day) => {
+      day.addEventListener('mouseenter', (e) => {
+        const target = e.target as HTMLElement;
+        const count = target.getAttribute('data-count');
+        const date = target.getAttribute('data-date');
+
+        if (!count || !date) return;
+
+        // Format date as "Month Day"
+        const dateObj = new Date(date);
+        const formattedDate = dateObj.toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+        });
+
+        // Update tooltip content
+        const contributionText = count === '1' ? 'contribution' : 'contributions';
+        tooltipContent.textContent = `${count} ${contributionText} on ${formattedDate}.`;
+
+        // Position tooltip
+        const rect = target.getBoundingClientRect();
+        const containerRect = tooltip.parentElement!.getBoundingClientRect();
+        
+        tooltip.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
+        tooltip.style.top = `${rect.top - containerRect.top - 8}px`;
+        tooltip.style.transform = 'translate(-50%, -100%)';
+        
+        tooltip.classList.remove('hidden');
+      });
+
+      day.addEventListener('mouseleave', () => {
+        tooltip.classList.add('hidden');
+      });
+    });
+  }
+
+  // Initialize on page load
+  initTooltip();
+
+  // Reinitialize if the component is updated (for SPA navigation)
+  document.addEventListener('astro:page-load', initTooltip);
+</script>
