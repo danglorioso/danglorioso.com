@@ -157,14 +157,17 @@ const categories = Array.from(
         ) {
           return;
         }
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        const selectedCategory = categoryFilter.value;
+        const searchInputElement = searchInput as HTMLInputElement;
+        const categoryFilterElement = categoryFilter as HTMLSelectElement;
+        const searchTerm = searchInputElement.value.toLowerCase().trim();
+        const selectedCategory = categoryFilterElement.value;
         let visibleCount = 0;
 
         projectItems.forEach((item) => {
-          const title = item.dataset.title || "";
-          const description = item.dataset.description || "";
-          const category = item.dataset.category || "";
+          const itemElement = item as HTMLElement;
+          const title = itemElement.dataset.title || "";
+          const description = itemElement.dataset.description || "";
+          const category = itemElement.dataset.category || "";
 
           const matchesSearch =
             !searchTerm ||
@@ -174,10 +177,10 @@ const categories = Array.from(
             !selectedCategory || category === selectedCategory;
 
           if (matchesSearch && matchesCategory) {
-            item.style.display = "";
+            itemElement.style.display = "";
             visibleCount++;
           } else {
-            item.style.display = "none";
+            itemElement.style.display = "none";
           }
         });
 
