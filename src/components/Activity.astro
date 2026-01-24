@@ -206,6 +206,8 @@ const getColor = (count: number) => {
 </style>
 
 <script>
+  let clickOutsideHandler: ((e: MouseEvent) => void) | null = null;
+
   function initTooltip() {
     const days = document.querySelectorAll('.day');
     const tooltip = document.getElementById('contribution-tooltip');
@@ -213,51 +215,65 @@ const getColor = (count: number) => {
 
     if (!tooltip || !tooltipContent) return;
 
-    days.forEach((day) => {
-      day.addEventListener('mouseenter', (e) => {
-        const target = e.target as HTMLElement;
-        const count = target.getAttribute('data-count');
-        const date = target.getAttribute('data-date');
+    function showTooltip(target: HTMLElement) {
+      const count = target.getAttribute('data-count');
+      const date = target.getAttribute('data-date');
 
-        if (!count || !date) return;
+      if (!count || !date) return;
 
-        // Format date as "Month Day"
-        // Parse YYYY-MM-DD into a local Date to avoid UTC shifts that
-        // can display the previous day in negative timezones.
-        const parts = date.split('-');
-        const year = Number(parts[0]);
-        const monthIndex = Number(parts[1]) - 1; // JS months are 0-based
-        const dayNum = Number(parts[2]);
-        const dateObj = new Date(year, monthIndex, dayNum);
-        const formattedDate = dateObj.toLocaleDateString('en-US', {
-          month: 'long',
-          day: 'numeric',
-        });
-
-        // Update tooltip content
-        const contributionText = count === '1' ? 'contribution' : 'contributions';
-        tooltipContent.textContent = `${count} ${contributionText} on ${formattedDate}.`;
-
-        // Position tooltip
-        const rect = target.getBoundingClientRect();
-        const containerRect = tooltip.parentElement!.getBoundingClientRect();
-        
-        tooltip.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
-        tooltip.style.top = `${rect.top - containerRect.top - 8}px`;
-        tooltip.style.transform = 'translate(-50%, -100%)';
-        
-        tooltip.classList.remove('hidden');
+      // Format date as "Month Day"
+      const parts = date.split('-');
+      const year = Number(parts[0]);
+      const monthIndex = Number(parts[1]) - 1;
+      const dayNum = Number(parts[2]);
+      const dateObj = new Date(year, monthIndex, dayNum);
+      const formattedDate = dateObj.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
       });
 
-      day.addEventListener('mouseleave', () => {
-        tooltip.classList.add('hidden');
+      const contributionText = count === '1' ? 'contribution' : 'contributions';
+      tooltipContent!.textContent = `${count} ${contributionText} on ${formattedDate}.`;
+
+      const rect = target.getBoundingClientRect();
+      const containerRect = tooltip!.parentElement!.getBoundingClientRect();
+
+      tooltip!.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
+      tooltip!.style.top = `${rect.top - containerRect.top - 8}px`;
+      tooltip!.style.transform = 'translate(-50%, -100%)';
+
+      tooltip!.classList.remove('hidden');
+    }
+
+    function hideTooltip() {
+      tooltip!.classList.add('hidden');
+    }
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest('.day')) {
+        hideTooltip();
+      }
+    };
+
+    if (clickOutsideHandler) {
+      document.removeEventListener('click', clickOutsideHandler);
+    }
+    clickOutsideHandler = handleClickOutside;
+    document.addEventListener('click', handleClickOutside);
+
+    days.forEach((day) => {
+      day.addEventListener('mouseenter', (e) => {
+        showTooltip(e.target as HTMLElement);
+      });
+
+      day.addEventListener('mouseleave', hideTooltip);
+
+      day.addEventListener('click', (e) => {
+        showTooltip(e.target as HTMLElement);
       });
     });
   }
 
-  // Initialize on page load
   initTooltip();
-
-  // Reinitialize if the component is updated (for SPA navigation)
   document.addEventListener('astro:page-load', initTooltip);
 </script>
