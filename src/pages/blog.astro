@@ -11,31 +11,75 @@ const allPosts = await getCollection("blog", ({ data }) => {
 const sortedPosts = allPosts.sort((a, b) => {
   return b.data.pubDate.getTime() - a.data.pubDate.getTime();
 });
+
+// Get unique categories (excluding empty strings)
+const categorySet = new Set<string>();
+sortedPosts.forEach((p) => {
+  if (p.data.category && typeof p.data.category === "string" && p.data.category.trim() !== "") {
+    categorySet.add(p.data.category);
+  }
+});
+const categories = Array.from(categorySet).sort();
 ---
 
 <Layout title="Blog" description="">
   <section id="blog">
     <div class="h-full w-full flex flex-col gap-6">
-      <!-- Page Header -->
-      <section class="">
+      <!-- Page Header with Category Filter -->
+      <section class="flex items-center justify-between gap-4 flex-wrap">
         <h1 class="text-4xl font-bold text-text-primary">Blog</h1>
+        <div class="relative w-full sm:w-64">
+          <select
+            id="category-filter"
+            class="w-full px-4 py-2.5 bg-bg-card rounded-lg text-text-primary border border-border-tertiary focus:ring-1 focus:ring-accent-primary focus:outline-none focus:border-accent-primary appearance-none cursor-pointer"
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option value={category}>{category}</option>
+            ))}
+          </select>
+          <svg
+            class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary pointer-events-none"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
       </section>
 
-      <div class="flex flex-col gap-6">
+      <!-- Blog Posts List -->
+      <div id="blog-container" class="flex flex-col gap-6">
         {
           sortedPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="block group">
-              <BlogCard
-                title={post.data.title}
-                description={post.data.description}
-                pubDate={post.data.pubDate.toISOString()}
-                tags={post.data.tags ?? []}
-                category={post.data.category}
-                featured={post.data.featured}
-              />
-            </a>
+            <div
+              class="blog-item"
+              data-category={post.data.category || ""}
+            >
+              <a href={`/blog/${post.slug}`} class="block group">
+                <BlogCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  pubDate={post.data.pubDate.toISOString()}
+                  tags={post.data.tags ?? []}
+                  category={post.data.category}
+                  featured={post.data.featured}
+                />
+              </a>
+            </div>
           ))
         }
+      </div>
+
+      <!-- No Results Message -->
+      <div id="no-results" class="hidden text-center py-12">
+        <p class="text-text-secondary text-lg">No posts found in this category.</p>
       </div>
 
       <!-- Newsletter Signup -->
@@ -123,4 +167,48 @@ const sortedPosts = allPosts.sort((a, b) => {
       </section>
     </div>
   </section>
+
+  <script>
+    (function () {
+      const categoryFilter = document.getElementById("category-filter");
+      const blogContainer = document.getElementById("blog-container");
+      const blogItems = document.querySelectorAll(".blog-item");
+      const noResults = document.getElementById("no-results");
+
+      function filterPosts() {
+        if (!categoryFilter || !blogContainer || !noResults) {
+          return;
+        }
+        const categoryFilterElement = categoryFilter as HTMLSelectElement;
+        const selectedCategory = categoryFilterElement.value;
+        let visibleCount = 0;
+
+        blogItems.forEach((item) => {
+          const itemElement = item as HTMLElement;
+          const category = itemElement.dataset.category || "";
+
+          const matchesCategory =
+            !selectedCategory || category === selectedCategory;
+
+          if (matchesCategory) {
+            itemElement.style.display = "";
+            visibleCount++;
+          } else {
+            itemElement.style.display = "none";
+          }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0 && selectedCategory) {
+          noResults.classList.remove("hidden");
+          blogContainer.classList.add("hidden");
+        } else {
+          noResults.classList.add("hidden");
+          blogContainer.classList.remove("hidden");
+        }
+      }
+
+      categoryFilter?.addEventListener("change", filterPosts);
+    })();
+  </script>
 </Layout>

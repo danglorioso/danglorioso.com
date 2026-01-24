@@ -2,7 +2,7 @@
 title: "My GitHub Wrapped 2025"
 description: "A look back at the goals I set for 2025 and how they turned out."
 pubDate: 2026-01-08
-category: ""
+category: "Personal"
 featured: false
 draft: false
 ---

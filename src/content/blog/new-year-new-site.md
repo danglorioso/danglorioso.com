@@ -2,7 +2,7 @@
 title: "New Year, New Site!"
 description: "Announcing the launch of my brand-new portfolio website."
 pubDate: 2025-12-30
-category: ""
+category: "Personal"
 featured: true
 draft: false
 ---
