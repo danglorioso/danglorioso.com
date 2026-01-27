@@ -5,7 +5,7 @@ startDate: 2024-09-02
 endDate: 2025-05-15
 status: "completed"
 technologies: ["React", "Next.js", "Node.js", "PostgreSQL", "Neon", "Clerk"]
-category: "Non-profit"
+categories: ["Non-profit", "Client Work"]
 githubUrl: "https://github.com/JumboCode/Somerville-Museum"
 favicon: "museum.jpg"
 priority: 4

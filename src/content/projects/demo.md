@@ -4,7 +4,7 @@ description: " A living lab for testing new frameworks, APIs, and development te
 startDate: 2024-02-01
 status: "in-progress"
 technologies: ["React", "Next.js", "Three.js", "WebGL", "WebAssembly", "TypeScript", "Tailwind CSS", "Vercel"]
-category: "Experimental"
+categories: ["Experimental"]
 featured: false
 draft: true
 liveUrl: "https://demo.danglorioso.com"

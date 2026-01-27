@@ -6,7 +6,7 @@ startDate: 2024-05-13
 endDate: 2025-01-13
 status: "completed"
 technologies: ["TypeScript", "VSCode Extension API", "Node.js", "JSON Schema", "Git", "npm"]
-category: "Developer Tools"
+categories: ["Developer Tools"]
 featured: true
 draft: false
 githubUrl: "https://github.com/danglorioso/under-30"

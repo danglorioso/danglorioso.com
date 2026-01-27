@@ -21,14 +21,18 @@ const sortedProjects = allProjects.sort((a, b) => {
   );
 });
 
-// Get unique categories (excluding empty strings)
-const categories = Array.from(
-  new Set(
-    sortedProjects
-      .map((p) => p.data.category)
-      .filter((cat) => cat && cat.trim() !== "")
-  )
-).sort();
+// Get unique categories from all projects (flattening arrays)
+const categorySet = new Set<string>();
+sortedProjects.forEach((p) => {
+  if (p.data.categories && Array.isArray(p.data.categories)) {
+    p.data.categories.forEach((cat) => {
+      if (cat && typeof cat === "string" && cat.trim() !== "") {
+        categorySet.add(cat);
+      }
+    });
+  }
+});
+const categories = Array.from(categorySet).sort();
 ---
 
 <Layout title="Projects" description="">
@@ -104,7 +108,7 @@ const categories = Array.from(
               class="project-item"
               data-title={project.data.title.toLowerCase()}
               data-description={project.data.description.toLowerCase()}
-              data-category={project.data.category || ""}
+              data-categories={project.data.categories ? JSON.stringify(project.data.categories) : "[]"}
             >
               <ProjectCard
                 slug={project.slug}
@@ -112,7 +116,7 @@ const categories = Array.from(
                 description={project.data.description}
                 status={project.data.status}
                 technologies={project.data.technologies}
-                category={project.data.category}
+                categories={project.data.categories ?? []}
                 featured={project.data.featured}
                 githubUrl={project.data.githubUrl}
                 liveUrl={project.data.liveUrl}
@@ -167,14 +171,21 @@ const categories = Array.from(
           const itemElement = item as HTMLElement;
           const title = itemElement.dataset.title || "";
           const description = itemElement.dataset.description || "";
-          const category = itemElement.dataset.category || "";
+          const categoriesJson = itemElement.dataset.categories || "[]";
+          let projectCategories: string[] = [];
+          try {
+            projectCategories = JSON.parse(categoriesJson);
+          } catch (e) {
+            // Fallback to empty array if parsing fails
+            projectCategories = [];
+          }
 
           const matchesSearch =
             !searchTerm ||
             title.includes(searchTerm) ||
             description.includes(searchTerm);
           const matchesCategory =
-            !selectedCategory || category === selectedCategory;
+            !selectedCategory || projectCategories.includes(selectedCategory);
 
           if (matchesSearch && matchesCategory) {
             itemElement.style.display = "";

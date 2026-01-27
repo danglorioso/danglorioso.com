@@ -5,7 +5,7 @@ startDate: 2023-09-02
 endDate: 2024-05-15
 status: "completed"
 technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "Tailwind CSS", "Neon", "Drizzle"]
-category: "Non-profit"
+categories: ["Non-profit", "Client Work"]
 githubUrl: "https://github.com/JumboCode/Theatre-At-First"
 favicon: "theatre.jpg"
 priority: 4

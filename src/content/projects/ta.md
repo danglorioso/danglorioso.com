@@ -3,7 +3,7 @@ title: "TA Grading Assignment"
 description: "A simple tool for distributing student submission among TAs for grading to ensure fair workloads."
 startDate: 2025-09-19
 status: "completed"
-category: ""
+categories: []
 featured: false
 technologies: ["TypeScript", "Next.js"]
 liveUrl: "https://ta.danglorioso.com"

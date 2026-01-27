@@ -4,7 +4,7 @@ interface Props {
   description: string;
   pubDate: string;
   tags: string[];
-  category?: string;
+  categories?: string[];
   featured?: boolean;
 }
 
@@ -13,7 +13,7 @@ const {
   description = "",
   pubDate,
   tags = [],
-  category = "",
+  categories = [],
   featured = false,
 } = Astro.props;
 

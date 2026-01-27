@@ -4,7 +4,7 @@ description: "A simple tool for finding the closest Tailwind CSS color to any gi
 startDate: 2026-01-08
 status: "completed"
 technologies: ["Svelte", "Vite", "Tailwind CSS", "Culori", "Node.js"]
-category: "Developer Tools"
+categories: ["Developer Tools"]
 liveUrl: "https://colors.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/colors"
 draft: false

@@ -4,7 +4,7 @@ description: "A photography portfolio with advanced metadata display, EXIF data 
 startDate: 2024-07-24
 status: "in-progress"
 technologies: ["React", "TypeScript", "Next.js", "Cloudinary", "EXIF.js", "Tailwind CSS", "Framer Motion"]
-category: "Photography"
+categories: ["Photography"]
 liveUrl: "https://pics.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/pics"
 favicon: "pics.ico"

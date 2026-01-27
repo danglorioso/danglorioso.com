@@ -5,7 +5,7 @@ startDate: 2024-05-01
 endDate: 2024-07-15
 status: "completed"
 technologies: ["TypeScript", "VSCode API", "Node.js", "Regular Expressions"]
-category: "Developer Tools"
+categories: ["Developer Tools"]
 githubUrl: "https://github.com/danglorioso/header-hero"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.header-hero"
 favicon: "header-hero.png"

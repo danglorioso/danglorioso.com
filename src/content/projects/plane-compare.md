@@ -4,7 +4,7 @@ description: "A comprehensive aircraft comparison platform enabling detailed ana
 startDate: 2024-09-01
 status: "planned"
 technologies: ["React", "TypeScript", "PostgreSQL", "GraphQL", "Next.js", "Chart.js", "Aviation APIs"]
-category: "Aviation"
+categories: ["Aviation"]
 featured: false
 draft: false
 liveUrl: "https://planes.danglorioso.com"

@@ -4,7 +4,7 @@ description: "A social network for flight simulator enthusiasts to track and sha
 startDate: 2025-12-21
 status: "in-progress"
 technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "Mapbox", "Tailwind CSS"]
-category: "Aviation"
+categories: ["Aviation"]
 featured: false
 draft: false
 liveUrl: "https://logbook.danglorioso.com"

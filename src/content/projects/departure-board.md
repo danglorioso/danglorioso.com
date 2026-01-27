@@ -4,7 +4,7 @@ description: "A dynamic flight information display system providing real-time ai
 startDate: 2025-01-02
 status: "planned"
 technologies: ["React", "TypeScript", "WebSockets", "Aviation APIs", "Real-time Data", "Next.js"]
-category: "Aviation"
+categories: ["Aviation"]
 featured: false
 draft: false
 liveUrl: "https://board.danglorioso.com"

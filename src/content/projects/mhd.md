@@ -4,7 +4,7 @@ description: "A data visualization web application for Massachusetts Historical 
 startDate: 2025-09-05
 status: "in-progress"
 technologies: ["React", "Next.js", "TypeScript", "D3.js", "Mapbox", "Tailwind CSS", "Vercel", "Drizzle ORM"]
-category: "Non-profit"
+categories: ["Non-profit", "Client Work"]
 liveUrl: "https://masshistday.vercel.app"
 githubUrl: "https://github.com/jumbocode/mhd"
 draft: false

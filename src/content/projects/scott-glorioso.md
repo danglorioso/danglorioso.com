@@ -5,7 +5,7 @@ startDate: 2025-01-08
 endDate: 2025-07-14
 status: "completed"
 technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Dynamic Routing", "Vercel", "Spotify API", "YouTube API"]
-category: "Client Work"
+categories: ["Web Development", "Client Work"]
 featured: false
 draft: false
 liveUrl: "https://scottglorioso.com"

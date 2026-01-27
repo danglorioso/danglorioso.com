@@ -12,11 +12,15 @@ const sortedPosts = allPosts.sort((a, b) => {
   return b.data.pubDate.getTime() - a.data.pubDate.getTime();
 });
 
-// Get unique categories (excluding empty strings)
+// Get unique categories from all posts (flattening arrays)
 const categorySet = new Set<string>();
 sortedPosts.forEach((p) => {
-  if (p.data.category && typeof p.data.category === "string" && p.data.category.trim() !== "") {
-    categorySet.add(p.data.category);
+  if (p.data.categories && Array.isArray(p.data.categories)) {
+    p.data.categories.forEach((cat) => {
+      if (cat && typeof cat === "string" && cat.trim() !== "") {
+        categorySet.add(cat);
+      }
+    });
   }
 });
 const categories = Array.from(categorySet).sort();
@@ -60,7 +64,7 @@ const categories = Array.from(categorySet).sort();
           sortedPosts.map((post) => (
             <div
               class="blog-item"
-              data-category={post.data.category || ""}
+              data-categories={post.data.categories ? JSON.stringify(post.data.categories) : "[]"}
             >
               <a href={`/blog/${post.slug}`} class="block group">
                 <BlogCard
@@ -68,7 +72,7 @@ const categories = Array.from(categorySet).sort();
                   description={post.data.description}
                   pubDate={post.data.pubDate.toISOString()}
                   tags={post.data.tags ?? []}
-                  category={post.data.category}
+                  categories={post.data.categories ?? []}
                   featured={post.data.featured}
                 />
               </a>
@@ -185,10 +189,17 @@ const categories = Array.from(categorySet).sort();
 
         blogItems.forEach((item) => {
           const itemElement = item as HTMLElement;
-          const category = itemElement.dataset.category || "";
+          const categoriesJson = itemElement.dataset.categories || "[]";
+          let postCategories: string[] = [];
+          try {
+            postCategories = JSON.parse(categoriesJson);
+          } catch (e) {
+            // Fallback to empty array if parsing fails
+            postCategories = [];
+          }
 
           const matchesCategory =
-            !selectedCategory || category === selectedCategory;
+            !selectedCategory || postCategories.includes(selectedCategory);
 
           if (matchesCategory) {
             itemElement.style.display = "";

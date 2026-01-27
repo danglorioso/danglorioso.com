@@ -5,7 +5,7 @@ startDate: 2025-07-29
 endDate: 2025-09-04
 status: "completed"
 technologies: ["TypeScript", "React",  "Regular Expressions", "Weather APIs", "Tailwind CSS", "Node.js"]
-category: "Aviation"
+categories: ["Aviation"]
 featured: true
 draft: false
 liveUrl: "https://metar.danglorioso.com"

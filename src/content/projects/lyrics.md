@@ -4,7 +4,7 @@ description: "A lyric discovery tool that deep dives into entire artist discogra
 startDate: 2025-03-21
 status: "in-progress"
 technologies: ["Python", "FastAPI", "React", "TypeScript", "Elasticsearch", "Spotify API", "Web Scraping", "NLP"]
-category: "Entertainment"
+categories: ["Entertainment"]
 featured: false
 draft: false
 liveUrl: "https://lyrics.danglorioso.com"

@@ -5,7 +5,7 @@ startDate: 2025-06-04
 endDate: 2025-08-12
 status: "completed"
 technologies: ["React", "Next.js", "TypeScript", "YouTube API", "Tailwind CSS", "Vercel"]
-category: "Entertainment"
+categories: ["Entertainment"]
 liveUrl: "https://cotl.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/comedyontheloose"
 favicon: "cotl.png"
