@@ -42,7 +42,7 @@ const getColor = (count: number) => {
     <!-- Main square map -->
     <div class="bg-slate-900 rounded-md relative">
       {contributions ? (
-        <div class="weeks overflow-x-auto py-2">
+        <div class="weeks py-2">
           {contributions.weeks.map((week: any) => (
             <div class="week">
               {week.contributionDays.map((day: any) => (
@@ -131,6 +131,15 @@ const getColor = (count: number) => {
   .weeks {
     display: flex;
     gap: 0.25rem;
+    padding: 0.25rem;
+    overflow-x: auto;
+  }
+
+  @media (min-width: 640px) {
+    .weeks {
+      overflow-x: visible;
+      padding: 0.25rem 0.5rem;
+    }
   }
 
   .week {
