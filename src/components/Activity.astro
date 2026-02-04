@@ -1,21 +1,6 @@
 ---
-
-let contributions = null;
-let error = null;
-
-try {
-  const response = await fetch(`${Astro.url.origin}/api/github-contributions`);
-  const data = await response.json();
-  
-  if (data.error) {
-    error = data.error;
-  } else {
-    contributions = data;
-  }
-} catch (e) {
-  error = 'Failed to load contributions';
-}
-
+// No server-side fetch — page sends full HTML immediately. Activity loads via client script.
+const apiBase = Astro.url.origin;
 const getColor = (count: number) => {
   if (count === 0) return '#161b22';
   if (count < 3) return '#0e4429';
@@ -23,11 +8,9 @@ const getColor = (count: number) => {
   if (count < 9) return '#26a641';
   return '#39d353';
 };
-
 ---
-<div class="flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg">
+<div class="flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg" data-api-base={apiBase}>
 
-    <!-- Title and total contributions -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-2">
       <h2 class="text-3xl font-bold text-text-primary">Activity</h2>
       <div class="flex items-center gap-2">
@@ -35,67 +18,44 @@ const getColor = (count: number) => {
           <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
           <div class="absolute w-2 h-2 rounded-full bg-green-500 opacity-75 animate-ping"></div>
         </div>
-        <h3 class="text-xm sm:text-base text-text-primary">{contributions.totalContributions.toLocaleString()} contributions in the last year</h3>
+        <h3 id="activity-count" class="text-xm sm:text-base text-text-primary">
+          <span class="text-text-secondary">Loading contributions...</span>
+        </h3>
       </div>
     </div>
 
-    <!-- Main square map -->
     <div class="bg-slate-900 rounded-md relative">
-      {contributions ? (
-        <div class="weeks py-2">
-          {contributions.weeks.map((week: any) => (
+      <div id="activity-grid-container" class="weeks overflow-x-auto py-2" style="min-height: 7rem;">
+        <div class="skeleton-grid">
+          {Array.from({ length: 53 }).map(() => (
             <div class="week">
-              {week.contributionDays.map((day: any) => (
-                <div
-                  class="day"
-                  style={`background-color: ${getColor(day.contributionCount)}`}
-                  data-count={day.contributionCount}
-                  data-date={day.date}
-                />
+              {Array.from({ length: 7 }).map(() => (
+                <div class="day skeleton-day" />
               ))}
             </div>
           ))}
         </div>
-      ) : (
-        <div class="loading">
-          <p>Loading contributions...</p>
-        </div>
-      )}
-      
-      <!-- Tooltip -->
+      </div>
+
       <div id="contribution-tooltip" class="tooltip hidden">
         <div id="tooltip-content"></div>
       </div>
-      
+
       <div class="flex flex-col sm:flex-row flex-col-reverse sm:justify-between items-center gap-4 mt-4 mx-2">
-        <!-- Link to GitHub -->
         <div class="flex flex-row items-center justify-start sm:justify-center">
           <a
-            href={'https://danglorioso.com/github'}
+            href="https://danglorioso.com/github"
             target="_blank"
             rel="noopener noreferrer"
             class="flex items-center text-sm text-text-secondary hover:text-accent-primary transition-colors"
           >
-          <div class="text-sm">
-            View on 
-          </div>
-            <svg
-              class="w-4 h-4 ml-1 mr-0.5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                clip-rule="evenodd"
-              />
+            <div class="text-sm">View on </div>
+            <svg class="w-4 h-4 ml-1 mr-0.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
             </svg>
             <span>GitHub</span>
           </a>
         </div>
-
-        <!-- Legend -->
         <div class="flex flex-end justify-end items-center text-sm gap-2">
           <span>Less</span>
           <div class="legend-colors">
@@ -112,42 +72,8 @@ const getColor = (count: number) => {
 </div>
 
 <style>
-  .day-labels {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding-right: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .day-label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    height: 0.75rem;
-    line-height: 0.75rem;
-  }
-
-  .weeks {
-    display: flex;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    overflow-x: auto;
-  }
-
-  @media (min-width: 640px) {
-    .weeks {
-      overflow-x: visible;
-      padding: 0.25rem 0.5rem;
-    }
-  }
-
-  .week {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
+  .weeks { display: flex; gap: 0.25rem; }
+  .week { display: flex; flex-direction: column; gap: 0.25rem; }
   .day {
     width: 0.75rem;
     height: 0.75rem;
@@ -155,47 +81,29 @@ const getColor = (count: number) => {
     cursor: pointer;
     transition: all 0.2s;
   }
-
   .day:hover {
     outline: 2px solid #9ca3af;
     outline-offset: 1px;
   }
-
-  .legend {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-    font-size: 0.75rem;
-    color: #6b7280;
-  }
-
-  .legend-colors {
-    display: flex;
-    gap: 0.25rem;
-  }
-
+  .legend-colors { display: flex; gap: 0.25rem; }
   .legend-box {
     width: 0.75rem;
     height: 0.75rem;
     border-radius: 0.125rem;
   }
-
-  .error {
-    padding: 1rem;
-    background-color: rgba(153, 27, 27, 0.2);
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    border-radius: 0.5rem;
-    color: #fca5a5;
+  .skeleton-grid { display: flex; gap: 0.25rem; }
+  .skeleton-day {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 0.125rem;
+    background-color: #1e293b;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
   }
-
-  .loading {
-    padding: 2rem;
-    text-align: center;
-    color: #9ca3af;
+  .skeleton-day:nth-child(odd) { animation-delay: 0.1s; }
+  @keyframes skeleton-shimmer {
+    0%, 100% { opacity: 0.6; background-color: #1e293b; }
+    50% { opacity: 1; background-color: #334155; }
   }
-
   .tooltip {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.856);
@@ -208,81 +116,123 @@ const getColor = (count: number) => {
     white-space: nowrap;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
-
-  .tooltip.hidden {
-    display: none;
-  }
+  .tooltip.hidden { display: none; }
 </style>
 
 <script>
-  let clickOutsideHandler: ((e: MouseEvent) => void) | null = null;
+  const CACHE_KEY = 'activity-contributions';
+  const CACHE_TIME_KEY = 'activity-contributions-time';
+  const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+  const getColor = (count) => {
+    if (count === 0) return '#161b22';
+    if (count < 3) return '#0e4429';
+    if (count < 6) return '#006d32';
+    if (count < 9) return '#26a641';
+    return '#39d353';
+  };
+
+  // Inline styles so grid renders even when Astro scoped CSS doesn't apply to dynamic HTML
+  const weekStyle = 'display:flex;flex-direction:column;gap:0.25rem';
+  const dayStyle = (bg) => `width:0.75rem;height:0.75rem;border-radius:0.125rem;cursor:pointer;background-color:${bg}`;
+
+  function renderGrid(contributions, gridContainer, countEl) {
+    if (!contributions?.weeks || !gridContainer || !countEl) return;
+    countEl.innerHTML = `<span class="text-text-primary">${contributions.totalContributions.toLocaleString()} contributions in the last year</span>`;
+    const weeksHtml = contributions.weeks.map((week) => `
+      <div class="week" style="${weekStyle}">
+        ${week.contributionDays.map((day) =>
+          `<div class="day" style="${dayStyle(getColor(day.contributionCount))}" data-count="${day.contributionCount}" data-date="${day.date}"></div>`
+        ).join('')}
+      </div>
+    `).join('');
+    gridContainer.innerHTML = weeksHtml;
+    try { initTooltip(); } catch (_) {}
+  }
 
   function initTooltip() {
-    const days = document.querySelectorAll('.day');
+    const days = document.querySelectorAll('.day[data-count][data-date]');
     const tooltip = document.getElementById('contribution-tooltip');
     const tooltipContent = document.getElementById('tooltip-content');
-
     if (!tooltip || !tooltipContent) return;
 
-    function showTooltip(target: HTMLElement) {
+    const showTooltip = (target) => {
       const count = target.getAttribute('data-count');
       const date = target.getAttribute('data-date');
-
       if (!count || !date) return;
-
-      // Format date as "Month Day"
-      const parts = date.split('-');
-      const year = Number(parts[0]);
-      const monthIndex = Number(parts[1]) - 1;
-      const dayNum = Number(parts[2]);
-      const dateObj = new Date(year, monthIndex, dayNum);
-      const formattedDate = dateObj.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-      });
-
-      const contributionText = count === '1' ? 'contribution' : 'contributions';
-      tooltipContent!.textContent = `${count} ${contributionText} on ${formattedDate}.`;
-
+      const [y, m, d] = date.split('-').map(Number);
+      const formatted = new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      tooltipContent.textContent = `${count} ${count === '1' ? 'contribution' : 'contributions'} on ${formatted}.`;
       const rect = target.getBoundingClientRect();
-      const containerRect = tooltip!.parentElement!.getBoundingClientRect();
-
-      tooltip!.style.left = `${rect.left - containerRect.left + rect.width / 2}px`;
-      tooltip!.style.top = `${rect.top - containerRect.top - 8}px`;
-      tooltip!.style.transform = 'translate(-50%, -100%)';
-
-      tooltip!.classList.remove('hidden');
-    }
-
-    function hideTooltip() {
-      tooltip!.classList.add('hidden');
-    }
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest('.day')) {
-        hideTooltip();
-      }
+      const parent = tooltip.parentElement.getBoundingClientRect();
+      tooltip.style.left = `${rect.left - parent.left + rect.width / 2}px`;
+      tooltip.style.top = `${rect.top - parent.top - 8}px`;
+      tooltip.style.transform = 'translate(-50%, -100%)';
+      tooltip.classList.remove('hidden');
     };
+    const hideTooltip = () => tooltip.classList.add('hidden');
 
-    if (clickOutsideHandler) {
-      document.removeEventListener('click', clickOutsideHandler);
-    }
-    clickOutsideHandler = handleClickOutside;
-    document.addEventListener('click', handleClickOutside);
+    document.removeEventListener('click', window._activityClickOut);
+    window._activityClickOut = (e) => { if (!e.target.closest('.day')) hideTooltip(); };
+    document.addEventListener('click', window._activityClickOut);
 
     days.forEach((day) => {
-      day.addEventListener('mouseenter', (e) => {
-        showTooltip(e.target as HTMLElement);
-      });
-
+      day.addEventListener('mouseenter', (e) => showTooltip(e.target));
       day.addEventListener('mouseleave', hideTooltip);
-
-      day.addEventListener('click', (e) => {
-        showTooltip(e.target as HTMLElement);
-      });
+      day.addEventListener('click', (e) => showTooltip(e.target));
     });
   }
 
-  initTooltip();
-  document.addEventListener('astro:page-load', initTooltip);
+  async function loadContributions() {
+    const gridContainer = document.getElementById('activity-grid-container');
+    const countEl = document.getElementById('activity-count');
+    if (!gridContainer || !countEl) return;
+
+    const wrapper = document.querySelector('[data-api-base]');
+    const base = wrapper?.getAttribute('data-api-base') || window.location.origin;
+    const apiUrl = `${base}/api/github-contributions`;
+
+    // Use cache if fresh
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      if (cached && cachedTime && Date.now() - Number(cachedTime) < CACHE_TTL_MS) {
+        const data = JSON.parse(cached);
+        if (data?.weeks) {
+          renderGrid(data, gridContainer, countEl);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const res = await fetch(apiUrl);
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        countEl.innerHTML = '<span class="text-red-400">Failed to load contributions</span>';
+        gridContainer.innerHTML = '<div class="py-8 text-center text-gray-400"><p>Unable to load. Please refresh.</p></div>';
+        return;
+      }
+      if (data?.weeks) {
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+          localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+        } catch (_) {}
+        renderGrid(data, gridContainer, countEl);
+      }
+    } catch (e) {
+      countEl.innerHTML = '<span class="text-red-400">Failed to load contributions</span>';
+      gridContainer.innerHTML = '<div class="py-8 text-center text-gray-400"><p>Unable to load. Please refresh.</p></div>';
+    }
+  }
+
+  function init() {
+    loadContributions();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  document.addEventListener('astro:page-load', init);
 </script>
