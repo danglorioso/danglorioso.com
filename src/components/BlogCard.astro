@@ -101,23 +101,43 @@ const formatDateShort = (dateString: string) => {
       </p>
     </div>
     <div
-      class="flex items-center justify-end gap-1 text-accent-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      class="blog-card-read flex items-center justify-end gap-1 text-accent-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
     >
       <span class="text-sm font-medium">Read</span>
       <svg
-        class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="blog-card-read-arrow"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 5l7 7-7 7"></path>
+        <path d="M18 8L22 12L18 16"></path>
+        <path d="M2 12H22"></path>
       </svg>
     </div>
   </div>
 
   <!-- Read more indicator -->
 </div>
+
+<style>
+  .group:hover .blog-card-read-arrow {
+    animation: read-arrow-nudge 0.5s ease-in-out;
+  }
+  @keyframes read-arrow-nudge {
+    0% {
+      transform: translateX(0);
+    }
+    40% {
+      transform: translateX(4px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+</style>

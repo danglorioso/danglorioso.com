@@ -54,7 +54,7 @@ const formatDate = (date: Date) => {
       <div class="mb-8">
         <a
           href="/blog"
-          class="inline-flex items-center gap-2 text-slate-400 hover:text-accent-primary transition-colors duration-200"
+          class="back-to-blog-link inline-flex items-center gap-2 text-slate-400 hover:text-accent-primary transition-colors duration-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const formatDate = (date: Date) => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="lucide lucide-move-left-icon lucide-move-left"
+            class="back-to-blog-arrow lucide lucide-move-left-icon lucide-move-left"
             ><path d="M6 8L2 12L6 16"></path><path d="M2 12H22"></path></svg
           >
           Back to Blog
@@ -190,3 +190,20 @@ const formatDate = (date: Date) => {
     </div>
   </main>
 </Layout>
+
+<style>
+  .back-to-blog-link:hover .back-to-blog-arrow {
+    animation: back-arrow-nudge 0.5s ease-in-out;
+  }
+  @keyframes back-arrow-nudge {
+    0% {
+      transform: translateX(0);
+    }
+    40% {
+      transform: translateX(-4px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+</style>
