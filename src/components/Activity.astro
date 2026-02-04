@@ -9,7 +9,7 @@ const getColor = (count: number) => {
   return '#39d353';
 };
 ---
-<div class="flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg" data-api-base={apiBase}>
+<div class="activity-section flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg" data-api-base={apiBase}>
 
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-2">
       <h2 class="text-3xl font-bold text-text-primary">Activity</h2>
@@ -85,6 +85,11 @@ const getColor = (count: number) => {
     outline: 2px solid #9ca3af;
     outline-offset: 1px;
   }
+  /* Apply to dynamically inserted .day cells too */
+  :global(.activity-section .day:hover) {
+    outline: 2px solid #9ca3af;
+    outline-offset: 1px;
+  }
   .legend-colors { display: flex; gap: 0.25rem; }
   .legend-box {
     width: 0.75rem;
@@ -120,11 +125,23 @@ const getColor = (count: number) => {
 </style>
 
 <script>
+  interface ContributionDay {
+    contributionCount: number;
+    date: string;
+  }
+  interface ContributionWeek {
+    contributionDays: ContributionDay[];
+  }
+  interface ContributionsData {
+    totalContributions: number;
+    weeks: ContributionWeek[];
+  }
+
   const CACHE_KEY = 'activity-contributions';
   const CACHE_TIME_KEY = 'activity-contributions-time';
   const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
-  const getColor = (count) => {
+  const getColor = (count: number): string => {
     if (count === 0) return '#161b22';
     if (count < 3) return '#0e4429';
     if (count < 6) return '#006d32';
@@ -132,16 +149,19 @@ const getColor = (count: number) => {
     return '#39d353';
   };
 
-  // Inline styles so grid renders even when Astro scoped CSS doesn't apply to dynamic HTML
   const weekStyle = 'display:flex;flex-direction:column;gap:0.25rem';
-  const dayStyle = (bg) => `width:0.75rem;height:0.75rem;border-radius:0.125rem;cursor:pointer;background-color:${bg}`;
+  const dayStyle = (bg: string): string => `width:0.75rem;height:0.75rem;border-radius:0.125rem;cursor:pointer;background-color:${bg}`;
 
-  function renderGrid(contributions, gridContainer, countEl) {
+  function renderGrid(
+    contributions: ContributionsData,
+    gridContainer: HTMLElement,
+    countEl: HTMLElement
+  ): void {
     if (!contributions?.weeks || !gridContainer || !countEl) return;
     countEl.innerHTML = `<span class="text-text-primary">${contributions.totalContributions.toLocaleString()} contributions in the last year</span>`;
-    const weeksHtml = contributions.weeks.map((week) => `
+    const weeksHtml = contributions.weeks.map((week: ContributionWeek) => `
       <div class="week" style="${weekStyle}">
-        ${week.contributionDays.map((day) =>
+        ${week.contributionDays.map((day: ContributionDay) =>
           `<div class="day" style="${dayStyle(getColor(day.contributionCount))}" data-count="${day.contributionCount}" data-date="${day.date}"></div>`
         ).join('')}
       </div>
@@ -150,13 +170,15 @@ const getColor = (count: number) => {
     try { initTooltip(); } catch (_) {}
   }
 
-  function initTooltip() {
+  let activityClickOut: ((e: MouseEvent) => void) | null = null;
+
+  function initTooltip(): void {
     const days = document.querySelectorAll('.day[data-count][data-date]');
     const tooltip = document.getElementById('contribution-tooltip');
     const tooltipContent = document.getElementById('tooltip-content');
     if (!tooltip || !tooltipContent) return;
 
-    const showTooltip = (target) => {
+    const showTooltip = (target: HTMLElement): void => {
       const count = target.getAttribute('data-count');
       const date = target.getAttribute('data-date');
       if (!count || !date) return;
@@ -164,22 +186,28 @@ const getColor = (count: number) => {
       const formatted = new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
       tooltipContent.textContent = `${count} ${count === '1' ? 'contribution' : 'contributions'} on ${formatted}.`;
       const rect = target.getBoundingClientRect();
-      const parent = tooltip.parentElement.getBoundingClientRect();
+      const parentEl = tooltip.parentElement;
+      if (!parentEl) return;
+      const parent = parentEl.getBoundingClientRect();
       tooltip.style.left = `${rect.left - parent.left + rect.width / 2}px`;
       tooltip.style.top = `${rect.top - parent.top - 8}px`;
       tooltip.style.transform = 'translate(-50%, -100%)';
       tooltip.classList.remove('hidden');
     };
-    const hideTooltip = () => tooltip.classList.add('hidden');
+    const hideTooltip = (): void => tooltip.classList.add('hidden');
 
-    document.removeEventListener('click', window._activityClickOut);
-    window._activityClickOut = (e) => { if (!e.target.closest('.day')) hideTooltip(); };
-    document.addEventListener('click', window._activityClickOut);
+    if (activityClickOut) {
+      document.removeEventListener('click', activityClickOut);
+    }
+    activityClickOut = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest('.day')) hideTooltip();
+    };
+    document.addEventListener('click', activityClickOut);
 
     days.forEach((day) => {
-      day.addEventListener('mouseenter', (e) => showTooltip(e.target));
+      day.addEventListener('mouseenter', (e) => showTooltip(e.target as HTMLElement));
       day.addEventListener('mouseleave', hideTooltip);
-      day.addEventListener('click', (e) => showTooltip(e.target));
+      day.addEventListener('click', (e) => showTooltip(e.target as HTMLElement));
     });
   }
 
