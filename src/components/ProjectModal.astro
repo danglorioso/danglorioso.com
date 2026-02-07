@@ -68,7 +68,7 @@ const currentStatus = statusConfig[project.data.status as keyof typeof statusCon
   <!-- Backdrop: dim overlay + blur so content behind is never readable -->
   <div
     data-modal-backdrop
-    class="absolute inset-0 bg-black/40 backdrop-blur-sm"
+    class="absolute inset-0 bg-black/20 backdrop-blur-sm"
     aria-hidden="true"
   ></div>
 
@@ -79,7 +79,7 @@ const currentStatus = statusConfig[project.data.status as keyof typeof statusCon
   >
     <!-- Header with Close Button -->
     <div class="flex items-center justify-between p-4 md:p-6 border-b border-border-secondary flex-shrink-0">
-      <div class="flex items-center gap-3 min-w-0 flex-1">
+      <div class="flex flex-1 items-center gap-3 min-w-0">
         <!-- Favicon -->
         {project.data.favicon && (
           <img
@@ -132,7 +132,7 @@ const currentStatus = statusConfig[project.data.status as keyof typeof statusCon
     <!-- Scrollable Content -->
     <div class="overflow-y-auto flex-1 p-6 md:p-8" data-modal-scroll>
       <!-- Categories and Status -->
-      <div class="mb-6 flex items-center gap-2 flex-wrap">
+      <!-- <div class="mb-6 flex items-center gap-2 flex-wrap">
         {project.data.categories && project.data.categories.length > 0 && (
           project.data.categories.map((category: string) => (
             <span
@@ -142,12 +142,7 @@ const currentStatus = statusConfig[project.data.status as keyof typeof statusCon
             </span>
           ))
         )}
-        <span
-          class={`px-3 py-1 text-xs font-medium border rounded-full uppercase tracking-wide ${getStatusStyle(project.data.status)}`}
-        >
-          {project.data.status.replace("-", " ")}
-        </span>
-      </div>
+      </div> -->
 
       <!-- Description -->
       <p class="text-lg text-text-secondary mb-6 leading-relaxed">
@@ -236,7 +231,7 @@ const currentStatus = statusConfig[project.data.status as keyof typeof statusCon
         <div class="flex flex-wrap gap-2">
           {
             project.data.technologies.map((tech: string) => (
-              <span class="px-3 py-1 text-sm text-text-tertiary bg-bg-overlay rounded-full border border-border-tertiary">
+              <span class="px-2 py-1 bg-bg-overlay text-text-tertiary text-sm rounded-md border border-border-tertiary">
                 {tech}
               </span>
             ))
