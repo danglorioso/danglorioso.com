@@ -19,21 +19,40 @@ const formatDate = (date: Date) => {
   });
 };
 
-// Get status badge styling
-const getStatusStyle = (status: string) => {
-  switch (status) {
-    case "completed":
-      return "bg-status-success-bg text-status-success-text border-status-success-border";
-    case "in-progress":
-      return "bg-status-info-bg text-status-info-text border-status-info-border";
-    case "planned":
-      return "bg-status-warning-bg text-status-warning-text border-status-warning-border";
-    case "archived":
-      return "bg-status-neutral-bg text-status-neutral-text border-status-neutral-border";
-    default:
-      return "bg-status-neutral-bg text-status-neutral-text border-status-neutral-border";
-  }
+// Status styling (same as ProjectCard)
+const statusConfig = {
+  completed: {
+    bg: "bg-status-success-bg",
+    text: "text-status-success-text",
+    border: "border-status-success-border",
+    label: "Completed",
+  },
+  "in-progress": {
+    bg: "bg-status-info-bg",
+    text: "text-status-info-text",
+    border: "border-status-info-border",
+    label: "In Progress",
+  },
+  planned: {
+    bg: "bg-status-warning-bg",
+    text: "text-status-warning-text",
+    border: "border-status-warning-border",
+    label: "Planned",
+  },
+  archived: {
+    bg: "bg-status-neutral-bg",
+    text: "text-status-neutral-text",
+    border: "border-status-neutral-border",
+    label: "Archived",
+  },
 };
+
+const getStatusStyle = (status: string) => {
+  const s = statusConfig[status as keyof typeof statusConfig] || statusConfig["in-progress"];
+  return `${s.bg} ${s.text} ${s.border}`;
+};
+
+const currentStatus = statusConfig[project.data.status as keyof typeof statusConfig] || statusConfig["in-progress"];
 ---
 
 <div
@@ -61,6 +80,7 @@ const getStatusStyle = (status: string) => {
     <!-- Header with Close Button -->
     <div class="flex items-center justify-between p-4 md:p-6 border-b border-border-secondary flex-shrink-0">
       <div class="flex items-center gap-3 min-w-0 flex-1">
+        <!-- Favicon -->
         {project.data.favicon && (
           <img
             src={`/projects/favicons/${project.data.favicon}`}
@@ -70,6 +90,8 @@ const getStatusStyle = (status: string) => {
             onerror="this.style.display='none'"
           />
         )}
+
+        <!-- Title -->
         <h2
           id={`modal-title-${project.slug}`}
           class="text-2xl md:text-3xl font-bold text-text-primary truncate"
@@ -77,25 +99,34 @@ const getStatusStyle = (status: string) => {
           {project.data.title}
         </h2>
       </div>
-      <button
-        data-modal-close
-        class="ml-4 p-2 text-text-secondary hover:text-text-primary hover:bg-bg-overlay rounded-lg transition-colors duration-200 flex-shrink-0"
-        aria-label="Close modal"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+
+      <!-- Right side: Status Badge (ProjectCard style) + Close Button -->
+      <div class="flex items-center gap-2 flex-shrink-0 ml-4">
+        <span
+          class={`px-2 py-1 rounded text-sm font-medium border ${currentStatus.bg} ${currentStatus.text} ${currentStatus.border} whitespace-nowrap`}
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          {currentStatus.label}
+        </span>
+        <button
+          data-modal-close
+          class="p-2 text-text-secondary hover:text-text-primary hover:bg-slate-800/60 rounded-lg transition-colors duration-300"
+          aria-label="Close modal"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Scrollable Content -->
