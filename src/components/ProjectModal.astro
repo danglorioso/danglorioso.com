@@ -1,0 +1,388 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  isOpen: boolean;
+}
+
+const { project, isOpen } = Astro.props;
+const { Content } = await project.render();
+
+// Format date function
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+};
+
+// Get status badge styling
+const getStatusStyle = (status: string) => {
+  switch (status) {
+    case "completed":
+      return "bg-status-success-bg text-status-success-text border-status-success-border";
+    case "in-progress":
+      return "bg-status-info-bg text-status-info-text border-status-info-border";
+    case "planned":
+      return "bg-status-warning-bg text-status-warning-text border-status-warning-border";
+    case "archived":
+      return "bg-status-neutral-bg text-status-neutral-text border-status-neutral-border";
+    default:
+      return "bg-status-neutral-bg text-status-neutral-text border-status-neutral-border";
+  }
+};
+---
+
+<div
+  id={`project-modal-${project.slug}`}
+  data-project-modal={project.slug}
+  data-open={isOpen ? "true" : "false"}
+  class="project-modal fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`modal-title-${project.slug}`}
+  aria-hidden={isOpen ? "false" : "true"}
+>
+  <!-- Backdrop: dim overlay + blur so content behind is never readable -->
+  <div
+    data-modal-backdrop
+    class="absolute inset-0 bg-black/40 backdrop-blur-sm"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Modal Container -->
+  <div
+    data-modal-panel
+    class="relative w-full max-w-5xl max-h-[80vh] sm:max-h-[75vh] bg-bg-primary border border-border-primary rounded-lg shadow-2xl overflow-hidden flex flex-col transform transition-opacity duration-300"
+  >
+    <!-- Header with Close Button -->
+    <div class="flex items-center justify-between p-4 md:p-6 border-b border-border-secondary flex-shrink-0">
+      <div class="flex items-center gap-3 min-w-0 flex-1">
+        {project.data.favicon && (
+          <img
+            src={`/projects/favicons/${project.data.favicon}`}
+            alt={`${project.data.title} favicon`}
+            class="w-8 h-8 flex-shrink-0 rounded-sm"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          />
+        )}
+        <h2
+          id={`modal-title-${project.slug}`}
+          class="text-2xl md:text-3xl font-bold text-text-primary truncate"
+        >
+          {project.data.title}
+        </h2>
+      </div>
+      <button
+        data-modal-close
+        class="ml-4 p-2 text-text-secondary hover:text-text-primary hover:bg-bg-overlay rounded-lg transition-colors duration-200 flex-shrink-0"
+        aria-label="Close modal"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div class="overflow-y-auto flex-1 p-6 md:p-8" data-modal-scroll>
+      <!-- Categories and Status -->
+      <div class="mb-6 flex items-center gap-2 flex-wrap">
+        {project.data.categories && project.data.categories.length > 0 && (
+          project.data.categories.map((category: string) => (
+            <span
+              class="inline-block px-3 py-1 text-xs font-medium text-accent-primary bg-accent-primary/10 rounded-full border border-accent-primary/20"
+            >
+              {category}
+            </span>
+          ))
+        )}
+        <span
+          class={`px-3 py-1 text-xs font-medium border rounded-full uppercase tracking-wide ${getStatusStyle(project.data.status)}`}
+        >
+          {project.data.status.replace("-", " ")}
+        </span>
+      </div>
+
+      <!-- Description -->
+      <p class="text-lg text-text-secondary mb-6 leading-relaxed">
+        {project.data.description}
+      </p>
+
+      <!-- Project Meta Grid -->
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        <!-- Timeline -->
+        <div class="bg-bg-overlay backdrop-blur-sm border border-border-secondary rounded-lg p-4">
+          <h3 class="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-2">
+            Timeline
+          </h3>
+          <p class="text-text-primary">
+            {formatDate(project.data.startDate)}
+            {
+              project.data.endDate
+                ? ` — ${formatDate(project.data.endDate)}`
+                : " — Present"
+            }
+          </p>
+        </div>
+
+        <!-- Links -->
+        <div class="bg-bg-overlay backdrop-blur-sm border border-border-secondary rounded-lg p-4">
+          <h3 class="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-2">
+            Links
+          </h3>
+          <div class="flex flex-col sm:flex-row gap-3">
+            {
+              project.data.githubUrl && (
+                <a
+                  href={project.data.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center text-accent-primary hover:text-accent-hover transition-colors duration-200"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1.5"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  </svg>
+                  GitHub
+                </a>
+              )
+            }
+            {
+              project.data.liveUrl && (
+                <a
+                  href={project.data.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center text-accent-primary hover:text-accent-hover transition-colors duration-200"
+                >
+                  <svg
+                    class="w-4 h-4 mr-1.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                  Live Demo
+                </a>
+              )
+            }
+            {!project.data.githubUrl && !project.data.liveUrl && (
+              <span class="text-text-secondary text-sm">No links available</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Technologies -->
+      <div class="mb-6">
+        <h3 class="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
+          Technologies
+        </h3>
+        <div class="flex flex-wrap gap-2">
+          {
+            project.data.technologies.map((tech: string) => (
+              <span class="px-3 py-1 text-sm text-text-tertiary bg-bg-overlay rounded-full border border-border-tertiary">
+                {tech}
+              </span>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Collaborators -->
+      {
+        project.data.collaborators &&
+          project.data.collaborators.length > 0 && (
+            <div class="mb-6">
+              <h3 class="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
+                Collaborators
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {project.data.collaborators.map((collaborator: string) => (
+                  <span class="px-3 py-1 text-sm text-accent-primary bg-accent-primary/10 rounded-full border border-accent-primary/20">
+                    {collaborator}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )
+      }
+
+      <!-- Achievements -->
+      {
+        project.data.achievements && project.data.achievements.length > 0 && (
+          <div class="mb-6">
+            <h3 class="text-sm font-semibold text-text-secondary uppercase tracking-wide mb-3">
+              🏆 Achievements
+            </h3>
+            <ul class="space-y-2">
+              {project.data.achievements.map((achievement: string) => (
+                <li class="flex items-center text-status-success-text">
+                  <span class="w-2 h-2 bg-status-success-text rounded-full mr-3 flex-shrink-0" />
+                  <span>{achievement}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <!-- Project Content -->
+      <div
+        class="prose prose-lg prose-invert prose-slate max-w-none mt-8
+        prose-headings:font-bold prose-headings:text-text-primary
+        prose-h1:text-3xl prose-h1:mb-4 prose-h1:mt-6 prose-h1:bg-gradient-to-r prose-h1:from-accent-primary prose-h1:to-purple-500 prose-h1:bg-clip-text prose-h1:text-transparent
+        prose-h2:text-2xl prose-h2:mb-3 prose-h2:mt-6 prose-h2:border-b prose-h2:border-border-secondary prose-h2:pb-2
+        prose-h3:text-xl prose-h3:mb-2 prose-h3:mt-4
+        prose-h4:text-lg prose-h4:mb-2 prose-h4:mt-3
+        prose-p:text-text-secondary prose-p:leading-7 prose-p:mb-4
+        prose-a:text-accent-primary prose-a:no-underline hover:prose-a:text-accent-hover prose-a:font-medium
+        prose-strong:text-text-primary prose-strong:font-bold
+        prose-em:text-text-secondary
+        prose-code:text-text-primary prose-code:bg-bg-overlay prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:font-mono prose-code:text-sm
+        prose-pre:bg-bg-overlay prose-pre:border prose-pre:border-border-secondary prose-pre:rounded-lg prose-pre:p-4
+        prose-blockquote:border-l-accent-primary prose-blockquote:bg-bg-overlay prose-blockquote:text-text-secondary prose-blockquote:font-normal prose-blockquote:not-italic
+        prose-ul:list-disc prose-ul:pl-6
+        prose-ol:list-decimal prose-ol:pl-6
+        prose-li:text-text-secondary prose-li:mb-1
+        prose-img:rounded-lg prose-img:shadow-xl prose-img:mx-auto
+        prose-hr:border-border-secondary"
+      >
+        <Content />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .project-modal {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 300ms ease-out;
+  }
+
+  /* When opening: no transition so backdrop + blur appear immediately */
+  .project-modal[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transition-duration: 0ms;
+  }
+
+  .project-modal[data-open="false"] [data-modal-backdrop] {
+    backdrop-filter: none;
+  }
+
+  /* Promote backdrop to own layer so blur applies immediately when modal opens */
+  .project-modal[data-open="true"] [data-modal-backdrop] {
+    transform: translateZ(0);
+  }
+
+  .project-modal [data-modal-panel] {
+    opacity: 0;
+    transform: scale(0.95) translateY(1rem);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+
+  .project-modal[data-open="true"] [data-modal-panel] {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  /* Closing: panel animates out (mirror of open), then overlay fades */
+  .project-modal[data-closing="true"] {
+    transition: opacity 300ms ease-out;
+    pointer-events: none;
+  }
+
+  .project-modal[data-open="true"][data-closing="true"] {
+    opacity: 0;
+  }
+
+  .project-modal[data-closing="true"] [data-modal-panel] {
+    opacity: 0;
+    transform: scale(0.95) translateY(1rem);
+  }
+
+  /* Smooth scrolling for modal content */
+  .project-modal [data-modal-scroll] {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-tertiary) transparent;
+  }
+
+  .project-modal [data-modal-scroll]::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .project-modal [data-modal-scroll]::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .project-modal [data-modal-scroll]::-webkit-scrollbar-thumb {
+    background-color: var(--border-tertiary);
+    border-radius: 4px;
+  }
+
+  .project-modal [data-modal-scroll]::-webkit-scrollbar-thumb:hover {
+    background-color: var(--border-secondary);
+  }
+
+  /* Prevent page scroll when modal is open (html + body for all browsers) */
+  html.modal-open {
+    overflow: hidden;
+  }
+
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    left: 0;
+    right: 0;
+    /* top is set via inline style in JS so scroll position is preserved */
+  }
+
+  /* Enhanced link hover effects */
+  .prose a {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .prose a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-primary), rgb(147 51 234));
+    transition: width 0.3s ease;
+  }
+
+  .prose a:hover::after {
+    width: 100%;
+  }
+</style>

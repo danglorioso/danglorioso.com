@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import ProjectModal from "../components/ProjectModal.astro";
 import { getCollection } from "astro:content";
 
 // Get all projects and sort
@@ -138,6 +139,13 @@ const categories = Array.from(categorySet).sort();
     </div>
   </section>
 
+  <!-- Project Modals -->
+  {
+    sortedProjects.map((project) => (
+      <ProjectModal project={project} isOpen={false} />
+    ))
+  }
+
   <script>
     (function () {
       const searchInput = document.getElementById("project-search");
@@ -216,6 +224,111 @@ const categories = Array.from(categorySet).sort();
 
       searchInput?.addEventListener("input", filterProjects);
       categoryFilter?.addEventListener("change", filterProjects);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const modals = Array.from(
+        document.querySelectorAll("[data-project-modal]")
+      ) as HTMLElement[];
+      const html = document.documentElement;
+      const body = document.body;
+      let activeModal: HTMLElement | null = null;
+      let scrollY = 0;
+
+      const setOpen = (modal: HTMLElement, open: boolean) => {
+        modal.dataset.open = open ? "true" : "false";
+        modal.setAttribute("aria-hidden", open ? "false" : "true");
+        if (open) {
+          scrollY = window.scrollY;
+          html.classList.add("modal-open");
+          body.classList.add("modal-open");
+          body.style.top = `-${scrollY}px`;
+        } else if (!activeModal) {
+          html.classList.remove("modal-open");
+          body.classList.remove("modal-open");
+          body.style.top = "";
+          window.scrollTo(0, scrollY);
+        }
+      };
+
+      const closeActiveModal = () => {
+        if (!activeModal) return;
+        const modalToClose = activeModal;
+        const panel = modalToClose.querySelector("[data-modal-panel]") as HTMLElement | null;
+        let done = false;
+
+        const finishClose = () => {
+          if (done) return;
+          done = true;
+          modalToClose.removeEventListener("transitionend", onTransitionEnd);
+          modalToClose.dataset.open = "false";
+          modalToClose.removeAttribute("data-closing");
+          modalToClose.setAttribute("aria-hidden", "true");
+          activeModal = null;
+          html.classList.remove("modal-open");
+          body.classList.remove("modal-open");
+          body.style.top = "";
+          window.scrollTo(0, scrollY);
+        };
+
+        const onTransitionEnd = (e: TransitionEvent) => {
+          if (e.target === panel && (e.propertyName === "opacity" || e.propertyName === "transform")) {
+            finishClose();
+          }
+        };
+
+        modalToClose.dataset.closing = "true";
+        panel?.addEventListener("transitionend", onTransitionEnd);
+        // Fallback if transitionend doesn't fire (e.g. reduced motion)
+        setTimeout(finishClose, 320);
+      };
+
+      (window as any).openProjectModal = (slug: string) => {
+        const modal = document.querySelector(
+          `[data-project-modal="${slug}"]`
+        ) as HTMLElement | null;
+        if (!modal) return;
+
+        if (activeModal && activeModal !== modal) {
+          setOpen(activeModal, false);
+        }
+
+        activeModal = modal;
+        setOpen(modal, true);
+      };
+
+      modals.forEach((modal) => {
+        const closeBtn = modal.querySelector(
+          "[data-modal-close]"
+        ) as HTMLElement | null;
+        const backdrop = modal.querySelector(
+          "[data-modal-backdrop]"
+        ) as HTMLElement | null;
+
+        closeBtn?.addEventListener("click", () => {
+          if (activeModal === modal) {
+            closeActiveModal();
+          } else {
+            setOpen(modal, false);
+          }
+        });
+
+        backdrop?.addEventListener("click", () => {
+          if (activeModal === modal) {
+            closeActiveModal();
+          } else {
+            setOpen(modal, false);
+          }
+        });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeActiveModal();
+        }
+      });
     })();
   </script>
 </Layout>

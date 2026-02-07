@@ -63,10 +63,15 @@ const currentStatus = statusConfig[status] || statusConfig["in-progress"];
 ---
 
 <div
-  class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg flex flex-col p-4 gap-3 hover:border-border-accent transition-all duration-200"
+  class="bg-bg-card backdrop-blur-sm border border-border-primary rounded-lg flex flex-col p-4 gap-3 hover:border-border-accent transition-all duration-200 project-card"
+  data-slug={slug}
 >
   <!-- Header with Favicon, Title and Status -->
-  <a href={``} class="group block cursor-pointer">
+  <button
+    type="button"
+    class="group block cursor-pointer w-full text-left"
+    data-project-slug={slug}
+  >
     <div class="flex items-center justify-between mb-3">
       <!-- mb-3 workaround to account for gap-3 not working with <a> tag -->
       <div class="flex flex-1 items-center gap-3 min-w-0">
@@ -115,7 +120,7 @@ const currentStatus = statusConfig[status] || statusConfig["in-progress"];
     <p class="text-text-secondary text-md leading-relaxed">
       {description}
     </p>
-  </a>
+  </button>
 
   <!-- Tech Stack -->
   <div class="flex flex-wrap gap-2">
@@ -201,3 +206,39 @@ const currentStatus = statusConfig[status] || statusConfig["in-progress"];
     }
   </div>
 </div>
+
+<script>
+  (function () {
+    // Wait for DOM to be ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initProjectCard);
+    } else {
+      initProjectCard();
+    }
+
+    function initProjectCard() {
+      const projectCards = document.querySelectorAll(".project-card");
+      projectCards.forEach((card) => {
+        const slug = card.getAttribute("data-slug");
+        if (!slug) return;
+
+        // Make entire card clickable
+        card.addEventListener("click", (e) => {
+          // Don't trigger if clicking on links
+          const target = e.target as HTMLElement;
+          if (target.tagName === "A" || target.closest("a")) {
+            return;
+          }
+
+          // Open modal
+          if ((window as any).openProjectModal) {
+            (window as any).openProjectModal(slug);
+          }
+        });
+
+        // Add hover effect
+        (card as HTMLElement).style.cursor = "pointer";
+      });
+    }
+  })();
+</script>
