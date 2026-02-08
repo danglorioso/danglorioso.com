@@ -231,9 +231,17 @@ const currentStatus = statusConfig[status] || statusConfig["in-progress"];
           }
 
           // Open modal
-          if ((window as any).openProjectModal) {
-            (window as any).openProjectModal(slug);
-          }
+            if ((window as any).openProjectModal) {
+              (window as any).openProjectModal(slug);
+              try {
+                if (window.location.pathname.indexOf("/projects") === 0) {
+                  // Push a shareable URL for the modal state at /projects/:slug
+                  history.pushState({ projectSlug: slug }, "", `/projects/${slug}`);
+                }
+              } catch (e) {
+                // ignore history errors
+              }
+            }
         });
 
         // Add hover effect

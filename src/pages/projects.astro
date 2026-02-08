@@ -283,6 +283,21 @@ const categories = Array.from(categorySet).sort();
         panel?.addEventListener("transitionend", onTransitionEnd);
         // Fallback if transitionend doesn't fire (e.g. reduced motion)
         setTimeout(finishClose, 320);
+        // If the URL is the modal shareable URL, navigate history back if possible,
+        // otherwise replace to the base projects path so the URL and UI stay in sync.
+        try {
+          const currentPathMatch = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/);
+          const modalSlug = modalToClose.dataset.projectModal;
+          if (currentPathMatch && currentPathMatch[1]) {
+            if (history.state && history.state.projectSlug === currentPathMatch[1]) {
+              history.back();
+            } else {
+              history.replaceState(null, "", "/projects");
+            }
+          }
+        } catch (e) {
+          // ignore
+        }
       };
 
       (window as any).openProjectModal = (slug: string) => {
@@ -298,6 +313,37 @@ const categories = Array.from(categorySet).sort();
         activeModal = modal;
         setOpen(modal, true);
       };
+
+      // Open modal if URL path indicates a modal route (/projects/:slug)
+      const checkOpenFromPath = () => {
+        try {
+          const m = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/);
+          if (m && m[1]) {
+            (window as any).openProjectModal(m[1]);
+          }
+        } catch (e) {
+          // ignore
+        }
+      };
+
+      // Listen to history navigation to open/close modal appropriately
+      window.addEventListener("popstate", (ev) => {
+        // If location matches modal path, open; otherwise close any open modal
+        const m = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/);
+        if (m && m[1]) {
+          (window as any).openProjectModal(m[1]);
+        } else {
+          // close active modal if any
+          if (activeModal) {
+            // call existing close logic
+            const evt = new KeyboardEvent("keydown", { key: "Escape" });
+            document.dispatchEvent(evt);
+          }
+        }
+      });
+
+      // On initial load, check if URL should open a modal
+      checkOpenFromPath();
 
       modals.forEach((modal) => {
         const closeBtn = modal.querySelector(

@@ -100,292 +100,359 @@ const getStatusStyle = (status: string) => {
       <header class="mb-10">
         <div class="mb-4 flex items-center gap-3 flex-wrap">
           {project.data.categories && project.data.categories.length > 0 && (
-            project.data.categories.map((category: string) => (
-              <span
-                class="inline-block px-3 py-1 text-xs font-medium text-purple-400 bg-purple-400/10 rounded-full"
-              >
-                {category}
-              </span>
-            ))
-          )}
-          <span
-            class={`px-3 py-1 text-xs font-medium border rounded-full ${getStatusStyle(project.data.status)} uppercase tracking-wide`}
-          >
-            {project.data.status.replace("-", " ")}
-          </span>
-        </div>
+            ---
+            import Layout from "../../layouts/Layout.astro";
+            import ProjectCard from "../../components/ProjectCard.astro";
+            import ProjectModal from "../../components/ProjectModal.astro";
+            import { getCollection } from "astro:content";
 
-        <h1
-          class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight"
-        >
-          {project.data.title}
-        </h1>
+            export const prerender = true;
 
-        <p class="text-xl text-slate-300 mb-6">
-          {project.data.description}
-        </p>
-
-        <!-- Project Meta -->
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
-          <!-- Timeline -->
-          <div
-            class="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-lg p-4"
-          >
-            <h3
-              class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-2"
-            >
-              Timeline
-            </h3>
-            <p class="text-white">
-              {formatDate(project.data.startDate)}
-              {
-                project.data.endDate
-                  ? ` — ${formatDate(project.data.endDate)}`
-                  : " — Present"
-              }
-            </p>
-          </div>
-
-          <!-- Links -->
-          <div
-            class="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-lg p-4"
-          >
-            <h3
-              class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-2"
-            >
-              Links
-            </h3>
-            <div class="flex gap-4">
-              {
-                project.data.githubUrl && (
-                  <a
-                    href={project.data.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-200"
-                  >
-                    <svg
-                      class="w-4 h-4 mr-1"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                    GitHub
-                  </a>
-                )
-              }
-              {
-                project.data.liveUrl && (
-                  <a
-                    href={project.data.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-200"
-                  >
-                    <svg
-                      class="w-4 h-4 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                    Live Demo
-                  </a>
-                )
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- Technologies -->
-        <div class="mb-6">
-          <h3
-            class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3"
-          >
-            Technologies
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            {
-              project.data.technologies.map((tech: string) => (
-                <span class="px-3 py-1 text-sm text-slate-300 bg-slate-700/50 rounded-full border border-slate-600/50">
-                  {tech}
-                </span>
-              ))
+            export async function getStaticPaths() {
+              const projects = await getCollection("projects");
+              return projects
+                .filter((p) => !p.data.draft)
+                .map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
             }
-          </div>
-        </div>
 
-        <!-- Collaborators -->
-        {
-          project.data.collaborators &&
-            project.data.collaborators.length > 0 && (
-              <div class="mb-6">
-                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
-                  Collaborators
-                </h3>
-                <div class="flex flex-wrap gap-2">
-                  {project.data.collaborators.map((collaborator: string) => (
-                    <span class="px-3 py-1 text-sm text-blue-400 bg-blue-400/10 rounded-full border border-blue-400/20">
-                      {collaborator}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )
-        }
+            const allProjects = await getCollection("projects", ({ data }) => data.draft !== true);
 
-        <!-- Achievements -->
-        {
-          project.data.achievements && project.data.achievements.length > 0 && (
-            <div class="mb-6">
-              <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
-                🏆 Achievements
-              </h3>
-              <ul class="space-y-2">
-                {project.data.achievements.map((achievement: string) => (
-                  <li class="flex items-center text-green-400">
-                    <span class="w-2 h-2 bg-green-400 rounded-full mr-3" />
-                    {achievement}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
-      </header>
+            // Sort projects same as main listing
+            const sortedProjects = allProjects.sort((a, b) => {
+              if (a.data.priority !== b.data.priority) {
+                return b.data.priority - a.data.priority;
+              }
+              return new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime();
+            });
 
-      <!-- Project content -->
-      <article
-        class="prose prose-lg prose-invert prose-slate max-w-none mb-16
-        prose-headings:font-bold prose-headings:text-white
-        prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-8 prose-h1:bg-gradient-to-r prose-h1:from-blue-400 prose-h1:to-purple-500 prose-h1:bg-clip-text prose-h1:text-transparent
-        prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-8 prose-h2:border-b prose-h2:border-slate-600 prose-h2:pb-2
-        prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-6
-        prose-h4:text-xl prose-h4:mb-2 prose-h4:mt-5
-        prose-p:text-slate-300 prose-p:leading-8 prose-p:mb-6
-        prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300 prose-a:font-medium
-        prose-strong:text-white prose-strong:font-bold
-        prose-em:text-slate-200
-        prose-code:text-slate-100 prose-code:bg-slate-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:font-mono prose-code:text-sm
-        prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700 prose-pre:rounded-lg prose-pre:p-6
-        prose-blockquote:border-l-blue-400 prose-blockquote:bg-slate-800/50 prose-blockquote:text-slate-200 prose-blockquote:font-normal prose-blockquote:not-italic
-        prose-ul:list-disc prose-ul:pl-6
-        prose-ol:list-decimal prose-ol:pl-6
-        prose-li:text-slate-300 prose-li:mb-2
-        prose-img:rounded-lg prose-img:shadow-2xl prose-img:mx-auto
-        prose-hr:border-slate-600
-        prose-table:border-collapse prose-table:bg-slate-800/50 prose-table:rounded-lg prose-table:overflow-hidden
-        prose-th:bg-slate-700 prose-th:text-white prose-th:font-semibold prose-th:p-4
-        prose-td:text-slate-300 prose-td:p-4 prose-td:border-t prose-td:border-slate-600"
-      >
-        <Content />
-      </article>
+            // Get unique categories
+            const categorySet = new Set<string>();
+            sortedProjects.forEach((p) => {
+              if (p.data.categories && Array.isArray(p.data.categories)) {
+                p.data.categories.forEach((cat) => {
+                  if (cat && typeof cat === "string" && cat.trim() !== "") {
+                    categorySet.add(cat);
+                  }
+                });
+              }
+            });
+            const categories = Array.from(categorySet).sort();
 
-      <!-- Related projects -->
-      {
-        relatedProjects.length > 0 && (
-          <section class="border-t border-slate-700 pt-12 mt-12">
-            <h2 class="text-2xl font-bold text-white mb-8 flex items-center">
-              <span class="w-3 h-3 bg-purple-500 rounded-full mr-3" />
-              Related Projects
-            </h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedProjects.map((relatedProject) => (
-                <article class="bg-slate-800/50 rounded-lg p-6 hover:bg-slate-700/50 transition-colors duration-200">
-                  {relatedProject.data.categories && relatedProject.data.categories.length > 0 && (
-                    <div class="mb-3 flex flex-wrap gap-2">
-                      {relatedProject.data.categories.map((category: string) => (
-                        <span class="inline-block px-2 py-1 text-xs font-medium text-purple-400 bg-purple-400/10 rounded">
-                          {category}
-                        </span>
-                      ))}
+            const { slug } = Astro.params;
+            ---
+
+            <Layout title="Projects" description="">
+              <section id="projects">
+                <div class="h-full w-full flex flex-col gap-6">
+                  <!-- Page Header -->
+                  <section class="">
+                    <h1 class="text-4xl font-bold text-text-primary">Projects</h1>
+                  </section>
+
+                  <!-- Search and Filter Controls (same as index) -->
+                  <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                    <div class="flex-1 relative">
+                      <input
+                        type="text"
+                        id="project-search"
+                        placeholder="Search projects..."
+                        class="bg-bg-card px-4 py-2.5 w-full rounded-lg text-text-primary placeholder-text-secondary border border-border-tertiary focus:ring-1 focus:ring-accent-primary focus:outline-none focus:border-accent-primary"
+                      />
+                      <svg
+                        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary pointer-events-none"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
                     </div>
-                  )}
-                  <h3 class="text-lg font-semibold text-white mb-2">
-                    <a
-                      href={`/projects/${relatedProject.slug}`}
-                      class="hover:text-blue-400 transition-colors duration-200"
-                    >
-                      {relatedProject.data.title}
-                    </a>
-                  </h3>
-                  <p class="text-slate-400 text-sm mb-3">
-                    {relatedProject.data.description}
-                  </p>
-                  <div class="text-xs text-slate-500">
-                    {formatDate(relatedProject.data.startDate)}
-                    {relatedProject.data.endDate &&
-                      ` — ${formatDate(relatedProject.data.endDate)}`}
+
+                    <div class="relative sm:w-64">
+                      <select
+                        id="category-filter"
+                        class="w-full px-4 py-2.5 bg-bg-card rounded-lg text-text-primary border border-border-tertiary focus:ring-1 focus:ring-accent-primary focus:outline-none focus:border-accent-primary appearance-none cursor-pointer"
+                      >
+                        <option value="">All Categories</option>
+                        {categories.map((category) => (
+                          <option value={category}>{category}</option>
+                        ))}
+                      </select>
+                      <svg
+                        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary pointer-events-none"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
                   </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        )
-      }
 
-      <!-- Back to projects -->
-      <div class="text-center mt-12">
-        <a
-          href="/projects"
-          class="inline-flex items-center px-6 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
-        >
-          <svg
-            class="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"></path>
-          </svg>
-          Back to All Projects
-        </a>
-      </div>
-    </div>
-  </main>
-</Layout>
+                  <div id="results-count" class="text-sm text-text-secondary hidden">
+                    Showing <span id="results-number">0</span> project <span id="results-label"></span>.
+                  </div>
 
-<style>
-  /* Enhanced link hover effects */
-  .prose a {
-    position: relative;
-    transition: all 0.3s ease;
-  }
+                  <div id="projects-container" class="flex flex-col gap-6">
+                    {
+                      sortedProjects.map((project) => (
+                        <div
+                          class="project-item"
+                          data-title={project.data.title.toLowerCase()}
+                          data-description={project.data.description.toLowerCase()}
+                          data-categories={project.data.categories ? JSON.stringify(project.data.categories) : "[]"}
+                        >
+                          <ProjectCard
+                            slug={project.slug}
+                            title={project.data.title}
+                            description={project.data.description}
+                            status={project.data.status}
+                            technologies={project.data.technologies}
+                            categories={project.data.categories ?? []}
+                            featured={project.data.featured}
+                            githubUrl={project.data.githubUrl}
+                            liveUrl={project.data.liveUrl}
+                            imageUrl={project.data.imageUrl}
+                            favicon={project.data.favicon}
+                            achievements={project.data.achievements}
+                            startDate={project.data.startDate.toISOString()}
+                            endDate={project.data.endDate?.toISOString()}
+                          />
+                        </div>
+                      ))
+                    }
+                  </div>
 
-  .prose a::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, rgb(96 165 250), rgb(147 51 234));
-    transition: width 0.3s ease;
-  }
+                  <div id="no-results" class="hidden text-center py-12">
+                    <p class="text-text-secondary text-lg">No projects found matching your search.</p>
+                  </div>
+                </div>
+              </section>
 
-  .prose a:hover::after {
-    width: 100%;
-  }
+              <!-- Project Modals: open the requested one from URL -->
+              {
+                sortedProjects.map((project) => (
+                  <ProjectModal project={project} isOpen={project.slug === slug} />
+                ))
+              }
 
-  /* Enhanced gradient for h2 underlines */
-  .prose h2::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, rgb(96 165 250), rgb(147 51 234));
-  }
-</style>
+              <script>
+                (function () {
+                  const searchInput = document.getElementById("project-search");
+                  const categoryFilter = document.getElementById("category-filter");
+                  const projectsContainer = document.getElementById("projects-container");
+                  const projectItems = document.querySelectorAll(".project-item");
+                  const resultsCount = document.getElementById("results-count");
+                  const resultsNumber = document.getElementById("results-number");
+                  const resultsLabel = document.getElementById("results-label");
+                  const noResults = document.getElementById("no-results");
+
+                  function filterProjects() {
+                    if (
+                      !searchInput ||
+                      !categoryFilter ||
+                      !projectsContainer ||
+                      !resultsCount ||
+                      !resultsNumber ||
+                      !resultsLabel ||
+                      !noResults
+                    ) {
+                      return;
+                    }
+                    const searchInputElement = searchInput as HTMLInputElement;
+                    const categoryFilterElement = categoryFilter as HTMLSelectElement;
+                    const searchTerm = searchInputElement.value.toLowerCase().trim();
+                    const selectedCategory = categoryFilterElement.value;
+                    let visibleCount = 0;
+
+                    projectItems.forEach((item) => {
+                      const itemElement = item as HTMLElement;
+                      const title = itemElement.dataset.title || "";
+                      const description = itemElement.dataset.description || "";
+                      const categoriesJson = itemElement.dataset.categories || "[]";
+                      let projectCategories: string[] = [];
+                      try {
+                        projectCategories = JSON.parse(categoriesJson);
+                      } catch (e) {
+                        projectCategories = [];
+                      }
+
+                      const matchesSearch =
+                        !searchTerm ||
+                        title.includes(searchTerm) ||
+                        description.includes(searchTerm);
+                      const matchesCategory =
+                        !selectedCategory || projectCategories.includes(selectedCategory);
+
+                      if (matchesSearch && matchesCategory) {
+                        itemElement.style.display = "";
+                        visibleCount++;
+                      } else {
+                        itemElement.style.display = "none";
+                      }
+                    });
+
+                    if (searchTerm || selectedCategory) {
+                      resultsCount.classList.remove("hidden");
+                      resultsNumber.textContent = String(visibleCount);
+                      resultsLabel.textContent = visibleCount === 1 ? "result" : "results";
+                    } else {
+                      resultsCount.classList.add("hidden");
+                    }
+
+                    if (visibleCount === 0 && (searchTerm || selectedCategory)) {
+                      noResults.classList.remove("hidden");
+                      projectsContainer.classList.add("hidden");
+                    } else {
+                      noResults.classList.add("hidden");
+                      projectsContainer.classList.remove("hidden");
+                    }
+                  }
+
+                  searchInput?.addEventListener("input", filterProjects);
+                  categoryFilter?.addEventListener("change", filterProjects);
+                })();
+              </script>
+
+              <script>
+                (function () {
+                  const modals = Array.from(
+                    document.querySelectorAll("[data-project-modal]")
+                  ) as HTMLElement[];
+                  const html = document.documentElement;
+                  const body = document.body;
+                  let activeModal: HTMLElement | null = null;
+                  let scrollY = 0;
+
+                  const setOpen = (modal: HTMLElement, open: boolean) => {
+                    modal.dataset.open = open ? "true" : "false";
+                    modal.setAttribute("aria-hidden", open ? "false" : "true");
+                    if (open) {
+                      scrollY = window.scrollY;
+                      html.classList.add("modal-open");
+                      body.classList.add("modal-open");
+                      body.style.top = `-${scrollY}px`;
+                    } else if (!activeModal) {
+                      html.classList.remove("modal-open");
+                      body.classList.remove("modal-open");
+                      body.style.top = "";
+                      window.scrollTo(0, scrollY);
+                    }
+                  };
+
+                  const closeActiveModal = () => {
+                    if (!activeModal) return;
+                    const modalToClose = activeModal;
+                    const panel = modalToClose.querySelector("[data-modal-panel]") as HTMLElement | null;
+                    let done = false;
+
+                    const finishClose = () => {
+                      if (done) return;
+                      done = true;
+                      modalToClose.removeEventListener("transitionend", onTransitionEnd);
+                      modalToClose.dataset.open = "false";
+                      modalToClose.removeAttribute("data-closing");
+                      modalToClose.setAttribute("aria-hidden", "true");
+                      activeModal = null;
+                      html.classList.remove("modal-open");
+                      body.classList.remove("modal-open");
+                      body.style.top = "";
+                      window.scrollTo(0, scrollY);
+                    };
+
+                    const onTransitionEnd = (e: TransitionEvent) => {
+                      if (e.target === panel && (e.propertyName === "opacity" || e.propertyName === "transform")) {
+                        finishClose();
+                      }
+                    };
+
+                    modalToClose.dataset.closing = "true";
+                    panel?.addEventListener("transitionend", onTransitionEnd);
+                    setTimeout(finishClose, 320);
+                  };
+
+                  (window as any).openProjectModal = (slug: string) => {
+                    const modal = document.querySelector(
+                      `[data-project-modal="${slug}"]`
+                    ) as HTMLElement | null;
+                    if (!modal) return;
+
+                    if (activeModal && activeModal !== modal) {
+                      setOpen(activeModal, false);
+                    }
+
+                    activeModal = modal;
+                    setOpen(modal, true);
+                  };
+
+                  // Open modal if URL path indicates a modal route (/projects/:slug)
+                  const checkOpenFromPath = () => {
+                    try {
+                      const m = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/);
+                      if (m && m[1]) {
+                        (window as any).openProjectModal(m[1]);
+                      }
+                    } catch (e) {
+                      // ignore
+                    }
+                  };
+
+                  // Listen to history navigation to open/close modal appropriately
+                  window.addEventListener("popstate", (ev) => {
+                    const m = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/);
+                    if (m && m[1]) {
+                      (window as any).openProjectModal(m[1]);
+                    } else {
+                      if (activeModal) {
+                        const evt = new KeyboardEvent("keydown", { key: "Escape" });
+                        document.dispatchEvent(evt);
+                      }
+                    }
+                  });
+
+                  // On initial load, check if URL should open a modal
+                  checkOpenFromPath();
+
+                  modals.forEach((modal) => {
+                    const closeBtn = modal.querySelector(
+                      "[data-modal-close]"
+                    ) as HTMLElement | null;
+                    const backdrop = modal.querySelector(
+                      "[data-modal-backdrop]"
+                    ) as HTMLElement | null;
+
+                    closeBtn?.addEventListener("click", () => {
+                      if (activeModal === modal) {
+                        closeActiveModal();
+                      } else {
+                        setOpen(modal, false);
+                      }
+                    });
+
+                    backdrop?.addEventListener("click", () => {
+                      if (activeModal === modal) {
+                        closeActiveModal();
+                      } else {
+                        setOpen(modal, false);
+                      }
+                    });
+                  });
+
+                  document.addEventListener("keydown", (event) => {
+                    if (event.key === "Escape") {
+                      closeActiveModal();
+                    }
+                  });
+                })();
+              </script>
+            </Layout>
