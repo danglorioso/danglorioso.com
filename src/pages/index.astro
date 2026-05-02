@@ -1,18 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
-import AboutMe from "../components/AboutMe.astro";
-import Experience from "../components/Experience.astro";
-import Education from "../components/Education.astro";
-import Interests from "../components/Interests.astro";
 import Activity from "../components/Activity.astro";
 import ContactForm from "../components/ContactForm.astro";
-import ComingSoonBox from "../components/ComingSoonBox.astro";
 ---
 
 <Layout
   title="Dan Glorioso | CS Student @ Tufts"
-  description="Learn more about Dan Glorioso - CS Student @ Tufts, Full-Stack Developer, and passionate technologist"
+  description="Dan Glorioso — CS Student at Tufts, full-stack developer, and passionate technologist."
   homepage={true}
 >
   <section id="home">
@@ -20,23 +15,30 @@ import ComingSoonBox from "../components/ComingSoonBox.astro";
       <!-- Hero Section -->
       <Hero />
 
-      <!-- About Me Section -->
-      <AboutMe />
-
-      <!-- Activities Section -->
+      <!-- GitHub Activity -->
       <Activity />
 
-      <!-- Experience Section -->
-      <Experience />
-
-      <!-- Education Section -->
-      <Education />
-
-      <!-- Interests & Hobbies Section -->
-      <!-- <Interests /> -->
-
-      <!-- Coming Soon Section -->
-      <ComingSoonBox />
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4">
+        <a
+          href="/about"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-bg-card border border-border-primary text-text-secondary hover:text-text-primary hover:border-accent-primary transition-all duration-200 text-sm font-medium"
+        >
+          About me
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a
+          href="/projects"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-bg-card border border-border-primary text-text-secondary hover:text-text-primary hover:border-accent-primary transition-all duration-200 text-sm font-medium"
+        >
+          My projects
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
 
       <!-- Contact Form -->
       <div class="flex flex-col gap-6">
