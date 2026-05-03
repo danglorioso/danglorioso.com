@@ -19,12 +19,98 @@
     <h1 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
       Hey, I'm Dan
     </h1>
-    <p class="text-xl md:text-2xl text-text-secondary mb-4">
-      CS Student @ Tufts • Full-Stack Developer
+    <p class="text-lg md:text-2xl text-text-secondary mb-4">
+      CS Student @ Tufts &mdash; <span id="hero-typewriter"></span><span class="hero-cursor" aria-hidden="true">|</span>
     </p>
     <p class="text-lg text-text-tertiary leading-relaxed">
-      I'm passionate about building things that matter—whether that's useful web
-      apps, open-source projects, or creative solutions to real-world problems.
+      <!-- When I'm not at my desk, you'll find me being my friends' and family's
+      personal IT guy, cooking up a new side project on the weekend, or looking
+      up at whatever plane just flew overhead. -->
+      <!-- Basically my friends and family's personal IT guy, a weekend
+      side-project enthusiast, and the guy who looks up at the plane that just
+      flew overhead. -->
+      My friends and family's go-to tech guy, a weekend
+      side quest enthusiast, and always looking up at the plane that just
+      flew overhead.
     </p>
   </div>
 </div>
+
+<style>
+  .hero-cursor {
+    display: inline-block;
+    margin-left: 1px;
+    font-weight: 300;
+    animation: hero-blink 1s step-end infinite;
+  }
+  @keyframes hero-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+</style>
+
+<script>
+  function initTypewriter() {
+    const el = document.getElementById('hero-typewriter');
+    if (!el) return;
+
+    const phrases = [
+      'Full-Stack Developer',
+      'Algorithms TA',
+      'JumboCode PM',
+      'Plane Spotter',
+      'Engineering Student',
+      'Late-Night Snack Connoisseur',
+      'Calendar Devotee',
+      'Corny Joke Teller',
+      'Self-Proclaimed Power User',
+      // 'Drone Pilot',
+      'Video Editor',
+      '3D Printing Hobbyist',
+      'Flight Simulator Enthusiast',
+      'Magnet Collector',
+      'Breakfast-for-Dinner Advocate',
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let timer: ReturnType<typeof setTimeout>;
+
+    function tick() {
+      const current = phrases[phraseIndex];
+
+      if (isDeleting) {
+        charIndex--;
+      } else {
+        charIndex++;
+      }
+
+      el!.textContent = current.substring(0, charIndex);
+
+      let delay = isDeleting ? 45 : 90;
+
+      if (!isDeleting && charIndex === current.length) {
+        delay = 2200;
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        delay = 350;
+      }
+
+      timer = setTimeout(tick, delay);
+    }
+
+    timer = setTimeout(tick, 600);
+
+    document.addEventListener('astro:before-swap', () => clearTimeout(timer), { once: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypewriter);
+  } else {
+    initTypewriter();
+  }
+  document.addEventListener('astro:page-load', initTypewriter);
+</script>

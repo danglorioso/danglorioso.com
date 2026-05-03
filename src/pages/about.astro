@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AboutMe from "../components/AboutMe.astro";
+import Experience from "../components/Experience.astro";
+import Education from "../components/Education.astro";
+import Activity from "../components/Activity.astro";
+---
+
+<Layout
+  title="About"
+  description="Learn more about Dan Glorioso — CS student at Tufts, full-stack developer, and passionate technologist."
+>
+  <section id="about">
+    <div class="h-full w-full flex flex-col gap-12 md:gap-16">
+      <!-- About Me Section -->
+      <AboutMe />
+
+      <!-- Activities Section -->
+      <Activity />
+
+      <!-- Experience Section -->
+      <Experience />
+
+      <!-- Education Section -->
+      <Education />
+    </div>
+  </section>
+</Layout>
