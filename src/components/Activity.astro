@@ -9,7 +9,7 @@ const getColor = (count: number) => {
   return '#39d353';
 };
 ---
-<div class="activity-section flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg" data-api-base={apiBase}>
+<div class="bg-bg-card activity-section flex flex-col gap-2 p-4 sm:p-6 border border-border-primary rounded-lg" data-api-base={apiBase}>
 
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-2">
       <h2 class="text-3xl font-bold text-text-primary">Activity</h2>
@@ -24,7 +24,7 @@ const getColor = (count: number) => {
       </div>
     </div>
 
-    <div class="bg-slate-900 rounded-md relative">
+    <div class="rounded-md relative">
       <div id="activity-grid-container" class="weeks overflow-x-auto py-2" style="min-height: 7rem;">
         <div class="skeleton-grid">
           {Array.from({ length: 53 }).map(() => (
