@@ -66,7 +66,7 @@ const categories = Array.from(categorySet).sort();
               class="blog-item"
               data-categories={post.data.categories ? JSON.stringify(post.data.categories) : "[]"}
             >
-              <a href={`/blog/${post.slug}`} class="block group">
+              <a href={`/blog/${post.id}`} class="block group">
                 <BlogCard
                   title={post.data.title}
                   description={post.data.description}

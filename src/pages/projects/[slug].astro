@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     return projects
       .filter((project) => !project.data.draft)
       .map((project) => ({
-        params: { slug: project.slug },
+        params: { slug: project.id },
         props: { project },
       }));
   } catch (error) {
@@ -26,7 +26,7 @@ type Props = {
 };
 
 const { project } = Astro.props;
-const { Content } = await project.render();
+const { Content } = await render(project);
 
 // Get related projects (sharing at least one category, excluding current project)
 const allProjects = await getCollection("projects");
@@ -34,7 +34,7 @@ const projectCategories = project.data.categories || [];
 const relatedProjects = allProjects
   .filter(
     (p) => {
-      if (p.slug === project.slug || p.data.draft) {
+      if (p.id === project.id || p.data.draft) {
         return false;
       }
       const pCategories = p.data.categories || [];
@@ -310,7 +310,7 @@ const getStatusStyle = (status: string) => {
                   )}
                   <h3 class="text-lg font-semibold text-white mb-2">
                     <a
-                      href={`/projects/${relatedProject.slug}`}
+                      href={`/projects/${relatedProject.id}`}
                       class="hover:text-blue-400 transition-colors duration-200"
                     >
                       {relatedProject.data.title}

@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
       // Only get published posts
       .filter((post) => !post.data.draft)
       .map((post) => ({
-        params: { slug: post.slug },
+        params: { slug: post.id },
         props: { post },
       }));
   } catch (error) {
@@ -28,12 +28,12 @@ type Props = {
 };
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 // Get related posts (excluding current post)
 const allPosts = await getCollection("blog");
 const relatedPosts = allPosts
-  .filter((p) => p.slug !== post.slug && !p.data.draft)
+  .filter((p) => p.id !== post.id && !p.data.draft)
   .slice(0, 3);
 
 // Format date function
@@ -156,7 +156,7 @@ const formatDate = (date: Date) => {
             <div class="grid md:grid-cols-2 gap-6">
               {relatedPosts.map((relatedPost) => (
                 <a
-                  href={`/blog/${relatedPost.slug}`}
+                  href={`/blog/${relatedPost.id}`}
                   class="block bg-slate-800/50 rounded-lg p-6 hover:bg-slate-700/50 transition-colors duration-200"
                 >
                   {/* Other Posts Title & Featured Star */}

@@ -1,10 +1,9 @@
-import { z, defineCollection, reference } from 'astro:content';
+import { z } from 'zod';
+import { defineCollection, reference } from 'astro:content';
+import { glob } from 'astro/loaders';
 
-// Using Astro Collections for blog posts
-
-// Blog schema
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -18,9 +17,8 @@ const blog = defineCollection({
   }),
 });
 
-// Projects schema
 const projects = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -34,10 +32,10 @@ const projects = defineCollection({
     githubUrl: z.string().url().optional(),
     liveUrl: z.string().url().optional(),
     imageUrl: z.string().optional(),
-    favicon: z.string().optional(), // Project favicon filename (from /public/favicons/)
-    priority: z.number().min(1).max(10).default(5), // For sorting
+    favicon: z.string().optional(),
+    priority: z.number().min(1).max(10).default(5),
     collaborators: z.array(z.string()).optional(),
-    achievements: z.array(z.string()).optional(), // Awards, metrics, etc.
+    achievements: z.array(z.string()).optional(),
   }),
 });
 
