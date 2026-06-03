@@ -137,6 +137,45 @@ const { title, description, homepage } = Astro.props;
       } else {
         initBackToTop();
       }
+
+      // Parallax background scrolling
+      function initParallaxBg() {
+        const bg = document.querySelector(".site-bg");
+        if (!bg) return;
+
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        if (prefersReducedMotion) return;
+
+        const speed = 0.1;
+        const maxOffset = 60;
+        let ticking = false;
+
+        function updateParallax() {
+          const offset = window.pageYOffset || document.documentElement.scrollTop;
+          const translateY = -Math.min(offset * speed, maxOffset);
+          bg.style.transform = `translate3d(0, ${translateY}px, 0)`;
+          ticking = false;
+        }
+
+        window.addEventListener("scroll", () => {
+          if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        });
+
+        updateParallax();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          initParallaxBg();
+        });
+      } else {
+        initParallaxBg();
+      }
     </script>
   </body>
 </html>
@@ -161,6 +200,7 @@ const { title, description, homepage } = Astro.props;
   }
 
   .site-bg {
+    will-change: transform;
     background:
       radial-gradient(
         900px 600px at 15% 10%,
