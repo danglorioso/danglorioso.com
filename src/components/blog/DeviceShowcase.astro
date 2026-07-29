@@ -1,0 +1,292 @@
+---
+// Live, non-interactive preview of the homepage inside laptop + phone outlines.
+// The device shapes come from traced photos (macbook-trace.svg / iphone-trace.svg):
+// each is a single silhouette path whose screen/notch area is a literal hole
+// (nonzero fill-rule), so it's used as an opaque mask over a full-bleed iframe
+// instead of hand-estimated bezel percentages.
+import macbookOutline from "./macbook-trace.svg?raw";
+import iphoneOutline from "./iphone-trace.svg?raw";
+---
+
+<div class="device-showcase not-prose" aria-hidden="true">
+  <div class="device laptop">
+    <div class="laptop-body">
+      <div class="laptop-screen-hole">
+        <div
+          class="device-content"
+          data-base-width="1440"
+          data-base-height="900"
+        >
+          <iframe
+            src="/"
+            title=""
+            tabindex="-1"
+            loading="lazy"
+            width="1440"
+            height="900"
+          ></iframe>
+        </div>
+      </div>
+      <div class="mac-outline" set:html={macbookOutline} />
+      <svg
+        class="laptop-chrome"
+        viewBox="0 0 3860 2540"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <line class="hinge-line" x1="364" y1="2371" x2="3494" y2="2371"></line>
+      </svg>
+    </div>
+  </div>
+
+  <div class="device phone">
+    <div class="phone-frame">
+      <div class="phone-screen" data-radius-pct="17">
+        <div
+          class="device-content"
+          data-base-width="390"
+          data-base-height="995"
+        >
+          <iframe
+            src="/"
+            title=""
+            tabindex="-1"
+            loading="lazy"
+            width="390"
+            height="995"
+          ></iframe>
+        </div>
+      </div>
+
+      <svg
+        class="phone-chrome"
+        viewBox="0 0 135 276"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <rect class="home-indicator" x="47.5" y="269" width="40" height="2" rx="1"
+        ></rect>
+      </svg>
+
+      <div class="iphone-outline" set:html={iphoneOutline} />
+    </div>
+  </div>
+</div>
+
+<style>
+  .device-showcase {
+    --line: rgba(148, 197, 255, 0.35);
+    --line-soft: rgba(148, 197, 255, 0.18);
+    --bg-solid: #0f172a; /* Outline around device */ 
+    --bg-screen: rgb(15, 20, 36); /* Background color within screen */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(1.5rem, 5vw, 3rem);
+    width: 100%;
+    margin: 3rem 0;
+  }
+
+  .device-content {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .device-content iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    border: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Laptop */
+  .laptop {
+    flex: 1 1 68%;
+    max-width: 640px;
+  }
+
+  .laptop-body {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3860 / 2540;
+  }
+
+  /* screen-hole bounding box, derived from the macbook-trace.svg path data */
+  .laptop-screen-hole {
+    position: absolute;
+    top: 11.34%;
+    left: 10.83%;
+    right: 10.83%;
+    bottom: 11.34%;
+    background: var(--bg-screen);
+    overflow: hidden;
+  }
+
+  .laptop-screen-hole .device-content {
+    top: 4%;
+  }
+
+  .mac-outline {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .laptop-chrome {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .laptop-chrome .hinge-line {
+    stroke: var(--line);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Phone */
+  .phone {
+    flex: 0 0 clamp(120px, 22%, 190px);
+    display: flex;
+    justify-content: center;
+  }
+
+  .phone-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1350 / 2760;
+  }
+
+  /* approximate screen-hole bounding box (mask draws the precise curve on
+     top); kept off .phone-frame itself so the true square-canvas corners
+     outside the phone's rounded silhouette stay transparent */
+  .phone-screen {
+    position: absolute;
+    top: 1.3%;
+    left: 2%;
+    right: 2%;
+    bottom: 1.3%;
+    background: var(--bg-screen);
+    overflow: hidden;
+  }
+
+  .phone-screen .device-content {
+    top: 9.5%;
+  }
+
+  .iphone-outline {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .phone-chrome {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .phone-chrome .home-indicator {
+    fill: var(--line);
+  }
+
+  /* Mobile: stack, laptop on top, phone below, both centered and smaller */
+  @media (max-width: 640px) {
+    .device-showcase {
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .laptop {
+      flex: none;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .phone {
+      flex: none;
+      width: 130px;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Targets raw-injected trace SVGs; Astro's scoping attribute doesn't reach
+     content inserted via set:html, so these rules must be global. */
+  .mac-outline svg,
+  .iphone-outline svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mac-outline path {
+    fill: var(--bg-solid, #0f172a);
+    stroke: rgba(148, 197, 255, 0.35);
+    stroke-width: 1.6;
+    vector-effect: non-scaling-stroke;
+    /* traced SVG carries inline opacity<1 from the export; force solid so
+       the fill is exact slate-900, not blended with the page behind it */
+    opacity: 1;
+  }
+
+  .iphone-outline path:nth-of-type(1) {
+    fill: var(--bg-solid, #0f172a);
+    stroke: rgba(148, 197, 255, 0.35);
+    stroke-width: 1.4;
+    vector-effect: non-scaling-stroke;
+    opacity: 1;
+  }
+
+  .iphone-outline path:nth-of-type(2) {
+    fill: var(--bg-solid, #0f172a);
+    stroke: rgba(148, 197, 255, 0.18);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    opacity: 1;
+  }
+</style>
+
+<script>
+  function updateElement(el: HTMLElement) {
+    const baseWidth = Number(el.dataset.baseWidth);
+    const baseHeight = Number(el.dataset.baseHeight);
+    const iframe = el.querySelector("iframe");
+    if (iframe && baseWidth && baseHeight) {
+      const scale = el.clientWidth / baseWidth;
+      (iframe as HTMLElement).style.transform = `scale(${scale})`;
+      (iframe as HTMLElement).style.width = `${baseWidth}px`;
+      (iframe as HTMLElement).style.height = `${baseHeight}px`;
+    }
+
+    const radiusPct = Number(el.dataset.radiusPct);
+    if (radiusPct) {
+      el.style.borderRadius = `${el.clientWidth * (radiusPct / 100)}px`;
+    }
+  }
+
+  const targets = document.querySelectorAll<HTMLElement>(
+    ".device-showcase [data-base-width], .device-showcase [data-radius-pct]",
+  );
+
+  const observer = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      updateElement(entry.target as HTMLElement);
+    }
+  });
+
+  targets.forEach((el) => {
+    updateElement(el);
+    observer.observe(el);
+  });
+</script>
