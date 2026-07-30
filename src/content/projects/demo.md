@@ -1,6 +1,6 @@
 ---
 title: "Demo Playground Platform"
-description: " A living lab for testing new frameworks, APIs, and development techniques."
+description: "A living lab for testing new frameworks, APIs, and development techniques."
 startDate: 2024-02-01
 status: "in-progress"
 technologies: ["React", "Next.js", "Three.js", "WebGL", "WebAssembly", "TypeScript", "Tailwind CSS", "Vercel"]

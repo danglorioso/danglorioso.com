@@ -9,7 +9,7 @@ liveUrl: "https://masshistday.vercel.app"
 githubUrl: "https://github.com/JumboCode/MHD"
 draft: false
 favicon: "mhd.png"
-priority: 6
+priority: 8
 ---
 
 ## Project Overview

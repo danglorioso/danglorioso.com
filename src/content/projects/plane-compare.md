@@ -6,7 +6,7 @@ status: "planned"
 technologies: ["React", "TypeScript", "PostgreSQL", "GraphQL", "Next.js", "Chart.js", "Aviation APIs"]
 categories: ["Aviation"]
 featured: false
-draft: false
+draft: true
 liveUrl: "https://planes.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/plane-compare"
 favicon: "planes.ico"

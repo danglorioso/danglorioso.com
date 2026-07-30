@@ -17,7 +17,7 @@ achievements: ["50k+ monthly visitors", "Increased booking inquiries by 300%", "
 
 ## Project Overview
 
-Scott Glorioso's professional website showcases a accomplished musician's career through an elegant, performance-optimized platform. The site combines artistic design with technical excellence to create an immersive experience for fans and industry professionals.
+Scott Glorioso's professional website showcases an accomplished musician's career through an elegant, performance-optimized platform. The site combines artistic design with technical excellence to create an immersive experience for fans and industry professionals.
 
 ## Content Management System
 

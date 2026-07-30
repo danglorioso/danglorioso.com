@@ -2,7 +2,8 @@
 title: "ADS-B Live Flight Map"
 description: "A self-hosted real-time ADS-B flight tracking system that runs on a Raspberry Pi, decodes aircraft broadcast signals, and streams live telemetry data to a browser-based interactive map via WebSocket."
 startDate: 2026-03-14
-status: "in-progress"
+endDate: 2026-04-14
+status: "completed"
 technologies: ["Raspberry Pi", "Software Defined Radio (SDR)", "ADS-B / Mode S", "Node.js (Express)", "Cloudflare Tunnel", "WebSocket", "Leaflet" ]
 categories: ["Aviation"]
 featured: false
@@ -10,7 +11,7 @@ draft: false
 liveUrl: "https://planes.danglorioso.com"
 githubUrl: "https://github.com/danglorioso/adsb-map"
 favicon: "planes.ico"
-priority: 6
+priority: 7
 ---
 
 # Project Overview                                                                                     

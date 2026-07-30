@@ -9,7 +9,7 @@ categories: ["Developer Tools"]
 githubUrl: "https://github.com/danglorioso/header-hero"
 liveUrl: "https://marketplace.visualstudio.com/items?itemName=danglorioso.header-hero"
 favicon: "header-hero.png"
-priority: 7
+priority: 6
 achievements: ["3k+ active users", "Featured in extension roundup", "Multi-language template support", "Enterprise adoption"]
 ---
 

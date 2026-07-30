@@ -5,7 +5,7 @@ startDate: 2025-12-27
 endDate: 2026-08-02
 status: "completed"
 technologies: ["React Native", "Expo", "Xcode Cloud", "TypeScript", "Next.js", "REST API design", "Resend", "PostgreSQL", "Drizzle ORM"]
-categories: ["Travel"]
+categories: ["Travel", "Mobile Development", "Social"]
 featured: true
 draft: false
 liveUrl: "https://parkquest.me"
