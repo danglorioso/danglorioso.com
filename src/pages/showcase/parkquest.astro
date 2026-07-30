@@ -1,0 +1,961 @@
+---
+// "Flagship" product page for ParkQuest — an Apple-style scroll experience:
+// full-bleed hero, pinned scroll-scrubbed feature demo (real App Store
+// screenshots), and a blueprint-style architecture teardown.
+//
+// Color: this page defines its own green/gold palette (--pq-*) scoped to
+// .pq-page, matching the parkquest.me brand, instead of the site's global
+// blue --accent-primary — kept local so the rest of the portfolio is
+// untouched.
+import { Image } from "astro:assets";
+import Showcase from "../../layouts/Showcase.astro";
+import parkquestLogo from "../../content/projects/parkquest-logo.png";
+---
+
+<Showcase
+  title="ParkQuest"
+  description="ParkQuest — a national park tracker for the U.S.'s 63 national parks, live on the App Store."
+>
+  <div class="pq-page">
+    <!-- Hero -->
+    <section class="pq-hero">
+      <div class="pq-hero-glow" aria-hidden="true"></div>
+      <div class="pq-hero-fade" aria-hidden="true"></div>
+      <svg class="pq-hero-bg" viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="pq-shoot-grad-1" gradientUnits="userSpaceOnUse" x1="260" y1="60" x2="200" y2="110">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.9" />
+          </linearGradient>
+          <linearGradient id="pq-shoot-grad-2" gradientUnits="userSpaceOnUse" x1="800" y1="40" x2="730" y2="70">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.9" />
+          </linearGradient>
+          <linearGradient id="pq-shoot-grad-3" gradientUnits="userSpaceOnUse" x1="1200" y1="150" x2="1145" y2="215">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.9" />
+          </linearGradient>
+          <g id="pq-wind-lines" fill="none" stroke="#cfe0d1" stroke-width="1" opacity="0.12">
+            <path d="M -100 260 C 200 220, 350 300, 600 250 S 1000 200, 1300 250 S 1600 220, 1750 260" />
+            <path d="M -100 320 C 200 280, 350 360, 600 310 S 1000 260, 1300 310 S 1600 280, 1750 320" />
+          </g>
+        </defs>
+        <g class="pq-wind-track">
+          <use href="#pq-wind-lines" x="0" />
+          <use href="#pq-wind-lines" x="1850" />
+        </g>
+        <g fill="currentColor" class="pq-hero-stars">
+          <circle class="pq-star pq-star-1" cx="180" cy="150" r="1.6" />
+          <circle class="pq-star pq-star-2" cx="420" cy="90" r="1.6" />
+          <circle class="pq-star pq-star-3" cx="640" cy="180" r="1.4" />
+          <circle class="pq-star pq-star-4" cx="900" cy="70" r="1.8" />
+          <circle class="pq-star pq-star-5" cx="1180" cy="130" r="1.4" />
+          <circle class="pq-star pq-star-6" cx="1390" cy="170" r="1.6" />
+          <circle class="pq-star pq-star-7" cx="1040" cy="220" r="1.4" />
+          <circle class="pq-star pq-star-8" cx="270" cy="260" r="1.4" />
+          <circle class="pq-star pq-star-9" cx="530" cy="230" r="1.3" />
+          <circle class="pq-star pq-star-10" cx="790" cy="150" r="1.5" />
+          <circle class="pq-star pq-star-11" cx="1280" cy="240" r="1.3" />
+          <circle class="pq-star pq-star-12" cx="1500" cy="100" r="1.6" />
+        </g>
+        <g class="pq-shooting-stars">
+          <line class="pq-shoot pq-shoot-1" x1="260" y1="60" x2="200" y2="110" stroke="url(#pq-shoot-grad-1)" stroke-width="1.6" stroke-linecap="round" />
+          <line class="pq-shoot pq-shoot-2" x1="800" y1="40" x2="730" y2="70" stroke="url(#pq-shoot-grad-2)" stroke-width="1.4" stroke-linecap="round" />
+          <line class="pq-shoot pq-shoot-3" x1="1200" y1="150" x2="1145" y2="215" stroke="url(#pq-shoot-grad-3)" stroke-width="1.6" stroke-linecap="round" />
+        </g>
+        <!-- back ridge -->
+        <polygon points="-100,520 150,260 420,480 700,180 1000,470 1300,300 1750,520 1750,800 -100,800" fill="#1c3524" opacity="0.85" />
+        <!-- mid ridge -->
+        <polygon points="-100,600 250,380 550,600 850,320 1150,610 1450,400 1750,600 1750,800 -100,800" fill="#152a1c" opacity="0.92" />
+        <!-- front ridge -->
+        <polygon points="-100,700 300,520 650,700 1000,460 1350,700 1750,540 1750,800 -100,800" fill="#0f2015" />
+      </svg>
+
+      <div class="pq-hero-content page-fade-in">
+        <Image src={parkquestLogo} alt="ParkQuest app icon" class="pq-app-icon" width={200} height={200} />
+
+        <!-- <p class="pq-eyebrow">EST. 2026 &middot; 63 PARKS &middot; ONE QUEST</p> -->
+        <h1 class="pq-title">ParkQuest</h1>
+        <p class="pq-tagline">Every park. One journal.</p>
+        <p class="pq-subtext">
+          Log every U.S. national park you've visited, plan the next one, collect
+          stamps and badges, and bring your friends along.
+        </p>
+        <div class="pq-hero-links">
+          <a href="https://parkquest.me/download" target="_blank" rel="noopener noreferrer" class="pq-badge">Available now on iOS</a>
+          <a href="https://parkquest.me" target="_blank" rel="noopener noreferrer" class="pq-link">parkquest.me &rarr;</a>
+        </div>
+      </div>
+
+      <svg class="pq-scroll-cue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </section>
+
+    <!-- Origin story -->
+    <section class="pq-section pq-origin">
+      <div class="pq-origin-grid">
+        <div class="pq-origin-text">
+          <h2>The idea</h2>
+          <p>
+            After graduating from Tufts this past spring, two high school friends and I set out on a
+            post-grad road trip to see all nine California national parks. Somewhere between
+            trailheads, our tracking was scattered across notes apps and camera rolls &mdash; there
+            wasn't a real way to log what we'd actually seen.
+          </p>
+          <p>
+            ParkQuest is the fix: a proper log for all 63 U.S. national parks, built to track visits,
+            see progress on a map, and compare notes with the people you explore with.
+          </p>
+        </div>
+        <div class="pq-origin-map">
+          <svg viewBox="0 0 300 380" aria-hidden="true">
+            <path
+              d="M 90 20 L 210 40 L 220 120 L 260 160 L 250 260 L 200 300 L 150 360 L 110 340 L 90 260 L 60 200 L 70 120 Z"
+              fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"
+            />
+            <g stroke="currentColor" stroke-width="1.2" opacity="0.7" fill="none">
+              <path d="M 120 60 L 150 100 L 140 150 L 170 190 L 155 230 L 180 270 L 160 310" stroke-dasharray="3 5" />
+            </g>
+            <g fill="currentColor">
+              <circle cx="120" cy="60" r="3.5" />
+              <circle cx="150" cy="100" r="3.5" />
+              <circle cx="140" cy="150" r="3.5" />
+              <circle cx="170" cy="190" r="3.5" />
+              <circle cx="155" cy="230" r="3.5" />
+              <circle cx="180" cy="270" r="3.5" />
+              <circle cx="160" cy="310" r="3.5" />
+            </g>
+          </svg>
+          <p class="pq-map-caption">The route &mdash; 9 California national parks, one trip.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What's inside -->
+    <section class="pq-section pq-inside">
+      <h2>What's inside</h2>
+      <div class="pq-inside-grid">
+        <div class="pq-inside-card">
+          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <path d="M20 8 L20 20 L28 26" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.9" />
+          </svg>
+          <h3>Track every park</h3>
+          <p>All 63 U.S. national parks on one map &mdash; visited, unvisited, and what's next.</p>
+        </div>
+        <div class="pq-inside-card">
+          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <rect x="6" y="8" width="28" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <line x1="6" y1="15" x2="34" y2="15" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <circle cx="14" cy="23" r="2" fill="currentColor" opacity="0.9" />
+            <circle cx="22" cy="23" r="2" fill="currentColor" opacity="0.5" />
+            <circle cx="30" cy="23" r="2" fill="currentColor" opacity="0.5" />
+          </svg>
+          <h3>Plan your next trip</h3>
+          <p>Queue up parks you want to see next and turn "someday" into an itinerary.</p>
+        </div>
+        <div class="pq-inside-card">
+          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" stroke-dasharray="2 3" />
+            <path d="M14 20 L18 24 L27 14" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.9" />
+          </svg>
+          <h3>Collect stamps &amp; badges</h3>
+          <p>Earn a digital stamp for every visit and unlock badges as your log fills in.</p>
+        </div>
+        <div class="pq-inside-card">
+          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="14" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.6" />
+            <circle cx="27" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
+            <path d="M6 32 C6 25 11 22 14 22 C17 22 22 25 22 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.6" />
+            <path d="M19 32 C19 25 24 22 27 22 C30 22 35 25 35 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.4" />
+          </svg>
+          <h3>Compare with friends</h3>
+          <p>See who's ahead on the leaderboard and turn tracking parks into friendly competition.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pinned feature scroller -->
+    <section id="pq-feature-section" class="pq-section pq-features">
+      <div class="pq-feature-grid">
+        <div class="pq-phone-stage">
+          <div class="pq-phone">
+            <div class="pq-phone-notch"></div>
+            <div class="pq-phone-screen">
+              <div class="pq-screen pq-screen-1" data-pq-screen="1">
+                <p class="pq-screen-label">Map</p>
+                <svg viewBox="0 0 220 380" class="pq-screen-svg">
+                  <rect x="10" y="10" width="200" height="360" rx="14" fill="none" stroke="currentColor" opacity="0.3" />
+                  <g fill="currentColor">
+                    <circle cx="60" cy="90" r="5" opacity="0.9" />
+                    <circle cx="120" cy="70" r="5" opacity="0.3" />
+                    <circle cx="150" cy="140" r="5" opacity="0.9" />
+                    <circle cx="90" cy="180" r="5" opacity="0.3" />
+                    <circle cx="140" cy="230" r="5" opacity="0.9" />
+                    <circle cx="70" cy="270" r="5" opacity="0.3" />
+                    <circle cx="130" cy="310" r="5" opacity="0.9" />
+                  </g>
+                  <text x="20" y="350" fill="currentColor" font-size="11" opacity="0.6">37 / 63 parks visited</text>
+                </svg>
+              </div>
+              <div class="pq-screen pq-screen-2" data-pq-screen="2">
+                <p class="pq-screen-label">Log a visit</p>
+                <svg viewBox="0 0 220 380" class="pq-screen-svg">
+                  <rect x="10" y="10" width="200" height="360" rx="14" fill="none" stroke="currentColor" opacity="0.3" />
+                  <text x="24" y="50" fill="currentColor" font-size="14" opacity="0.85">Yosemite</text>
+                  <rect x="24" y="70" width="172" height="90" rx="6" fill="none" stroke="currentColor" opacity="0.5" />
+                  <line x1="24" y1="185" x2="196" y2="185" stroke="currentColor" opacity="0.4" />
+                  <line x1="24" y1="210" x2="196" y2="210" stroke="currentColor" opacity="0.4" />
+                  <line x1="24" y1="235" x2="140" y2="235" stroke="currentColor" opacity="0.4" />
+                  <rect x="24" y="300" width="172" height="34" rx="8" fill="currentColor" opacity="0.25" />
+                  <text x="110" y="322" fill="currentColor" font-size="11" text-anchor="middle" opacity="0.85">Save visit</text>
+                </svg>
+              </div>
+              <div class="pq-screen pq-screen-3" data-pq-screen="3">
+                <p class="pq-screen-label">Compare</p>
+                <svg viewBox="0 0 220 380" class="pq-screen-svg">
+                  <rect x="10" y="10" width="200" height="360" rx="14" fill="none" stroke="currentColor" opacity="0.3" />
+                  <text x="24" y="45" fill="currentColor" font-size="13" opacity="0.85">Leaderboard</text>
+                  <g stroke="currentColor" opacity="0.4">
+                    <line x1="24" y1="70" x2="196" y2="70" />
+                    <line x1="24" y1="110" x2="196" y2="110" />
+                    <line x1="24" y1="150" x2="196" y2="150" />
+                    <line x1="24" y1="190" x2="196" y2="190" />
+                  </g>
+                  <text x="24" y="95" fill="currentColor" font-size="11" opacity="0.85">1. Dan &mdash; 37 parks</text>
+                  <text x="24" y="135" fill="currentColor" font-size="11" opacity="0.6">2. Sam &mdash; 29 parks</text>
+                  <text x="24" y="175" fill="currentColor" font-size="11" opacity="0.6">3. Jordan &mdash; 22 parks</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pq-captions">
+          <div class="pq-caption pq-caption-1" data-pq-caption="1">
+            <h3>Track all 63 parks</h3>
+            <p>See every U.S. national park on one map &mdash; visited, unvisited, and what's next.</p>
+          </div>
+          <div class="pq-caption pq-caption-2" data-pq-caption="2">
+            <h3>Log each visit</h3>
+            <p>Quick entries for dates, notes, and photos &mdash; right after you're off the trail.</p>
+          </div>
+          <div class="pq-caption pq-caption-3" data-pq-caption="3">
+            <h3>Compare with friends</h3>
+            <p>See who's ahead and turn tracking parks into a bit of a competition.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- By the numbers -->
+    <section class="pq-section pq-stats">
+      <div class="pq-stats-grid">
+        <div class="pq-stat">
+          <p class="pq-stat-num">63</p>
+          <p class="pq-stat-label">U.S. national parks tracked</p>
+        </div>
+        <div class="pq-stat">
+          <p class="pq-stat-num">9</p>
+          <p class="pq-stat-label">Parks on the trip that started it</p>
+        </div>
+        <div class="pq-stat">
+          <p class="pq-stat-num">2026</p>
+          <p class="pq-stat-label">Launch year</p>
+        </div>
+        <div class="pq-stat">
+          <p class="pq-stat-num">iOS + Web</p>
+          <p class="pq-stat-label">Native app, plus parkquest.me</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Built with -->
+    <section class="pq-section pq-bts">
+      <h2>Built with</h2>
+      <div class="pq-diagram">
+        <svg viewBox="0 0 900 220" class="pq-diagram-svg" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
+            <rect x="20" y="80" width="180" height="60" rx="6" />
+            <rect x="290" y="80" width="140" height="60" rx="6" />
+            <rect x="520" y="80" width="220" height="60" rx="6" />
+            <rect x="520" y="20" width="220" height="40" rx="6" opacity="0.4" />
+            <line x1="200" y1="110" x2="290" y2="110" />
+            <line x1="430" y1="110" x2="520" y2="110" />
+            <line x1="630" y1="80" x2="630" y2="60" opacity="0.4" />
+          </g>
+          <g fill="currentColor" opacity="0.85" font-size="13">
+            <text x="110" y="115" text-anchor="middle">Native iOS App</text>
+            <text x="360" y="115" text-anchor="middle">Node.js API</text>
+            <text x="630" y="115" text-anchor="middle">PostgreSQL + Drizzle</text>
+            <text x="630" y="45" text-anchor="middle" opacity="0.7">63-park geodata &amp; map tiles</text>
+          </g>
+        </svg>
+      </div>
+      <ul class="pq-stack-badges">
+        <li>Swift &amp; SwiftUI</li>
+        <li>React</li>
+        <li>TypeScript</li>
+        <li>Node.js</li>
+        <li>Leaflet</li>
+        <li>PostgreSQL</li>
+        <li>Drizzle ORM</li>
+      </ul>
+      <ul class="pq-notes">
+        <li>Type-safe schema and migrations via Drizzle ORM instead of hand-written SQL.</li>
+        <li>Park boundaries and visit map rendered from a dedicated 63-park geodata set, with Leaflet powering the web map.</li>
+        <li>A companion web app at parkquest.me, built with React and TypeScript, mirrors the same tracking for desktop.</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section class="pq-section pq-cta">
+      <Image src={parkquestLogo} alt="ParkQuest app icon" class="pq-app-icon pq-app-icon-small" width={200} height={200} />
+      <h2>Try it yourself</h2>
+      <div class="pq-cta-store">
+        <a href="https://parkquest.me/download" target="_blank" rel="noopener noreferrer" class="pq-store-badge">
+          <img src="/badges/app-store-badge.svg" alt="Download on the App Store" width="160" height="47" />
+        </a>
+        <a href="https://parkquest.me" target="_blank" rel="noopener noreferrer" class="pq-cta-web-link">or start on the web &rarr;</a>
+      </div>
+      <div class="pq-cta-links">
+        <a href="https://github.com/danglorioso/park-quest" target="_blank" rel="noopener noreferrer" class="pq-link">View source &rarr;</a>
+      </div>
+      <a href="/projects" class="pq-back">&larr; Back to all projects</a>
+    </section>
+  </div>
+</Showcase>
+
+<style>
+  .pq-page {
+    /* ParkQuest brand palette — scoped to this page only, kept separate
+       from the site's global blue --accent-primary. */
+    --pq-bg-0: #0b160f;
+    --pq-bg-1: #13261a;
+    --pq-bg-2: #1c3524;
+    --pq-gold: #d7a955;
+    --pq-gold-soft: #e8c37e;
+    --pq-cream: #f3efe2;
+    --pq-mute: #a8bcac;
+  }
+
+  section.pq-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 2rem;
+    background: linear-gradient(180deg, var(--pq-bg-1) 0%, var(--pq-bg-0) 65%, #060b08 100%);
+    color: var(--pq-mute);
+  }
+
+  .pq-hero-glow {
+    position: absolute;
+    top: 8%;
+    right: 12%;
+    width: 32rem;
+    height: 32rem;
+    background: radial-gradient(circle, rgba(224, 165, 63, 0.35) 0%, rgba(224, 165, 63, 0) 70%);
+    filter: blur(10px);
+    pointer-events: none;
+  }
+
+  .pq-hero-fade {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 14rem;
+    background: linear-gradient(to bottom, transparent, var(--bg-primary));
+    pointer-events: none;
+  }
+
+  .pq-hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--pq-gold-soft);
+  }
+  .pq-star {
+    --pq-star-max: 0.6;
+    animation-name: pq-twinkle;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  .pq-star-1  { --pq-star-max: 0.7;  animation-duration: 4.2s; animation-delay: 0s; }
+  .pq-star-2  { --pq-star-max: 0.5;  animation-duration: 6.1s; animation-delay: 1.1s; }
+  .pq-star-3  { --pq-star-max: 0.6;  animation-duration: 3.4s; animation-delay: 0.6s; }
+  .pq-star-4  { --pq-star-max: 0.8;  animation-duration: 5.3s; animation-delay: 2.4s; }
+  .pq-star-5  { --pq-star-max: 0.55; animation-duration: 4.8s; animation-delay: 0.3s; }
+  .pq-star-6  { --pq-star-max: 0.65; animation-duration: 3.9s; animation-delay: 1.8s; }
+  .pq-star-7  { --pq-star-max: 0.5;  animation-duration: 6.6s; animation-delay: 3.1s; }
+  .pq-star-8  { --pq-star-max: 0.6;  animation-duration: 4.5s; animation-delay: 2s; }
+  .pq-star-9  { --pq-star-max: 0.55; animation-duration: 5.7s; animation-delay: 0.9s; }
+  .pq-star-10 { --pq-star-max: 0.7;  animation-duration: 3.7s; animation-delay: 2.7s; }
+  .pq-star-11 { --pq-star-max: 0.5;  animation-duration: 5s;   animation-delay: 1.4s; }
+  .pq-star-12 { --pq-star-max: 0.65; animation-duration: 4.1s; animation-delay: 3.5s; }
+  @keyframes pq-twinkle {
+    0%, 100% { opacity: var(--pq-star-max); }
+    50% { opacity: 0.15; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-star { animation: none; }
+  }
+
+  .pq-shoot {
+    opacity: 0;
+    transform-origin: 0 0;
+  }
+  /* Each star's travel vector matches its own line angle (tail top-right → head bottom-left). */
+  .pq-shoot-1 {
+    --pq-shoot-dx: -260px; --pq-shoot-dy: 215px;
+    animation: pq-shoot-move 8s ease-in infinite; animation-delay: 0.5s;
+  }
+  .pq-shoot-2 {
+    --pq-shoot-dx: -300px; --pq-shoot-dy: 130px;
+    animation: pq-shoot-move 9s ease-in infinite; animation-delay: 3.5s;
+  }
+  .pq-shoot-3 {
+    --pq-shoot-dx: -235px; --pq-shoot-dy: 280px;
+    animation: pq-shoot-move 7.5s ease-in infinite; animation-delay: 6s;
+  }
+  @keyframes pq-shoot-move {
+    0% { transform: translate(0, 0); opacity: 0; }
+    2% { opacity: 1; }
+    14% { transform: translate(var(--pq-shoot-dx), var(--pq-shoot-dy)); opacity: 0; }
+    100% { transform: translate(var(--pq-shoot-dx), var(--pq-shoot-dy)); opacity: 0; }
+  }
+
+  /* Faint wind-streak lines: two seamless copies of the same path drift left and loop. */
+  .pq-wind-track {
+    animation: pq-wind-drift 70s linear infinite;
+  }
+  @keyframes pq-wind-drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-1850px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-star, .pq-shoot, .pq-wind-track { animation: none; }
+    .pq-shoot { opacity: 0; }
+  }
+
+  .pq-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 42rem;
+  }
+
+  .pq-app-icon {
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin: 0 auto 1.5rem;
+    border-radius: 22%;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+  }
+
+  .pq-eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pq-gold-soft);
+    opacity: 0.85;
+    margin-bottom: 1rem;
+  }
+
+  .pq-title {
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    font-weight: 800;
+    color: var(--pq-cream);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .pq-tagline {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--pq-cream);
+    opacity: 0.9;
+    margin-bottom: 1rem;
+  }
+
+  .pq-subtext {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--pq-mute);
+    max-width: 32rem;
+    margin: 0 auto 2rem;
+  }
+
+  .pq-hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pq-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--pq-bg-2) 85%, black);
+    border: 1px solid color-mix(in oklab, var(--pq-gold) 30%, transparent);
+    color: var(--pq-cream);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .pq-badge:hover {
+    border-color: var(--pq-gold);
+    background: color-mix(in oklab, var(--pq-bg-2) 70%, black);
+  }
+
+  .pq-link {
+    color: var(--pq-mute);
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .pq-link:hover {
+    color: var(--pq-gold-soft);
+    border-color: var(--pq-gold-soft);
+  }
+
+  .pq-scroll-cue {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 26px;
+    height: 26px;
+    color: var(--pq-gold-soft);
+    z-index: 1;
+    animation: pq-scroll-cue-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pq-scroll-cue-pulse {
+    0%, 100% { transform: translate(-50%, 0); opacity: 1; }
+    50% { transform: translate(-50%, 10px); opacity: 0.35; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-scroll-cue { animation: none; }
+  }
+
+  .pq-section {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .pq-section h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+  }
+
+  .pq-origin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .pq-origin-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  .pq-origin-text p {
+    color: var(--text-tertiary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .pq-origin-map {
+    color: var(--pq-gold);
+    text-align: center;
+  }
+  .pq-origin-map svg {
+    width: 100%;
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .pq-map-caption {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  /* What's inside */
+  .pq-inside-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 700px) {
+    .pq-inside-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .pq-inside-card {
+    padding: 1.75rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 1rem;
+    background: var(--bg-card);
+  }
+  .pq-inside-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--pq-gold);
+    margin-bottom: 1rem;
+  }
+  .pq-inside-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  .pq-inside-card p {
+    color: var(--text-tertiary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Pinned feature scroller */
+  .pq-features {
+    max-width: none;
+    padding: 0;
+  }
+  .pq-feature-grid {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  @media (min-width: 900px) {
+    .pq-feature-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4rem;
+    }
+  }
+
+  .pq-phone-stage {
+    display: flex;
+    justify-content: center;
+  }
+  @media (min-width: 900px) {
+    .pq-phone-stage {
+      align-self: start;
+      position: sticky;
+      top: 6rem;
+    }
+  }
+
+  .pq-phone {
+    position: relative;
+    width: 240px;
+    height: 490px;
+    border-radius: 2.75rem;
+    border: 6px solid color-mix(in oklab, var(--border-primary) 90%, transparent);
+    background: var(--bg-card);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+  }
+  .pq-phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 20px;
+    background: color-mix(in oklab, var(--border-primary) 90%, transparent);
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+  }
+  .pq-phone-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .pq-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--pq-gold);
+  }
+  .pq-screen-2, .pq-screen-3 {
+    /* hidden by default; JS controls visibility on desktop, CSS stacks them on mobile */
+    opacity: 0;
+    visibility: hidden;
+  }
+  .pq-screen-label {
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    opacity: 0.6;
+  }
+  .pq-screen-svg {
+    width: 85%;
+    height: auto;
+  }
+
+  .pq-captions {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+  @media (min-width: 900px) {
+    .pq-captions {
+      gap: 30vh;
+      padding: 10vh 0;
+    }
+  }
+  .pq-caption h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  .pq-caption p {
+    color: var(--text-tertiary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 26rem;
+  }
+
+  /* By the numbers */
+  .pq-stats {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .pq-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    text-align: center;
+  }
+  @media (min-width: 700px) {
+    .pq-stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .pq-stat-num {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--pq-gold);
+    margin-bottom: 0.5rem;
+  }
+  .pq-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    line-height: 1.4;
+  }
+
+  /* Built with */
+  .pq-diagram {
+    color: var(--pq-gold);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+  .pq-diagram-svg {
+    width: 100%;
+    min-width: 640px;
+  }
+  .pq-stack-badges {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+  .pq-stack-badges li {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pq-notes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--text-tertiary);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .pq-notes li::before {
+    content: "\2014 ";
+    color: var(--text-secondary);
+  }
+
+  .pq-cta {
+    text-align: center;
+  }
+  .pq-app-icon-small {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .pq-cta-store {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 2rem;
+  }
+  .pq-store-badge {
+    display: inline-flex;
+    line-height: 0;
+    border-radius: 10px;
+    transition: opacity 0.2s ease;
+  }
+  .pq-store-badge:hover {
+    opacity: 0.85;
+  }
+  .pq-store-badge img {
+    display: block;
+    width: 160px;
+    height: auto;
+  }
+  .pq-cta-web-link {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .pq-cta-web-link:hover {
+    color: var(--pq-gold);
+    border-color: var(--pq-gold);
+  }
+  .pq-cta-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+  .pq-back {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .pq-back:hover {
+    color: var(--text-primary);
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initParkQuestHero() {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const content = document.querySelector(".pq-hero-content");
+    if (!content) return;
+    const targets = [
+      content.querySelector(".pq-app-icon"),
+      content.querySelector(".pq-eyebrow"),
+      content.querySelector(".pq-title"),
+      content.querySelector(".pq-tagline"),
+      content.querySelector(".pq-subtext"),
+      content.querySelector(".pq-hero-links"),
+    ].filter(Boolean);
+    if (!targets.length) return;
+
+    gsap.set(content, { opacity: 1 });
+    gsap.from(targets, {
+      y: 22,
+      opacity: 0,
+      duration: 0.7,
+      ease: "power2.out",
+      stagger: 0.1,
+      delay: 0.15,
+    });
+  }
+
+  function initParkQuestScroll() {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 900px)", () => {
+      const section = document.getElementById("pq-feature-section");
+      const screens = gsap.utils.toArray<HTMLElement>(".pq-screen");
+      const captions = gsap.utils.toArray<HTMLElement>(".pq-caption");
+      if (!section || screens.length < 3 || captions.length < 3) return;
+
+      gsap.set(screens, { autoAlpha: 0 });
+      gsap.set(screens[0], { autoAlpha: 1 });
+      gsap.set(captions, { opacity: 0.3 });
+      gsap.set(captions[0], { opacity: 1 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top+=90",
+          end: "+=1600",
+          scrub: 0.6,
+          pin: ".pq-phone-stage",
+          anticipatePin: 1,
+        },
+      });
+
+      for (let i = 1; i < screens.length; i++) {
+        tl.to(screens[i - 1], { autoAlpha: 0, duration: 0.4 }, i)
+          .to(screens[i], { autoAlpha: 1, duration: 0.4 }, i)
+          .to(captions[i - 1], { opacity: 0.3, duration: 0.4 }, i)
+          .to(captions[i], { opacity: 1, duration: 0.4 }, i);
+      }
+
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    });
+  }
+
+  function initParkQuest() {
+    initParkQuestHero();
+    initParkQuestScroll();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initParkQuest);
+  } else {
+    initParkQuest();
+  }
+</script>
