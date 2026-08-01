@@ -14,6 +14,63 @@ import parkquestLogo from "../../content/projects/parkquest-logo.png";
 // body path has the screen area cut out via nonzero fill-rule, so it works as
 // an overlay mask over whatever's positioned in .pq-phone-screen-hole below.
 import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
+
+// Deterministic shuffle (fixed seed) instead of Math.random() — this list is
+// built once at build/render time, and a stable order avoids the row
+// reshuffling itself on every rebuild or SSR request.
+function seededShuffle<T>(arr: T[], seed: number): T[] {
+  let state = seed;
+  const rand = () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+// Phone carousel slides — mix of the original curated set (some video) and
+// the full batch of real device screenshots, in one data-driven list so the
+// track markup below doesn't repeat itself 40+ times. Order is randomized
+// (see seededShuffle above) so it doesn't read as ~11 curated shots followed
+// by ~32 raw dumps in upload order.
+const carouselSlidesOrdered: { src: string; alt: string; video?: boolean }[] = [
+  { src: "/showcase/parkquest/web/feed.jpg", alt: "ParkQuest social feed" },
+  { src: "/showcase/parkquest/web/map.jpg", alt: "ParkQuest map" },
+  { src: "/showcase/parkquest/web/map-grandcanyon.jpg", alt: "ParkQuest map, Grand Canyon" },
+  { src: "/showcase/parkquest/web/profile-arches.jpg", alt: "Arches National Park detail" },
+  { src: "/showcase/parkquest/web/profile-grandcanyon.jpg", alt: "Grand Canyon National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9687.jpg", alt: "ParkQuest feed, first visit to Grand Teton National Park" },
+  { src: "/showcase/parkquest/web/carousel/img-9691.jpg", alt: "Grand Teton National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9692.jpg", alt: "Yellowstone National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9693.jpg", alt: "Acadia National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9694.jpg", alt: "Virgin Islands National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9695.jpg", alt: "Mount Rainier National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9696.jpg", alt: "Yosemite National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9697.jpg", alt: "Joshua Tree National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9698.jpg", alt: "Redwood National and State Parks detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9699.jpg", alt: "Shenandoah National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9700.jpg", alt: "New River Gorge National Park and Preserve detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9704.jpg", alt: "Explore the Parks grid" },
+  { src: "/showcase/parkquest/web/carousel/img-9707.jpg", alt: "Browse the full parks list" },
+  { src: "/showcase/parkquest/web/carousel/img-9708.jpg", alt: "Map view centered on Glacier National Park" },
+  { src: "/showcase/parkquest/web/carousel/img-9709.jpg", alt: "Mount Rainier National Park detail from the map" },
+  { src: "/showcase/parkquest/web/carousel/img-9710.jpg", alt: "Carlsbad Caverns National Park detail" },
+  { src: "/showcase/parkquest/web/carousel/img-9711.jpg", alt: "Map view centered on Carlsbad Caverns National Park" },
+  { src: "/showcase/parkquest/web/carousel/img-9712.jpg", alt: "Carlsbad Caverns National Park hours and activities" },
+  { src: "/showcase/parkquest/web/carousel/img-9713.jpg", alt: "Isle Royale National Park directions" },
+  { src: "/showcase/parkquest/web/carousel/img-9714.jpg", alt: "Logging a visit, trip dates and weather" },
+  { src: "/showcase/parkquest/web/carousel/img-9715.jpg", alt: "Logging a visit, weather conditions step" },
+  { src: "/showcase/parkquest/web/carousel/img-9716.jpg", alt: "Logging a visit, rating step" },
+  { src: "/showcase/parkquest/web/carousel/img-9720.jpg", alt: "Death Valley National Park directions" },
+  { src: "/showcase/parkquest/web/carousel/img-9722.jpg", alt: "Saguaro National Park entrance fees" },
+  { src: "/showcase/parkquest/web/carousel/img-9723.jpg", alt: "Explore the Parks filters" },
+  { src: "/showcase/parkquest/web/carousel/img-9725.jpg", alt: "Search parks on the map" },
+];
+const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
 ---
 
 <Showcase
@@ -173,32 +230,55 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     <section class="pq-section pq-inside">
       <h2>What's inside</h2>
       <div class="pq-inside-grid">
-        <div class="pq-inside-card">
+        <div class="pq-inside-card pq-inside-card-wide">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <path d="M20 8 L20 20 L28 26" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.9" />
+            <path d="M20 6 C13 6 8 11.5 8 18 C8 27 20 36 20 36 C20 36 32 27 32 18 C32 11.5 27 6 20 6 Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6" />
+            <circle cx="20" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.9" />
           </svg>
-          <h3>Track every park</h3>
-          <p>All 63 U.S. national parks on one map &mdash; visited, unvisited, and what's next.</p>
+          <h3>Track all 63 parks</h3>
+          <p>Every U.S. national park on one map or list, filtered by status, location, activities, or topics &mdash; backed by live NPS data and per-park weather.</p>
+          <span class="pq-inside-stat">63 parks &middot; live NPS data</span>
         </div>
         <div class="pq-inside-card">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <rect x="6" y="8" width="28" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <line x1="6" y1="15" x2="34" y2="15" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <circle cx="14" cy="23" r="2" fill="currentColor" opacity="0.9" />
-            <circle cx="22" cy="23" r="2" fill="currentColor" opacity="0.5" />
-            <circle cx="30" cy="23" r="2" fill="currentColor" opacity="0.5" />
+            <rect x="9" y="6" width="22" height="28" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <path d="M15 6 h10 v3 a1.5 1.5 0 0 1 -1.5 1.5 h-7 a1.5 1.5 0 0 1 -1.5 -1.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.6" />
+            <path d="M14 20 l3.5 3.5 L27 14" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.9" />
+            <line x1="14" y1="28" x2="26" y2="28" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
           </svg>
-          <h3>Plan your next trip</h3>
-          <p>Queue up parks you want to see next and turn "someday" into an itinerary.</p>
+          <h3>Log a real visit</h3>
+          <p>A guided flow through trip dates, weather conditions, activities and topics, and a 5-star rating &mdash; not just a checkbox.</p>
+          <span class="pq-inside-stat">multi-step log flow</span>
+        </div>
+        <div class="pq-inside-card">
+          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M5 30 L13 16 L19 24 L24 14 L35 30" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.8" />
+            <path d="M5 30 L35 30" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
+            <circle cx="24" cy="14" r="2" fill="currentColor" opacity="0.8" />
+          </svg>
+          <h3>GPX-powered hike stats</h3>
+          <p>Upload a GPX file and it's parsed automatically into distance, elevation gain, and the route drawn on the map.</p>
+          <span class="pq-inside-stat">distance &middot; elevation &middot; route</span>
+        </div>
+        <div class="pq-inside-card">
+          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
+            <rect x="7" y="9" width="26" height="22" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <line x1="12" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <line x1="12" y1="22" x2="24" y2="22" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+            <path d="M29 20 v9 l-3 -2.2 l-3 2.2 v-9 Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.9" />
+          </svg>
+          <h3>Bucket list</h3>
+          <p>Queue up parks you want to see next and turn "someday" into an actual itinerary.</p>
+          <span class="pq-inside-stat">save for later</span>
         </div>
         <div class="pq-inside-card">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
             <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" stroke-dasharray="2 3" />
             <path d="M14 20 L18 24 L27 14" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.9" />
           </svg>
-          <h3>Collect stamps &amp; badges</h3>
-          <p>Earn a digital stamp for every visit and unlock badges as your log fills in.</p>
+          <h3>Stamps &amp; badges</h3>
+          <p>Every visit earns a real stamp; badges are awarded the moment your log fills a condition &mdash; no hardcoded launch list.</p>
+          <span class="pq-inside-stat">condition-engine driven</span>
         </div>
         <div class="pq-inside-card">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
@@ -207,8 +287,9 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
             <path d="M6 32 C6 25 11 22 14 22 C17 22 22 25 22 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.6" />
             <path d="M19 32 C19 25 24 22 27 22 C30 22 35 25 35 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.4" />
           </svg>
-          <h3>Compare with friends</h3>
-          <p>See who's ahead on the leaderboard and turn tracking parks into friendly competition.</p>
+          <h3>Friends &amp; feed</h3>
+          <p>A mutual request/accept model, not a one-way follow &mdash; real photos and notes from friends actually out on the trail.</p>
+          <span class="pq-inside-stat">mutual friends model</span>
         </div>
       </div>
     </section>
@@ -221,32 +302,54 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
             <div class="pq-phone-screen-hole">
               <div class="pq-phone-screen">
               <div class="pq-screen pq-screen-1" data-pq-screen="1">
-                <img class="pq-screen-media" src="/showcase/parkquest/web/feed.jpg" alt="ParkQuest social feed" loading="lazy" />
+                <video
+                  class="pq-screen-media"
+                  src="/showcase/parkquest/web/feed.mp4"
+                  autoplay
+                  muted
+                  playsinline
+                  preload="metadata"
+                ></video>
               </div>
               <div class="pq-screen pq-screen-2" data-pq-screen="2">
-                <img class="pq-screen-media" src="/showcase/parkquest/web/map.jpg" alt="ParkQuest map of national parks" loading="lazy" />
+                <video
+                  class="pq-screen-media"
+                  src="/showcase/parkquest/web/map-selection.mp4"
+                  autoplay
+                  muted
+                  playsinline
+                  preload="metadata"
+                ></video>
               </div>
               <div class="pq-screen pq-screen-3" data-pq-screen="3">
                 <video
                   class="pq-screen-media"
-                  src="/showcase/parkquest/web/arches-scroll.mp4"
+                  src="/showcase/parkquest/web/parkprofile1.mp4"
                   autoplay
                   muted
-                  loop
                   playsinline
                   preload="metadata"
                 ></video>
               </div>
               <div class="pq-screen pq-screen-4" data-pq-screen="4">
-                <img class="pq-screen-media" src="/showcase/parkquest/web/parks.jpg" alt="ParkQuest browse all parks" loading="lazy" />
+                <img class="pq-screen-media" src="/showcase/parkquest/web/allparks-new.jpg" alt="ParkQuest browse all parks" loading="lazy" />
               </div>
               <div class="pq-screen pq-screen-5" data-pq-screen="5">
                 <video
                   class="pq-screen-media"
-                  src="/showcase/parkquest/web/passport.mp4"
+                  src="/showcase/parkquest/web/stamps.mp4"
                   autoplay
                   muted
-                  loop
+                  playsinline
+                  preload="metadata"
+                ></video>
+              </div>
+              <div class="pq-screen pq-screen-6" data-pq-screen="6">
+                <video
+                  class="pq-screen-media"
+                  src="/showcase/parkquest/web/profile-video.mp4"
+                  autoplay
+                  muted
                   playsinline
                   preload="metadata"
                 ></video>
@@ -255,6 +358,13 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
             </div>
             <div class="pq-phone-outline" set:html={iphoneOutline} />
           </div>
+          <button type="button" id="pq-replay" class="pq-replay" aria-label="Replay">
+            <svg class="pq-replay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-3-6.7" />
+              <path d="M21 3v6h-6" />
+            </svg>
+            Replay
+          </button>
         </div>
 
         <div class="pq-captions-stage">
@@ -289,11 +399,15 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
             <p>Filter and sort all 63 U.S. national parks &mdash; distance, state, or what's still unvisited.</p>
           </div>
           <div class="pq-caption pq-caption-5" data-pq-caption="5">
+            <h3>Collect every stamp</h3>
+            <p>Every visit adds a real stamp to your passport &mdash; trips, states, bucket list, and badges, all tracked as the collection grows.</p>
+          </div>
+          <div class="pq-caption pq-caption-6" data-pq-caption="6">
             <h3>
               <svg class="pq-caption-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M344,144c-3.92,52.87-44,96-88,96s-84.15-43.12-88-96c-4-55,35-96,88-96S348,90,344,144Z" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><path d="M256,304c-87,0-175.3,48-191.64,138.6C62.39,453.52,68.57,464,80,464H432c11.44,0,17.62-10.48,15.65-21.4C431.3,352,343,304,256,304Z" style="fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:32px"/></svg>
-              Collect the passport
+              Your profile, your trail
             </h3>
-            <p>Every visit earns a real stamp &mdash; a growing passport of everywhere you've actually been.</p>
+            <p>Stats, badges, and every recent stamp you've collected &mdash; a running record of everywhere you've been.</p>
           </div>
         </div>
         <svg id="pq-keep-scrolling" class="pq-keep-scrolling" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -303,24 +417,47 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
       </div>
     </section>
 
+    <!-- Phone carousel — picks up where the pinned mockup left off, fanning
+         out into a row of real screens that drifts right to left forever. -->
+    <section class="pq-carousel-section">
+      <div class="pq-phone-carousel">
+        <div class="pq-phone-carousel-track" id="pq-phone-carousel-track">
+          {Array.from({ length: 2 }).map(() =>
+            carouselSlides.map((slide) => (
+              <div class="pq-mini-phone">
+                <div class="pq-mini-phone-screen">
+                  {slide.video ? (
+                    <video src={slide.src} autoplay muted loop playsinline preload="metadata"></video>
+                  ) : (
+                    <img src={slide.src} alt={slide.alt} loading="lazy" />
+                  )}
+                </div>
+                <div class="pq-mini-phone-outline" set:html={iphoneOutline} />
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
+
     <!-- By the numbers -->
     <section class="pq-section pq-stats">
       <div class="pq-stats-grid">
         <div class="pq-stat">
           <p class="pq-stat-num">63</p>
-          <p class="pq-stat-label">U.S. national parks tracked</p>
+          <p class="pq-stat-label">U.S. National Parks stamps</p>
         </div>
         <div class="pq-stat">
-          <p class="pq-stat-num">9</p>
-          <p class="pq-stat-label">Parks on the trip that started it</p>
-        </div>
-        <div class="pq-stat">
-          <p class="pq-stat-num">2026</p>
-          <p class="pq-stat-label">Launch year</p>
+          <p class="pq-stat-num">32+</p>
+          <p class="pq-stat-label">Unique badges to earn</p>
         </div>
         <div class="pq-stat">
           <p class="pq-stat-num">iOS + Web</p>
           <p class="pq-stat-label">Native app, plus parkquest.me</p>
+        </div>
+        <div class="pq-stat">
+          <p class="pq-stat-num">2026</p>
+          <p class="pq-stat-label">Launch year</p>
         </div>
       </div>
     </section>
@@ -328,6 +465,35 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     <!-- Built with -->
     <section class="pq-section pq-bts">
       <h2>Built with</h2>
+      <div class="pq-stack">
+        <div class="pq-stack-group">
+          <h4 class="pq-stack-label">Frontend</h4>
+          <ul class="pq-stack-badges">
+            <li>Expo &amp; React Native</li>
+            <li>Next.js</li>
+            <li>React</li>
+            <li>TypeScript</li>
+            <li>Tailwind CSS</li>
+            <li>TanStack Query</li>
+          </ul>
+        </div>
+        <div class="pq-stack-group">
+          <h4 class="pq-stack-label">Maps</h4>
+          <ul class="pq-stack-badges">
+            <li>MapLibre GL</li>
+            <li>React Native Maps</li>
+          </ul>
+        </div>
+        <div class="pq-stack-group">
+          <h4 class="pq-stack-label">Backend &amp; data</h4>
+          <ul class="pq-stack-badges">
+            <li>Neon Postgres</li>
+            <li>Drizzle ORM</li>
+            <li>Clerk</li>
+            <li>Cloudflare R2</li>
+          </ul>
+        </div>
+      </div>
       <div class="pq-diagram">
         <svg viewBox="0 0 1020 434" class="pq-diagram-svg" aria-hidden="true">
           <!-- connecting lines -->
@@ -438,19 +604,6 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
         </div>
       </div>
 
-      <ul class="pq-stack-badges">
-        <li>Expo &amp; React Native</li>
-        <li>Next.js</li>
-        <li>React</li>
-        <li>TypeScript</li>
-        <li>Clerk</li>
-        <li>Neon Postgres</li>
-        <li>Drizzle ORM</li>
-        <li>MapLibre GL</li>
-        <li>React Native Maps</li>
-        <li>TanStack Query</li>
-        <li>Tailwind CSS</li>
-      </ul>
       <ul class="pq-notes">
         <li>One Next.js backend serves both clients &mdash; 60 API routes shared by the iOS app and the web app, kept in sync by a single TypeScript types package.</li>
         <li>Badges are entirely data-driven: every badge, including the launch set, is a database row evaluated by a condition engine, not a hardcoded list.</li>
@@ -766,22 +919,39 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     color: var(--text-secondary);
   }
 
-  /* What's inside */
+  /* What's inside — bento grid: one wide "hero" card (park tracking, the
+     core value prop) plus five even cards, each grounded in a concrete
+     detail instead of pure marketing copy. */
   .pq-inside-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.25rem;
   }
   @media (min-width: 700px) {
     .pq-inside-grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1100px) {
+    .pq-inside-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .pq-inside-card-wide {
+      grid-column: span 2;
     }
   }
   .pq-inside-card {
+    display: flex;
+    flex-direction: column;
     padding: 1.75rem;
     border: 1px solid var(--border-primary);
     border-radius: 1rem;
     background: var(--bg-card);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .pq-inside-card:hover {
+    border-color: color-mix(in oklab, var(--pq-gold) 45%, var(--border-primary));
+    transform: translateY(-2px);
   }
   .pq-inside-icon {
     width: 2.25rem;
@@ -799,6 +969,19 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     color: var(--text-tertiary);
     font-size: 0.95rem;
     line-height: 1.6;
+    flex: 1;
+  }
+  .pq-inside-stat {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 1rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.4rem;
+    background: color-mix(in oklab, var(--pq-gold) 12%, transparent);
+    color: var(--pq-gold-soft);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
   }
 
   /* Pinned feature scroller */
@@ -848,12 +1031,23 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
   .pq-keep-scrolling {
     position: absolute;
     left: 50%;
-    bottom: -3rem;
+    /* top is set from JS — tracks the bottom edge of whichever caption's
+       text is currently active, since captions vary a lot in length and
+       are vertically centered in their box (so their own bottom edge
+       moves too), rather than sitting at one fixed spot below the stage. */
+    top: 0;
+    /* Y offset lives in the JS-computed `top` value below, not here — the
+       .is-visible pulse keyframes (pq-scroll-cue-pulse) set their own
+       `transform: translate(-50%, 0/10px)`, which fully overrides
+       whatever Y translate this rule declares the instant the animation
+       is running (the only time this element is ever actually visible).
+       A Y component here was silently dead code. */
+    transform: translateX(-50%);
     width: 26px;
     height: 26px;
     color: var(--pq-gold-soft);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease, top 0.3s ease;
     pointer-events: none;
   }
   .pq-keep-scrolling.is-visible {
@@ -862,6 +1056,39 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
   }
   @media (prefers-reduced-motion: reduce) {
     .pq-keep-scrolling.is-visible { animation: none; }
+  }
+  /* Shows once the active screen's video plays through to the end (Apple-
+     style "replay" link), hides again the moment the screen changes. */
+  .pq-replay {
+    position: absolute;
+    left: 50%;
+    bottom: -1.6rem;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    color: var(--pq-gold-soft);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, color 0.2s ease;
+  }
+  .pq-replay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .pq-replay:hover {
+    color: var(--pq-gold);
+  }
+  .pq-replay-icon {
+    width: 15px;
+    height: 15px;
   }
   /* Bounding box of the real screen cutout in iphone-trace.svg; the outline
      overlay below draws the precise curved edge on top of this rectangle. */
@@ -909,7 +1136,7 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     justify-content: center;
     color: var(--pq-gold);
   }
-  .pq-screen-2, .pq-screen-3, .pq-screen-4, .pq-screen-5 {
+  .pq-screen-2, .pq-screen-3, .pq-screen-4, .pq-screen-5, .pq-screen-6 {
     /* hidden by default; JS controls visibility as the pinned scroll advances */
     opacity: 0;
     visibility: hidden;
@@ -991,6 +1218,63 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     font-size: 1.05rem;
     line-height: 1.6;
     max-width: 26rem;
+  }
+
+  /* Phone carousel */
+  .pq-carousel-section {
+    padding: 2rem 0 6rem;
+    overflow: hidden;
+  }
+  .pq-phone-carousel {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .pq-phone-carousel-track {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    width: max-content;
+    /* Duration scaled with the track's width (currently 34 unique slides)
+       to keep the drift speed in px/s roughly constant. */
+    animation: pq-carousel-drift 160s linear infinite;
+  }
+  @keyframes pq-carousel-drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-phone-carousel-track { animation: none; }
+  }
+
+  .pq-mini-phone {
+    position: relative;
+    flex: none;
+    width: 170px;
+    aspect-ratio: 1350 / 2760;
+    filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.5));
+  }
+  .pq-mini-phone-screen {
+    position: absolute;
+    top: 1.7%;
+    left: 4.8%;
+    right: 4.8%;
+    bottom: 1.8%;
+    border-radius: 1.7rem;
+    overflow: hidden;
+    background: #050505;
+  }
+  .pq-mini-phone-screen img,
+  .pq-mini-phone-screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .pq-mini-phone-outline {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
 
   /* By the numbers */
@@ -1093,12 +1377,26 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     color: var(--text-secondary);
   }
 
+  .pq-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .pq-stack-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pq-gold-soft);
+    opacity: 0.85;
+    margin-bottom: 0.6rem;
+  }
   .pq-stack-badges {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
-    margin-bottom: 2.5rem;
   }
   .pq-stack-badges li {
     padding: 0.4rem 0.9rem;
@@ -1270,6 +1568,23 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     fill: none;
     stroke: none;
   }
+
+  .pq-mini-phone-outline svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .pq-mini-phone-outline path:nth-of-type(1) {
+    fill: #050505;
+    stroke: color-mix(in oklab, var(--pq-gold, #d7a955) 30%, transparent);
+    stroke-width: 1.4;
+    vector-effect: non-scaling-stroke;
+    opacity: 1;
+  }
+  .pq-mini-phone-outline path:nth-of-type(2) {
+    fill: none;
+    stroke: none;
+  }
 </style>
 
 <script>
@@ -1353,10 +1668,12 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
         const offsetWithinSection = stageRect.top - sectionRect.top;
         // Center within the space below the site header (it goes fixed on
         // scroll-up), not the raw viewport, so the pinned phone never sits
-        // underneath/behind it.
+        // underneath/behind it. No extra buffer here — adding one on top
+        // of headerH would make the gap above the phone bigger than the
+        // gap below it; centering against the header's true edge is what
+        // keeps both gaps equal.
         const headerH = document.getElementById("main-header")?.offsetHeight ?? 0;
-        const safeTop = headerH + 16;
-        const desiredViewportTop = safeTop + (window.innerHeight - safeTop - stageRect.height) / 2;
+        const desiredViewportTop = headerH + (window.innerHeight - headerH - stageRect.height) / 2;
         return "top top+=" + (desiredViewportTop - offsetWithinSection);
       };
       // Shorter now (was 700px/transition) — the full sequence was a long
@@ -1391,42 +1708,135 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
         invalidateOnRefresh: true,
       });
 
+      // Videos play once and freeze on the last frame (no `loop`) — an
+      // Apple-style "Replay" link surfaces below the mockup once the
+      // active screen's video ends, and hides again the moment a new
+      // screen becomes active.
+      const replayBtn = document.getElementById("pq-replay");
+      const hideReplay = () => replayBtn?.classList.remove("is-visible");
+      const showReplay = () => replayBtn?.classList.add("is-visible");
+
       // Restart a screen's video from the beginning whenever it becomes the
-      // active one, instead of leaving it wherever its loop happened to be
-      // (or, worse, paused/needing a manual play — browsers can stop an
-      // autoplaying video that's been visibility:hidden for a while).
+      // active one, instead of leaving it wherever it stopped (or, worse,
+      // paused/needing a manual play — browsers can stop an autoplaying
+      // video that's been visibility:hidden for a while).
       const restartVideo = (screen: HTMLElement) => {
+        hideReplay();
         const video = screen.querySelector<HTMLVideoElement>("video");
         if (!video) return;
         video.currentTime = 0;
         video.play().catch(() => {});
       };
 
+      // Every screen with a video gets its own replay affordance — surfaces
+      // whenever THAT screen's video plays through while it's the active
+      // one. (A background screen's video can also fire `ended` while
+      // hidden, since it isn't paused when its screen goes inactive — the
+      // visibility check guards against that.)
+      screens.forEach((screen) => {
+        const video = screen.querySelector<HTMLVideoElement>("video");
+        video?.addEventListener("ended", () => {
+          if (getComputedStyle(screen).visibility === "hidden") return;
+          showReplay();
+        });
+      });
+      replayBtn?.addEventListener("click", () => {
+        const activeScreen = screens.find(
+          (s) => getComputedStyle(s).visibility !== "hidden"
+        );
+        if (activeScreen) restartVideo(activeScreen);
+      });
+
+      // Keeps the "keep scrolling" hint glued right under whichever
+      // caption's text is currently active — captions vary a lot in
+      // length and are vertically centered in a fixed-height box, so
+      // their own bottom edge lands somewhere different every time.
+      const hint = document.getElementById("pq-keep-scrolling");
+      const positionHint = () => {
+        if (!hint) return;
+        const activeCaption = captions.find(
+          (c) => getComputedStyle(c).visibility !== "hidden"
+        );
+        const p = activeCaption?.querySelector("p");
+        if (!p) return;
+        const stageRect = captionsStage.getBoundingClientRect();
+        const pRect = p.getBoundingClientRect();
+        const gap = 48;
+        hint.style.top = pRect.bottom - stageRect.top + gap + "px";
+      };
+      positionHint();
+
+      const blendDuration = 0.08;
+      const blendStarts: number[] = [];
       for (let i = 1; i < screens.length; i++) {
         const frac = i / (screens.length - 1);
-        tl.to(screens[i - 1], { autoAlpha: 0, duration: 0.08 }, frac)
-          .to(screens[i], { autoAlpha: 1, duration: 0.08, onStart: () => restartVideo(screens[i]) }, frac)
-          .to(captions[i - 1], { autoAlpha: 0, duration: 0.08 }, frac)
-          .to(captions[i], { autoAlpha: 1, duration: 0.08 }, frac);
+        blendStarts.push(frac);
+        // Linear on purpose: this timeline is scrubbed by scroll position,
+        // not played back on its own clock, so an eased ease would make
+        // opacity cross 50% at some time other than the tween's own
+        // midpoint — throwing off the mid-blend snap logic below, which
+        // picks a side by comparing tl.time() to that midpoint.
+        tl.to(screens[i - 1], { autoAlpha: 0, duration: blendDuration, ease: "none" }, frac)
+          .to(screens[i], { autoAlpha: 1, duration: blendDuration, ease: "none", onStart: () => restartVideo(screens[i]) }, frac)
+          .to(captions[i - 1], { autoAlpha: 0, duration: blendDuration, ease: "none" }, frac)
+          .to(captions[i], { autoAlpha: 1, duration: blendDuration, ease: "none", onStart: positionHint }, frac);
       }
 
-      // Nudge the user to keep scrolling if they pause mid-sequence (not
-      // at the very start, not finished) for a second — reassurance that
-      // the pinned section is still responding, not stuck.
-      const hint = document.getElementById("pq-keep-scrolling");
+      // Scrubbing ties the crossfade directly to scroll position, so a
+      // user can stop scrolling mid-blend and be left looking at two
+      // half-visible screens at once. On scrollend, if we're inside one
+      // of those blend windows, snap forward/back to whichever screen's
+      // fully-settled edge is closer — never leave the fade caught
+      // mid-way. `scrollend` (not a debounce timer) waits out the
+      // browser's own momentum/inertial scroll before checking.
+      let snapping = false;
+      const trySnap = () => {
+        if (snapping) {
+          snapping = false;
+          return;
+        }
+        const st = tl.scrollTrigger;
+        if (!st || !st.isActive) return;
+        const t = tl.time();
+        for (const bStart of blendStarts) {
+          const bEnd = bStart + blendDuration;
+          if (t <= bStart || t >= bEnd) continue;
+          const mid = bStart + blendDuration / 2;
+          const targetTime = t < mid ? bStart : bEnd;
+          const targetProgress = targetTime / tl.duration();
+          // Nudge 1px past the exact edge — landing precisely on it can
+          // round to a fraction of a pixel short, leaving autoAlpha at
+          // 99.x% instead of a clean 0/1.
+          const edgeBuffer = targetTime === bStart ? -1 : 1;
+          const targetScrollY = st.start + targetProgress * (st.end - st.start) + edgeBuffer;
+          snapping = true;
+          window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+          return;
+        }
+      };
+      window.addEventListener("scrollend", trySnap);
+
+      // Nudge the user to keep scrolling if they pause mid-sequence for a
+      // second — reassurance that the pinned section is still responding,
+      // not stuck. Still fires on the last screen too: there's more page
+      // below (the carousel), so "done with this section" still means
+      // "keep scrolling."
       let idleTimer: ReturnType<typeof setTimeout> | undefined;
       const onScroll = () => {
         if (!hint) return;
         hint.classList.remove("is-visible");
         clearTimeout(idleTimer);
         const st = tl.scrollTrigger;
-        if (!st || !st.isActive || st.progress <= 0 || st.progress >= 1) return;
+        if (!st || !st.isActive || st.progress <= 0) return;
         idleTimer = setTimeout(() => hint.classList.add("is-visible"), 1000);
       };
       window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", positionHint);
 
       return () => {
         window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", positionHint);
+        window.removeEventListener("scrollend", trySnap);
         clearTimeout(idleTimer);
         tl.scrollTrigger?.kill();
         tl.kill();
@@ -1448,9 +1858,11 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     // visibility:hidden at load (our non-default pq-screen panels are), and
     // GSAP toggling visibility later doesn't retroactively trigger it — so
     // kick off playback manually instead of relying on the attribute.
-    document.querySelectorAll<HTMLVideoElement>("video.pq-screen-media").forEach((video) => {
-      video.play().catch(() => {});
-    });
+    document
+      .querySelectorAll<HTMLVideoElement>("video.pq-screen-media, .pq-mini-phone-screen video")
+      .forEach((video) => {
+        video.play().catch(() => {});
+      });
   }
 
   function initParkQuestScrollRefresh() {
@@ -1465,21 +1877,82 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
       )
     );
     let pending = media.length;
-    if (!pending) return;
-    const done = () => {
-      pending -= 1;
-      if (pending <= 0) ScrollTrigger.refresh();
+    if (pending) {
+      const done = () => {
+        pending -= 1;
+        if (pending <= 0) ScrollTrigger.refresh();
+      };
+      media.forEach((el) => {
+        if (el instanceof HTMLImageElement) {
+          if (el.complete) done();
+          else el.addEventListener("load", done, { once: true });
+        } else {
+          if (el.readyState >= 1) done();
+          else el.addEventListener("loadedmetadata", done, { once: true });
+        }
+      });
+    }
+
+    // The carousel's own screenshots are `loading="lazy"`, so they load in
+    // waves as the user scrolls toward them rather than all at once —
+    // without this, the carousel's own fan-out entrance trigger stayed
+    // computed against a shorter, pre-load page and fired too early
+    // (already fully visible by the time it actually scrolled into view).
+    // Refresh — batched via rAF so 40+ near-simultaneous loads don't each
+    // trigger their own recalculation — as each one settles.
+    let carouselRefreshQueued = false;
+    const queueCarouselRefresh = () => {
+      if (carouselRefreshQueued) return;
+      carouselRefreshQueued = true;
+      requestAnimationFrame(() => {
+        carouselRefreshQueued = false;
+        ScrollTrigger.refresh();
+      });
     };
-    media.forEach((el) => {
-      if (el instanceof HTMLImageElement) {
-        if (el.complete) done();
-        else el.addEventListener("load", done, { once: true });
-      } else {
-        if (el.readyState >= 1) done();
-        else el.addEventListener("loadedmetadata", done, { once: true });
-      }
-    });
+    document
+      .querySelectorAll<HTMLImageElement | HTMLVideoElement>(
+        ".pq-mini-phone-screen img, .pq-mini-phone-screen video"
+      )
+      .forEach((el) => {
+        if (el instanceof HTMLImageElement) {
+          if (!el.complete) el.addEventListener("load", queueCarouselRefresh, { once: true });
+        } else if (el.readyState < 1) {
+          el.addEventListener("loadedmetadata", queueCarouselRefresh, { once: true });
+        }
+      });
+
     window.addEventListener("load", () => ScrollTrigger.refresh());
+  }
+
+  function initParkQuestCarousel() {
+    const phones = gsap.utils.toArray<HTMLElement>(".pq-mini-phone");
+    if (!phones.length) return;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    // Fans out from a stacked/tilted starting point as the carousel scrolls
+    // into view — picks up the "coming out of the single phone" feeling
+    // without literally morphing that DOM element. Tied to scroll position
+    // (scrub) rather than played once on a time-based tween: this section
+    // isn't pinned, so a normal fast scroll/flick easily covers its whole
+    // trigger range before an untied ~1-3.5s animation could finish,
+    // making it look like the phones were "already there." Scrubbing keeps
+    // the reveal in lockstep with scroll no matter how fast that is.
+    gsap.from(phones, {
+      opacity: 0,
+      x: -60,
+      rotate: -8,
+      scale: 0.82,
+      stagger: 0.06,
+      scrollTrigger: {
+        trigger: ".pq-carousel-section",
+        start: "top 85%",
+        end: "top 35%",
+        scrub: 0.4,
+      },
+    });
   }
 
   function initParkQuest() {
@@ -1488,6 +1961,7 @@ import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
     initParkQuestScrollCue();
     initParkQuestMedia();
     initParkQuestScrollRefresh();
+    initParkQuestCarousel();
   }
 
   if (document.readyState === "loading") {
