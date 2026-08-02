@@ -14,6 +14,7 @@ import parkquestLogo from "../../content/projects/parkquest-logo.png";
 // body path has the screen area cut out via nonzero fill-rule, so it works as
 // an overlay mask over whatever's positioned in .pq-phone-screen-hole below.
 import iphoneOutline from "../../components/blog/iphone-trace.svg?raw";
+import macbookOutline from "../../components/blog/macbook-trace.svg?raw";
 
 // Deterministic shuffle (fixed seed) instead of Math.random() — this list is
 // built once at build/render time, and a stable order avoids the row
@@ -175,8 +176,8 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
             To celebrate graduating college, two childhood buddies and I planned something ambitious:
             drive over 3,000 miles, camp along the way, and visit every national park in California
             &mdash; which, with nine, has more national parks than any other state. In the months
-            between graduation and the trip, I built ParkQuest so we'd have a real way to log where
-            we'd been, and see what other people had found worth stopping for.
+            between graduation and the trip, I built ParkQuest, so we'd have a real way to log where
+            we'd been and see what other people had found worth stopping for.
           </p>
           <p>
             It's grown into a personal journal for anyone chasing the same goal. Track your own
@@ -239,7 +240,7 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
           <p>Every U.S. national park on one map or list, filtered by status, location, activities, or topics &mdash; backed by live NPS data and per-park weather.</p>
           <span class="pq-inside-stat">63 parks &middot; live NPS data</span>
         </div>
-        <div class="pq-inside-card">
+        <div class="pq-inside-card pq-inside-card-wide">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
             <rect x="9" y="6" width="22" height="28" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
             <path d="M15 6 h10 v3 a1.5 1.5 0 0 1 -1.5 1.5 h-7 a1.5 1.5 0 0 1 -1.5 -1.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.6" />
@@ -250,7 +251,7 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
           <p>A guided flow through trip dates, weather conditions, activities and topics, and a 5-star rating &mdash; not just a checkbox.</p>
           <span class="pq-inside-stat">multi-step log flow</span>
         </div>
-        <div class="pq-inside-card">
+        <div class="pq-inside-card pq-inside-card-wide">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
             <path d="M5 30 L13 16 L19 24 L24 14 L35 30" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.8" />
             <path d="M5 30 L35 30" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
@@ -280,15 +281,17 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
           <p>Every visit earns a real stamp; badges are awarded the moment your log fills a condition &mdash; no hardcoded launch list.</p>
           <span class="pq-inside-stat">condition-engine driven</span>
         </div>
-        <div class="pq-inside-card">
+        <div class="pq-inside-card pq-inside-card-full">
           <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
             <circle cx="14" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.6" />
             <circle cx="27" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
             <path d="M6 32 C6 25 11 22 14 22 C17 22 22 25 22 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.6" />
             <path d="M19 32 C19 25 24 22 27 22 C30 22 35 25 35 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.4" />
           </svg>
-          <h3>Friends &amp; feed</h3>
-          <p>A mutual request/accept model, not a one-way follow &mdash; real photos and notes from friends actually out on the trail.</p>
+          <div class="pq-inside-text">
+            <h3>Friends &amp; feed</h3>
+            <p>A mutual request/accept model, not a one-way follow &mdash; real photos and notes from friends actually out on the trail.</p>
+          </div>
           <span class="pq-inside-stat">mutual friends model</span>
         </div>
       </div>
@@ -465,6 +468,8 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     <!-- Built with -->
     <section class="pq-section pq-bts">
       <h2>Built with</h2>
+      <div class="pq-bts-row">
+      <div class="pq-bts-left">
       <div class="pq-stack">
         <div class="pq-stack-group">
           <h4 class="pq-stack-label">Frontend</h4>
@@ -496,119 +501,277 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
       </div>
       <div class="pq-diagram">
         <svg viewBox="0 0 1020 434" class="pq-diagram-svg" aria-hidden="true">
-          <!-- connecting lines -->
+          <!-- connecting lines — data-group ties each line to the node(s)
+               it belongs to, so hovering a box highlights its own path
+               instead of the whole diagram lighting up at once. -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.5">
-            <line x1="210" y1="112" x2="210" y2="138" />
-            <line x1="790" y1="112" x2="790" y2="138" />
-            <line x1="210" y1="138" x2="790" y2="138" />
-            <line x1="500" y1="168" x2="500" y2="204" />
-            <line x1="500" y1="290" x2="500" y2="310" />
-            <line x1="150" y1="310" x2="870" y2="310" />
-            <line x1="150" y1="310" x2="150" y2="330" />
-            <line x1="390" y1="310" x2="390" y2="330" />
-            <line x1="630" y1="310" x2="630" y2="330" />
-            <line x1="870" y1="310" x2="870" y2="330" />
+            <line data-group="ios" x1="210" y1="112" x2="210" y2="138" />
+            <line data-group="web" x1="790" y1="112" x2="790" y2="138" />
+            <line data-group="ios web" x1="210" y1="138" x2="790" y2="138" />
+            <line data-group="ios web" x1="500" y1="138" x2="500" y2="204" />
+            <line data-group="neon clerk r2 external" x1="500" y1="290" x2="500" y2="310" />
+            <line data-group="neon clerk r2 external" x1="150" y1="310" x2="870" y2="310" />
+            <line data-group="neon" x1="150" y1="310" x2="150" y2="330" />
+            <line data-group="clerk" x1="390" y1="310" x2="390" y2="330" />
+            <line data-group="r2" x1="630" y1="310" x2="630" y2="330" />
+            <line data-group="external" x1="870" y1="310" x2="870" y2="330" />
           </g>
-          <!-- shared types connector -->
-          <rect x="415" y="138" width="170" height="30" rx="6" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.5" stroke-dasharray="3 4" />
+
+          <!-- Shared types sits right at the midpoint of the line joining
+               the two clients — that's literally what it is, the thing
+               they share — tucked in the gap above the merge point so it
+               doesn't sit on top of the trunk line running down to the
+               API box. -->
+          <rect data-group="ios web" x="415" y="114" width="170" height="24" rx="6" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.5" stroke-dasharray="3 4" />
 
           <!-- client layer -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
-            <rect x="60" y="20" width="300" height="92" rx="6" />
-            <rect x="640" y="20" width="300" height="92" rx="6" />
+            <rect data-group="ios" x="60" y="20" width="300" height="92" rx="6" />
+            <rect data-group="web" x="640" y="20" width="300" height="92" rx="6" />
+          </g>
+          <!-- device glyphs — centered at the top of each client box, same
+               placement as the service logos below. -->
+          <!-- Every logo below — hand-drawn or real brand mark — is scaled
+               to fit the same 20x20 box, centered at the top of its box,
+               so differently-shaped marks (a tall phone, a wide laptop, a
+               square app icon) still read as the same visual weight. -->
+          <g stroke="currentColor" stroke-width="1.3" fill="none" opacity="0.7">
+            <g data-group="ios">
+              <rect x="204" y="33" width="12" height="20" rx="2" />
+              <line x1="208" y1="50" x2="212" y2="50" stroke-linecap="round" />
+            </g>
+            <g data-group="web">
+              <rect x="780" y="37" width="20" height="12" rx="1" />
+              <line x1="777" y1="51" x2="803" y2="51" stroke-linecap="round" />
+            </g>
           </g>
           <!-- API layer -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.65">
-            <rect x="250" y="204" width="500" height="86" rx="6" />
+            <rect data-group="ios web neon clerk r2 external" x="250" y="204" width="500" height="86" rx="6" />
           </g>
           <!-- service layer -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
-            <rect x="40" y="330" width="220" height="90" rx="6" />
-            <rect x="280" y="330" width="220" height="90" rx="6" />
-            <rect x="520" y="330" width="220" height="90" rx="6" />
-            <rect x="760" y="330" width="220" height="90" rx="6" />
+            <rect data-group="neon" x="40" y="330" width="220" height="90" rx="6" />
+            <rect data-group="clerk" x="280" y="330" width="220" height="90" rx="6" />
+            <rect data-group="r2" x="520" y="330" width="220" height="90" rx="6" />
+            <rect data-group="external" x="760" y="330" width="220" height="90" rx="6" />
           </g>
 
           <g fill="currentColor" text-anchor="middle">
-            <text x="210" y="48" font-size="13" opacity="0.85">iOS App (Expo)</text>
-            <text x="210" y="68" font-size="10.5" opacity="0.6">fetch() + Bearer JWT</text>
-            <text x="210" y="88" font-size="10" opacity="0.5">Expo Router &middot; React Native 0.81</text>
+            <g data-group="ios">
+              <text x="210" y="76" font-size="13" opacity="0.85">iOS App (Expo)</text>
+              <text x="210" y="94" font-size="10.5" opacity="0.6">fetch() + Bearer JWT</text>
+              <text x="210" y="108" font-size="10" opacity="0.5">Expo Router &middot; React Native 0.81</text>
+            </g>
 
-            <text x="790" y="48" font-size="13" opacity="0.85">Web App (Next.js)</text>
-            <text x="790" y="68" font-size="10.5" opacity="0.6">same-origin fetch</text>
-            <text x="790" y="88" font-size="10" opacity="0.5">App Router &middot; React 19</text>
+            <g data-group="web">
+              <text x="790" y="76" font-size="13" opacity="0.85">Web App (Next.js)</text>
+              <text x="790" y="94" font-size="10.5" opacity="0.6">same-origin fetch</text>
+              <text x="790" y="108" font-size="10" opacity="0.5">App Router &middot; React 19</text>
+            </g>
 
-            <text x="500" y="157" font-size="10" opacity="0.7">Shared TypeScript types</text>
+            <text data-group="ios web" x="500" y="130" font-size="10" opacity="0.7">Shared TypeScript types</text>
 
-            <text x="500" y="234" font-size="13" opacity="0.9">Next.js API routes</text>
-            <text x="500" y="254" font-size="10.5" opacity="0.6">60 route.ts files &mdash; one backend for both clients</text>
-            <text x="500" y="272" font-size="10" opacity="0.5">deployed on Vercel</text>
+            <g data-group="ios web neon clerk r2 external">
+              <text x="500" y="234" font-size="13" opacity="0.9">Next.js API routes</text>
+              <text x="500" y="254" font-size="10.5" opacity="0.6">60 route.ts files &mdash; one backend for both clients</text>
+              <text x="500" y="272" font-size="10" opacity="0.5">deployed on Vercel</text>
+            </g>
 
-            <text x="150" y="360" font-size="13" opacity="0.85">Neon Postgres</text>
-            <text x="150" y="380" font-size="10" opacity="0.6">Drizzle ORM &middot; schema.ts</text>
-            <text x="150" y="398" font-size="10" opacity="0.5">serverless HTTP driver</text>
+            <g data-group="neon">
+              <text x="150" y="386" font-size="13" opacity="0.85">Neon Postgres</text>
+              <text x="150" y="402" font-size="10" opacity="0.6">Drizzle ORM &middot; schema.ts</text>
+              <text x="150" y="416" font-size="10" opacity="0.5">serverless HTTP driver</text>
+            </g>
 
-            <text x="390" y="360" font-size="13" opacity="0.85">Clerk</text>
-            <text x="390" y="380" font-size="10" opacity="0.6">JWT + session auth</text>
-            <text x="390" y="398" font-size="10" opacity="0.5">Apple &amp; Google SSO</text>
+            <g data-group="clerk">
+              <text x="390" y="386" font-size="13" opacity="0.85">Clerk</text>
+              <text x="390" y="402" font-size="10" opacity="0.6">JWT + session auth</text>
+              <text x="390" y="416" font-size="10" opacity="0.5">Apple &amp; Google SSO</text>
+            </g>
 
-            <text x="630" y="360" font-size="13" opacity="0.85">Cloudflare R2</text>
-            <text x="630" y="380" font-size="10" opacity="0.6">photo storage</text>
-            <text x="630" y="398" font-size="10" opacity="0.5">S3-compatible &middot; no egress fees</text>
+            <g data-group="r2">
+              <text x="630" y="386" font-size="13" opacity="0.85">Cloudflare R2</text>
+              <text x="630" y="402" font-size="10" opacity="0.6">photo storage</text>
+              <text x="630" y="416" font-size="10" opacity="0.5">S3-compatible &middot; no egress fees</text>
+            </g>
 
-            <text x="870" y="360" font-size="13" opacity="0.85">External APIs</text>
-            <text x="870" y="380" font-size="10" opacity="0.6">NPS parks data</text>
-            <text x="870" y="398" font-size="10" opacity="0.5">App Store Connect &middot; push</text>
+            <g data-group="external">
+              <text x="870" y="386" font-size="13" opacity="0.85">External APIs</text>
+              <text x="870" y="402" font-size="10" opacity="0.6">NPS parks data</text>
+              <text x="870" y="416" font-size="10" opacity="0.5">App Store Connect &middot; push</text>
+            </g>
+          </g>
+
+          <!-- Real service logos, not stand-in glyphs — official monochrome
+               marks (Simple Icons), tinted to the diagram's own gold via
+               currentColor. National Park Service doesn't have one of
+               those (understandably, for a federal agency), so that spot
+               gets a plain mountain glyph matching this page's own icon
+               style instead of the literal NPS arrowhead emblem. -->
+          <g fill="currentColor" opacity="0.8">
+            <g data-group="neon" transform="translate(140 343) scale(0.8333)">
+              <path d="M24 0V24l-9.365-8.045V24H0V0ZM2.942 21.087h8.751V9.563l9.365 8.204V2.919L2.942 2.914Z" />
+            </g>
+            <g data-group="clerk" transform="translate(380 343) scale(0.8333)">
+              <path d="m21.47 20.829-2.881-2.881a.572.572 0 0 0-.7-.084 6.854 6.854 0 0 1-7.081 0 .576.576 0 0 0-.7.084l-2.881 2.881a.576.576 0 0 0-.103.69.57.57 0 0 0 .166.186 12 12 0 0 0 14.113 0 .58.58 0 0 0 .239-.423.576.576 0 0 0-.172-.453Zm.002-17.668-2.88 2.88a.569.569 0 0 1-.701.084A6.857 6.857 0 0 0 8.724 8.08a6.862 6.862 0 0 0-1.222 3.692 6.86 6.86 0 0 0 .978 3.764.573.573 0 0 1-.083.699l-2.881 2.88a.567.567 0 0 1-.864-.063A11.993 11.993 0 0 1 6.771 2.7a11.99 11.99 0 0 1 14.637-.405.566.566 0 0 1 .232.418.57.57 0 0 1-.168.448Zm-7.118 12.261a3.427 3.427 0 1 0 0-6.854 3.427 3.427 0 0 0 0 6.854Z" />
+            </g>
+            <g data-group="r2" transform="translate(620 343) scale(0.8333)">
+              <path d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727" />
+            </g>
+            <!-- Two logos share the External APIs slot, so each still gets
+                 its own full 20x20 box — a 46px-wide pair (20 + 6 gap + 20)
+                 centered on the box, same as a single logo would be. -->
+            <image data-group="external" href="/showcase/parkquest/web/nps-mark.webp" x="849" y="343" width="15.3" height="20" preserveAspectRatio="xMidYMid meet" />
+            <g data-group="external" transform="translate(873 343) scale(0.8333)">
+              <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
+            </g>
+          </g>
+
+          <!-- Invisible hit targets, added last so they sit above the text
+               labels in hit-test order — without this, hovering directly
+               over a box's own label would hit the text element instead
+               of the box underneath it, and never register as a hover. -->
+          <g class="pq-diagram-hits" fill="transparent">
+            <rect data-node="ios" x="60" y="20" width="300" height="92" />
+            <rect data-node="web" x="640" y="20" width="300" height="92" />
+            <rect data-node="api" x="250" y="204" width="500" height="86" />
+            <rect data-node="neon" x="40" y="330" width="220" height="90" />
+            <rect data-node="clerk" x="280" y="330" width="220" height="90" />
+            <rect data-node="r2" x="520" y="330" width="220" height="90" />
+            <rect data-node="external" x="760" y="330" width="220" height="90" />
           </g>
         </svg>
       </div>
+      </div>
+
+      <!-- Disjoint from the diagram on purpose — not another node on the
+           flow, just a reference list of what's actually in the shared
+           types package the diagram's annotation points at. -->
+      <div class="pq-types-card">
+        <h4 class="pq-types-title">Shared TypeScript types</h4>
+        <div class="pq-types-row">
+          <span class="pq-types-label">Core domain</span>
+          <span class="pq-types-list">Park, Visit, PhotoMeta, ParkStatus, ParkWithStatus</span>
+        </div>
+        <div class="pq-types-row">
+          <span class="pq-types-label">Users &amp; social</span>
+          <span class="pq-types-list">UserProfile, PublicProfile, FriendshipStatus, Friend, FriendRequest</span>
+        </div>
+        <div class="pq-types-row">
+          <span class="pq-types-label">Feed</span>
+          <span class="pq-types-list">Post, EnrichedPost, EnrichedComment</span>
+        </div>
+        <div class="pq-types-row">
+          <span class="pq-types-label">Moderation</span>
+          <span class="pq-types-list">Report, EnrichedReport, ReportTargetType, ReportReason, ReportStatus, BlockedUser</span>
+        </div>
+        <div class="pq-types-row">
+          <span class="pq-types-label">Badges &amp; gamification</span>
+          <span class="pq-types-list">BadgeTier, Badge, BadgeColors, BadgesResponse, UserStats, CustomBadge, BadgeCondition, BadgeConditionType, BadgeDef</span>
+        </div>
+        <div class="pq-types-row">
+          <span class="pq-types-label">Stamp art</span>
+          <span class="pq-types-list">StampGlyphShape, StampGlyph, CustomStampGlyph, PARK_GLYPHS, <code>glyphTransform()</code></span>
+        </div>
+      </div>
+      </div>
 
       <h3 class="pq-routes-heading">Inside the API</h3>
-      <p class="pq-routes-sub">60 routes, grouped by what they actually do.</p>
-      <div class="pq-routes-grid">
-        <div class="pq-route-card">
-          <h4>Parks &amp; maps</h4>
-          <p>Proxies live NPS data, per-park weather, and who else has visited.</p>
+      <p class="pq-routes-sub">60 routes, grouped by what they actually do &mdash; moderation and admin routes are covered below.</p>
+      <div class="pq-routes-list">
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Parks &amp; maps</span>
+          <span class="pq-routes-desc">Proxies live NPS data, per-park weather, and who else has visited.</span>
         </div>
-        <div class="pq-route-card">
-          <h4>Visits &amp; hikes</h4>
-          <p>Logs trips and bucket-list entries; parses GPX uploads into distance, elevation, and route.</p>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Visits &amp; hikes</span>
+          <span class="pq-routes-desc">Logs trips and bucket-list entries; parses GPX uploads into distance, elevation, and route.</span>
         </div>
-        <div class="pq-route-card">
-          <h4>Social feed</h4>
-          <p>Posts, likes, comments, quote/reposts, and badge-share posts.</p>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Social feed</span>
+          <span class="pq-routes-desc">Posts, likes, comments, quote/reposts, and badge-share posts.</span>
         </div>
-        <div class="pq-route-card">
-          <h4>Friends</h4>
-          <p>Mutual request/accept model &mdash; not a one-way follow.</p>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Friends</span>
+          <span class="pq-routes-desc">Mutual request/accept model &mdash; not a one-way follow.</span>
         </div>
-        <div class="pq-route-card">
-          <h4>Badges</h4>
-          <p>Awards and revokes badges through one shared condition engine.</p>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Badges</span>
+          <span class="pq-routes-desc">Awards and revokes badges through one shared condition engine.</span>
         </div>
-        <div class="pq-route-card">
-          <h4>Notifications</h4>
-          <p>One typed feed, fanned out to Web Push and Expo push in parallel.</p>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Notifications</span>
+          <span class="pq-routes-desc">One typed feed, fanned out to Web Push and Expo push in parallel.</span>
         </div>
-        <div class="pq-route-card">
-          <h4>Moderation</h4>
-          <p>Blocks, reports, and the queue admins review them from.</p>
-        </div>
-        <div class="pq-route-card">
-          <h4>Admin</h4>
-          <p>User, post, visit, park, and badge management, plus broadcast and DAU tools.</p>
-        </div>
-        <div class="pq-route-card">
-          <h4>Auth &amp; webhooks</h4>
-          <p>Clerk's <code>user.created</code> webhook backstops profile creation for SSO signups.</p>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Auth &amp; webhooks</span>
+          <span class="pq-routes-desc">Clerk's <code>user.created</code> webhook backstops profile creation for SSO signups.</span>
         </div>
       </div>
 
       <ul class="pq-notes">
-        <li>One Next.js backend serves both clients &mdash; 60 API routes shared by the iOS app and the web app, kept in sync by a single TypeScript types package.</li>
+        <li>One Next.js backend serves both clients &mdash; 60 API routes shared by the iOS app and the web app, kept in sync by <code>@parkquest/types</code>, a package of shared domain types (parks, visits, social, moderation, badges) both apps import as the API contract.</li>
+        <li>That package also ships shared SVG glyph geometry for the passport stamps (<code>parkGlyphs.ts</code>) &mdash; web's <code>Stamp</code> component and iOS's <code>ParkStamp</code> render pixel-identical stamp art from the same <code>glyphTransform()</code> function, not duplicated per platform.</li>
         <li>Badges are entirely data-driven: every badge, including the launch set, is a database row evaluated by a condition engine, not a hardcoded list.</li>
         <li>The web app renders its own MapLibre GL vector map; iOS uses react-native-maps with <code>PROVIDER_DEFAULT</code>, which resolves to Apple MapKit rather than Google Maps. GPX uploads power real hike stats (distance, elevation, route) without a third-party fitness integration.</li>
       </ul>
+
+      <h3 class="pq-routes-heading">Admin &amp; moderation</h3>
+      <p class="pq-routes-sub">A private dashboard, not linked anywhere else on this page &mdash; <code>/admin</code>, gated by <code>requireAdmin()</code>. Here's what's actually behind it.</p>
+
+      <div class="pq-admin-feature">
+        <h4>Reconciling Apple's App Store Connect reporting</h4>
+        <p>A daily Vercel Cron job merges Apple's two separate, laggy reporting pipelines into one metrics table.</p>
+        <ul class="pq-notes">
+          <li>Pulls the Sales Reports API (units, proceeds) and the Analytics Reports API (impressions, page views, downloads vs. redownloads) &mdash; two report families, different formats, different lag.</li>
+          <li>Re-walks a trailing 7 days, not just yesterday, since Apple's reports land 24&ndash;48h late and inconsistently &mdash; one run both catches new days and repairs partial ones.</li>
+          <li>Auth is hand-rolled: an ES256 JWT signed with Apple's <code>.p8</code> key via Node's <code>crypto</code> directly, no JWT library &mdash; App Store Connect tokens cap at 20 minutes.</li>
+          <li>Idempotent, per-column upserts &mdash; a sales-only run can't clobber an analytics-only run, and an unpublished day shows as a gap on the charts, not a fake zero.</li>
+        </ul>
+      </div>
+
+      <div class="pq-routes-list pq-admin-list">
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Dashboard</span>
+          <span class="pq-routes-desc">Live signups, DAU, active-user windows, top parks by visits.</span>
+        </div>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Moderation</span>
+          <span class="pq-routes-desc">Review queue for user reports and blocks.</span>
+        </div>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Badges</span>
+          <span class="pq-routes-desc">CRUD manager for the condition-engine badges.</span>
+        </div>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Parks</span>
+          <span class="pq-routes-desc">Upload the SVG stamp glyphs for the passport.</span>
+        </div>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Broadcast</span>
+          <span class="pq-routes-desc">Push notifications to user segments.</span>
+        </div>
+        <div class="pq-routes-row">
+          <span class="pq-routes-label">Email</span>
+          <span class="pq-routes-desc">Deliverability monitoring.</span>
+        </div>
+      </div>
+
+      <p class="pq-admin-other">Why it exists: the report/block/EULA gating behind all of it is what satisfies Apple's App Store Review Guideline 1.2 (user-generated content) &mdash; a real external requirement, not one I invented.</p>
+
+      <div class="pq-laptop-stage">
+        <div class="pq-laptop">
+          <div class="pq-laptop-screen-hole">
+            <img src="/showcase/parkquest/web/admin-dashboard.jpg" alt="ParkQuest admin dashboard" loading="lazy" />
+          </div>
+          <div class="pq-laptop-outline" set:html={macbookOutline} />
+          <svg class="pq-laptop-chrome" viewBox="0 0 3860 2540" preserveAspectRatio="none" aria-hidden="true">
+            <line class="pq-hinge-line" x1="364" y1="2371" x2="3494" y2="2371"></line>
+          </svg>
+        </div>
+        <p class="pq-laptop-caption">Figures shown are illustrative, not real production numbers.</p>
+      </div>
     </section>
 
     <!-- CTA -->
@@ -934,10 +1097,17 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
   }
   @media (min-width: 1100px) {
     .pq-inside-grid {
-      grid-template-columns: repeat(3, 1fr);
+      /* 4 columns so the sizes actually read as varied bento cells (2+2,
+         2+1+1, 4) instead of one card that's technically wider but close
+         enough to the others to barely register, with a leftover card
+         stranded alone in its own half-empty row. */
+      grid-template-columns: repeat(4, 1fr);
     }
     .pq-inside-card-wide {
       grid-column: span 2;
+    }
+    .pq-inside-card-full {
+      grid-column: span 4;
     }
   }
   .pq-inside-card {
@@ -952,6 +1122,36 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
   .pq-inside-card:hover {
     border-color: color-mix(in oklab, var(--pq-gold) 45%, var(--border-primary));
     transform: translateY(-2px);
+  }
+  @media (min-width: 1100px) {
+    /* The full-width closer has room to spare — lay it out sideways
+       (icon beside the text) instead of stacked, so it reads as a
+       deliberate wide card and not a normal card just stretched thin.
+       Must come after the base .pq-inside-card rule above: equal
+       specificity, so source order decides, and flex-direction: column
+       there was silently winning over row here when this block sat
+       first. */
+    .pq-inside-card-full {
+      flex-direction: row;
+      align-items: center;
+      gap: 1.75rem;
+    }
+    .pq-inside-card-full .pq-inside-icon {
+      flex: none;
+      margin-bottom: 0;
+    }
+    .pq-inside-card-full .pq-inside-text {
+      flex: 1;
+    }
+    .pq-inside-card-full .pq-inside-text p {
+      max-width: 46ch;
+    }
+    .pq-inside-card-full .pq-inside-stat {
+      margin-top: 0;
+      margin-left: auto;
+      align-self: center;
+      flex: none;
+    }
   }
   .pq-inside-icon {
     width: 2.25rem;
@@ -1045,14 +1245,24 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     transform: translateX(-50%);
     width: 26px;
     height: 26px;
+    /* Bigger invisible hit area than the visible glyph — a 26px chevron
+       is a small target to click precisely. */
+    padding: 10px;
+    margin: -10px;
+    box-sizing: content-box;
     color: var(--pq-gold-soft);
     opacity: 0;
-    transition: opacity 0.4s ease, top 0.3s ease;
+    transition: opacity 0.4s ease, top 0.3s ease, color 0.2s ease;
     pointer-events: none;
   }
   .pq-keep-scrolling.is-visible {
     opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
     animation: pq-scroll-cue-pulse 1.8s ease-in-out infinite;
+  }
+  .pq-keep-scrolling.is-visible:hover {
+    color: var(--pq-gold);
   }
   @media (prefers-reduced-motion: reduce) {
     .pq-keep-scrolling.is-visible { animation: none; }
@@ -1252,7 +1462,10 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     flex: none;
     width: 170px;
     aspect-ratio: 1350 / 2760;
-    filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.5));
+    /* Tighter and softer than before — at a bigger blur/opacity this read
+       as a rectangular dark-blue smudge behind each phone rather than a
+       shadow hugging the rounded shape. */
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.3));
   }
   .pq-mini-phone-screen {
     position: absolute;
@@ -1260,9 +1473,15 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     left: 4.8%;
     right: 4.8%;
     bottom: 1.8%;
-    border-radius: 1.7rem;
+    /* Rounded a bit past what the bezel's own corner curve strictly needs
+       (same margin-of-safety approach as the main phone mockup) — a
+       screenshot's square corner peeking past the bezel's rounded mask
+       used to show as a mismatched dark square. Background matched to
+       the page itself so even a stray sliver blends in instead of
+       contrasting as a different shade of "dark". */
+    border-radius: 2.1rem;
     overflow: hidden;
-    background: #050505;
+    background: var(--bg-primary);
   }
   .pq-mini-phone-screen img,
   .pq-mini-phone-screen video {
@@ -1305,12 +1524,92 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     line-height: 1.4;
   }
 
-  /* Built with */
+  /* Built with — left column (stack + diagram) vs. right column (shared
+     types reference) so the disjoint types card reads as sitting beside
+     everything else, not just some leftover bolted onto the diagram. */
+  .pq-bts-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .pq-bts-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+  }
+  @media (min-width: 1300px) {
+    .pq-bts-row {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    .pq-bts-left {
+      flex: 1 1 auto;
+    }
+    .pq-types-card {
+      flex: 0 0 260px;
+    }
+  }
   .pq-diagram {
     position: relative;
     color: var(--pq-gold);
-    margin-bottom: 2rem;
     overflow-x: auto;
+  }
+  .pq-types-card {
+    padding: 1.25rem 1.25rem 1.4rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 0.9rem;
+    background: var(--bg-card);
+  }
+  .pq-types-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.9rem;
+  }
+  .pq-types-row {
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--border-primary);
+  }
+  .pq-types-row:first-of-type {
+    border-top: none;
+  }
+  .pq-types-label {
+    display: block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--pq-gold-soft);
+    margin-bottom: 0.3rem;
+  }
+  .pq-types-list {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--text-tertiary);
+  }
+  .pq-types-list code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
+    color: var(--text-secondary);
+  }
+  /* Hover a box (or its label) to spotlight its own path through the
+     diagram — everything else dims instead. Quiet on purpose: no ambient
+     motion, nothing until you actually interact with it. */
+  .pq-diagram-svg [data-group] {
+    transition: opacity 0.25s ease;
+  }
+  .pq-diagram-svg.pq-diagram-hovering [data-group] {
+    opacity: 0.2;
+  }
+  .pq-diagram-svg.pq-diagram-hovering [data-group].is-active {
+    opacity: 1;
+  }
+  .pq-diagram-hits rect {
+    cursor: pointer;
+    pointer-events: all;
   }
   @media (max-width: 700px) {
     .pq-diagram::after {
@@ -1338,42 +1637,47 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
   }
-  .pq-routes-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-  @media (min-width: 700px) {
-    .pq-routes-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (min-width: 1000px) {
-    .pq-routes-grid {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-  }
-  .pq-route-card {
-    padding: 1.25rem;
+  /* Single card, not a grid of nine — this section is a supporting detail
+     for whoever wants to dig in, not the page's main draw, so it should
+     read as one scannable list rather than compete for attention. */
+  .pq-routes-list {
     border: 1px solid var(--border-primary);
-    border-radius: 0.75rem;
+    border-radius: 0.9rem;
     background: var(--bg-card);
+    margin-bottom: 2.5rem;
+    overflow: hidden;
   }
-  .pq-route-card h4 {
-    font-size: 0.95rem;
+  .pq-routes-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border-primary);
+  }
+  .pq-routes-row:last-child {
+    border-bottom: none;
+  }
+  @media (min-width: 640px) {
+    .pq-routes-row {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+  }
+  .pq-routes-label {
+    flex: 0 0 9rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--pq-gold);
-    margin-bottom: 0.4rem;
   }
-  .pq-route-card p {
-    font-size: 0.85rem;
+  .pq-routes-desc {
+    font-size: 0.88rem;
     line-height: 1.55;
     color: var(--text-tertiary);
   }
-  .pq-route-card code {
+  .pq-routes-desc code {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.8em;
+    font-size: 0.9em;
     color: var(--text-secondary);
   }
 
@@ -1381,7 +1685,6 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     display: flex;
     flex-wrap: wrap;
     gap: 1.75rem 2.5rem;
-    margin-bottom: 2.5rem;
   }
   .pq-stack-label {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
@@ -1415,6 +1718,7 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     color: var(--text-tertiary);
     font-size: 1rem;
     line-height: 1.6;
+    margin-bottom: 2.5rem;
   }
   .pq-notes li::before {
     content: "\2014 ";
@@ -1424,6 +1728,99 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 0.9em;
     color: var(--text-secondary);
+  }
+
+  /* Admin dashboard — the App Store Connect pipeline gets a visually
+     distinct callout (gold border, not just another gray card) since
+     it's the standout technical story in this section, not one item
+     among equals. */
+  .pq-admin-feature {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid color-mix(in oklab, var(--pq-gold) 40%, var(--border-primary));
+    border-radius: 0.9rem;
+    background: var(--bg-card);
+    margin-bottom: 1.5rem;
+  }
+  .pq-admin-feature h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--pq-gold);
+    margin-bottom: 0.5rem;
+  }
+  .pq-admin-feature > p {
+    color: var(--text-tertiary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .pq-admin-feature .pq-notes {
+    margin-bottom: 0;
+  }
+  .pq-admin-other {
+    color: var(--text-tertiary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .pq-admin-other code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
+    color: var(--text-secondary);
+  }
+
+  /* Admin dashboard laptop mockup — same traced-photo approach as the
+     phone mockups (real MacBook silhouette, screen area is a literal
+     hole in the SVG via nonzero fill-rule), reused from the blog's
+     DeviceShowcase, just recolored to this page's gold palette. */
+  .pq-laptop-stage {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pq-laptop {
+    position: relative;
+    width: 100%;
+    max-width: 780px;
+    aspect-ratio: 3860 / 2540;
+  }
+  .pq-laptop-screen-hole {
+    position: absolute;
+    top: 11.34%;
+    left: 10.83%;
+    right: 10.83%;
+    bottom: 11.34%;
+    background: #050505;
+    overflow: hidden;
+  }
+  .pq-laptop-screen-hole img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .pq-laptop-outline {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .pq-laptop-chrome {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .pq-laptop-chrome .pq-hinge-line {
+    stroke: color-mix(in oklab, var(--pq-gold) 35%, transparent);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .pq-laptop-caption {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    font-style: italic;
   }
 
   .pq-cta {
@@ -1584,6 +1981,19 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
   .pq-mini-phone-outline path:nth-of-type(2) {
     fill: none;
     stroke: none;
+  }
+
+  .pq-laptop-outline svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .pq-laptop-outline path {
+    fill: #050505;
+    stroke: color-mix(in oklab, var(--pq-gold, #d7a955) 35%, transparent);
+    stroke-width: 1.6;
+    vector-effect: non-scaling-stroke;
+    opacity: 1;
   }
 </style>
 
@@ -1789,12 +2199,40 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
       // fully-settled edge is closer — never leave the fade caught
       // mid-way. `scrollend` (not a debounce timer) waits out the
       // browser's own momentum/inertial scroll before checking.
-      let snapping = false;
+      // A programmatic smooth-scroll (from here or the click-to-advance
+      // handler below) can fire more than one 'scrollend' before it's
+      // actually finished — WebKit seems to emit one at each momentary
+      // pause in the animation curve, not just at the true end. A single
+      // consume-once flag only absorbs the first of those and lets a
+      // later spurious one fire trySnap's real logic mid-flight, snapping
+      // the page backward before the scroll it was supposed to ignore
+      // even finishes. A time window survives however many fire.
+      let suppressSnapUntil = 0;
+      const suppressSnapFor = (ms: number) => {
+        suppressSnapUntil = Date.now() + ms;
+      };
+      // Self-driven instead of `window.scrollTo({behavior:"smooth"})` — the
+      // native version was observed cutting itself short mid-animation on
+      // some transitions here (landing dozens of px before the requested
+      // target, for reasons that didn't trace back to anything in this
+      // file). Driving it via rAF sidesteps whatever native scroll-
+      // animation cancellation was doing that, and lets one duration cover
+      // the whole suppression window precisely.
+      const animateScrollTo = (target: number, duration = 500) => {
+        const startY = window.scrollY;
+        const delta = target - startY;
+        if (Math.abs(delta) < 1) return;
+        const startTime = performance.now();
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+        const step = (now: number) => {
+          const t = Math.min(1, (now - startTime) / duration);
+          window.scrollTo(0, startY + delta * easeOutCubic(t));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
       const trySnap = () => {
-        if (snapping) {
-          snapping = false;
-          return;
-        }
+        if (Date.now() < suppressSnapUntil) return;
         const st = tl.scrollTrigger;
         if (!st || !st.isActive) return;
         const t = tl.time();
@@ -1809,12 +2247,44 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
           // 99.x% instead of a clean 0/1.
           const edgeBuffer = targetTime === bStart ? -1 : 1;
           const targetScrollY = st.start + targetProgress * (st.end - st.start) + edgeBuffer;
-          snapping = true;
-          window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+          suppressSnapFor(600);
+          animateScrollTo(targetScrollY);
           return;
         }
       };
       window.addEventListener("scrollend", trySnap);
+
+      // The idle hint doubles as a "next" control — click it to advance
+      // to the next screen's settled point, or (on the last screen) jump
+      // straight to the carousel section below, since there's nothing
+      // further to advance to within the pin itself.
+      hint?.addEventListener("click", () => {
+        // Ignore clicks while a previous click's (or the auto-snap's)
+        // smooth-scroll is still in flight — starting a second one on top
+        // reads the still-mid-transition screen as "active" and can
+        // compute a target that doesn't actually advance anything.
+        if (Date.now() < suppressSnapUntil) return;
+        const st = tl.scrollTrigger;
+        if (!st) return;
+        const activeIndex = screens.findIndex(
+          (s) => getComputedStyle(s).visibility !== "hidden"
+        );
+        if (activeIndex === -1) return;
+        if (activeIndex >= blendStarts.length) {
+          document
+            .querySelector(".pq-carousel-section")
+            ?.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+        const targetTime = blendStarts[activeIndex] + blendDuration;
+        const targetProgress = targetTime / tl.duration();
+        // Same 1px-past-the-edge nudge as the auto-snap above — landing
+        // precisely on the boundary can round a fraction short, leaving
+        // the next screen at 99.x% instead of a clean 100%.
+        const targetScrollY = st.start + targetProgress * (st.end - st.start) + 1;
+        suppressSnapFor(600);
+        animateScrollTo(targetScrollY);
+      });
 
       // Nudge the user to keep scrolling if they pause mid-sequence for a
       // second — reassurance that the pinned section is still responding,
@@ -1822,12 +2292,28 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
       // below (the carousel), so "done with this section" still means
       // "keep scrolling."
       let idleTimer: ReturnType<typeof setTimeout> | undefined;
+      let lastScrollY = window.scrollY;
       const onScroll = () => {
         if (!hint) return;
+        // Some browsers fire a trailing 'scroll' event or two with no
+        // actual position change (momentum settling, etc.) — treat those
+        // as no-ops instead of letting them keep resetting the idle timer
+        // right as it's about to arm.
+        if (window.scrollY === lastScrollY) return;
+        lastScrollY = window.scrollY;
         hint.classList.remove("is-visible");
         clearTimeout(idleTimer);
         const st = tl.scrollTrigger;
-        if (!st || !st.isActive || st.progress <= 0) return;
+        if (!st) return;
+        // GSAP flips `isActive` false the instant scroll passes the pin's
+        // end — the same tick `progress` reaches 1 — so there's no moment
+        // where both "isActive" and "resting on the last screen" are true
+        // together. A fixed pixel buffer past `end` doesn't work either:
+        // one scroll step can easily overshoot it by more than any static
+        // amount. Checking the section's own visibility instead is robust
+        // regardless of how fast/far a single scroll tick travels.
+        const justPastEnd = st.progress >= 1 && section.getBoundingClientRect().bottom > 0;
+        if (!(st.isActive || justPastEnd) || st.progress <= 0) return;
         idleTimer = setTimeout(() => hint.classList.add("is-visible"), 1000);
       };
       window.addEventListener("scroll", onScroll, { passive: true });
@@ -1955,6 +2441,34 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     });
   }
 
+  function initParkQuestDiagram() {
+    const svg = document.querySelector<SVGSVGElement>(".pq-diagram-svg");
+    if (!svg) return;
+    const groupedEls = svg.querySelectorAll<SVGElement>("[data-group]");
+    const allGroups = ["ios", "web", "neon", "clerk", "r2", "external"];
+
+    const setActive = (groups: string[] | null) => {
+      svg.classList.toggle("pq-diagram-hovering", groups !== null);
+      groupedEls.forEach((el) => {
+        if (!groups) {
+          el.classList.remove("is-active");
+          return;
+        }
+        const own = (el.dataset.group ?? "").split(" ");
+        el.classList.toggle("is-active", own.some((g) => groups.includes(g)));
+      });
+    };
+
+    svg.querySelectorAll<SVGRectElement>("[data-node]").forEach((hit) => {
+      const node = hit.dataset.node ?? "";
+      // The API box is the hub everything routes through — hovering it
+      // spotlights the whole diagram rather than just itself.
+      const groups = node === "api" ? allGroups : [node];
+      hit.addEventListener("mouseenter", () => setActive(groups));
+      hit.addEventListener("mouseleave", () => setActive(null));
+    });
+  }
+
   function initParkQuest() {
     initParkQuestHero();
     initParkQuestScroll();
@@ -1962,6 +2476,7 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     initParkQuestMedia();
     initParkQuestScrollRefresh();
     initParkQuestCarousel();
+    initParkQuestDiagram();
   }
 
   if (document.readyState === "loading") {
