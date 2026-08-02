@@ -25,7 +25,7 @@ const getColor = (count: number) => {
     </div>
 
     <div class="rounded-md relative">
-      <div id="activity-grid-container" class="weeks py-2" style="min-height: 7rem;">
+      <div id="activity-grid-container" class="grid-scroll overflow-x-auto py-2" style="min-height: 7rem;">
         <div class="skeleton-grid">
           {Array.from({ length: 53 }).map(() => (
             <div class="week">
@@ -72,23 +72,39 @@ const getColor = (count: number) => {
 </div>
 
 <style>
-  .weeks { display: flex; width: 100%; gap: clamp(1px, 0.3vw, 4px); }
-  .week { display: flex; flex: 1 1 0; min-width: 0; flex-direction: column; gap: clamp(1px, 0.3vw, 4px); }
-  .day {
-    width: 100%;
-    aspect-ratio: 1 / 1;
+  /* The hover outline on .day draws 3px (2px outline + 1px offset) outside
+     its box. .grid-scroll's clip boundary sits at its own padding edge, so
+     it's pushed out 3px past its allotted space (negative margin) and given
+     3px of padding to match — its content box ends up exactly where the
+     grid used to sit, but the box itself now has real room beyond that for
+     the outline to render into without being clipped. */
+  .grid-scroll { margin-left: -3px; margin-right: -3px; padding-left: 3px; padding-right: 3px; }
+  /* .weeks, .week and .day are all inserted dynamically via JS (innerHTML),
+     so Astro's scoped styles never attach to them — these rules must be
+     :global. */
+  /* width: max-content (mobile only) makes .weeks size itself to its actual
+     overflowing content instead of collapsing to the container's width.
+     Without this, Chromium drops grid-scroll's trailing padding from the
+     scrollable area — a known quirk when the overflow comes from a nested
+     box that's narrower than its own content — which clipped the hover
+     outline on the last (rightmost) column when scrolled to the end. */
+  :global(.activity-section .weeks) { display: flex; gap: 0.25rem; width: max-content; }
+  :global(.activity-section .week) { display: flex; flex-direction: column; gap: 0.25rem; }
+  :global(.activity-section .day) {
+    width: 0.75rem;
+    height: 0.75rem;
     border-radius: 0.125rem;
     cursor: pointer;
-    transition: all 0.2s;
-  }
-  .day:hover {
-    outline: 2px solid #9ca3af;
+    outline: 2px solid transparent;
     outline-offset: 1px;
   }
-  /* Apply to dynamically inserted .day cells too */
+  @media (min-width: 640px) {
+    :global(.activity-section .weeks) { width: 100%; }
+    :global(.activity-section .week) { flex: 1 1 0; min-width: 0; }
+    :global(.activity-section .day) { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+  }
   :global(.activity-section .day:hover) {
-    outline: 2px solid #9ca3af;
-    outline-offset: 1px;
+    outline-color: #9ca3af;
   }
   .legend-colors { display: flex; gap: 0.25rem; }
   .legend-box {
@@ -96,15 +112,19 @@ const getColor = (count: number) => {
     height: 0.75rem;
     border-radius: 0.125rem;
   }
-  .skeleton-grid { display: flex; width: 100%; gap: clamp(1px, 0.3vw, 4px); }
+  .skeleton-grid { display: flex; gap: 0.25rem; }
   .skeleton-day {
-    width: 100%;
-    aspect-ratio: 1 / 1;
+    width: 0.75rem;
+    height: 0.75rem;
     border-radius: 0.125rem;
     background-color: #1e293b;
     animation: skeleton-shimmer 1.5s ease-in-out infinite;
   }
   .skeleton-day:nth-child(odd) { animation-delay: 0.1s; }
+  @media (min-width: 640px) {
+    .skeleton-grid { width: 100%; }
+    .skeleton-day { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+  }
   @keyframes skeleton-shimmer {
     0%, 100% { opacity: 0.6; background-color: #1e293b; }
     50% { opacity: 1; background-color: #334155; }
@@ -149,9 +169,6 @@ const getColor = (count: number) => {
     return '#39d353';
   };
 
-  const weekStyle = 'display:flex;flex:1 1 0;min-width:0;flex-direction:column;gap:clamp(1px, 0.3vw, 4px)';
-  const dayStyle = (bg: string): string => `width:100%;aspect-ratio:1/1;border-radius:0.125rem;cursor:pointer;background-color:${bg}`;
-
   function renderGrid(
     contributions: ContributionsData,
     gridContainer: HTMLElement,
@@ -160,14 +177,27 @@ const getColor = (count: number) => {
     if (!contributions?.weeks || !gridContainer || !countEl) return;
     countEl.innerHTML = `<span class="text-text-primary">${contributions.totalContributions.toLocaleString()} contributions in the last year</span>`;
     const weeksHtml = contributions.weeks.map((week: ContributionWeek) => `
-      <div class="week" style="${weekStyle}">
+      <div class="week">
         ${week.contributionDays.map((day: ContributionDay) =>
-          `<div class="day" style="${dayStyle(getColor(day.contributionCount))}" data-count="${day.contributionCount}" data-date="${day.date}"></div>`
+          `<div class="day" style="background-color:${getColor(day.contributionCount)}" data-count="${day.contributionCount}" data-date="${day.date}"></div>`
         ).join('')}
       </div>
     `).join('');
-    gridContainer.innerHTML = weeksHtml;
+    gridContainer.innerHTML = `<div class="weeks">${weeksHtml}</div>`;
+    scrollToEnd(gridContainer);
     try { initTooltip(); } catch (_) {}
+  }
+
+  function scrollToEnd(gridContainer: HTMLElement): void {
+    gridContainer.scrollLeft = gridContainer.scrollWidth;
+    // Layout (fonts, images) can still settle after this tick on some mobile
+    // browsers, so re-assert the scroll position on the next couple of frames.
+    requestAnimationFrame(() => {
+      gridContainer.scrollLeft = gridContainer.scrollWidth;
+      requestAnimationFrame(() => {
+        gridContainer.scrollLeft = gridContainer.scrollWidth;
+      });
+    });
   }
 
   let activityClickOut: ((e: MouseEvent) => void) | null = null;
@@ -189,10 +219,25 @@ const getColor = (count: number) => {
       const parentEl = tooltip.parentElement;
       if (!parentEl) return;
       const parent = parentEl.getBoundingClientRect();
-      tooltip.style.left = `${rect.left - parent.left + rect.width / 2}px`;
+      const left = rect.left - parent.left + rect.width / 2;
+      tooltip.style.left = `${left}px`;
       tooltip.style.top = `${rect.top - parent.top - 8}px`;
       tooltip.style.transform = 'translate(-50%, -100%)';
       tooltip.classList.remove('hidden');
+
+      // Keep the tooltip on screen: if centering it on the square would push
+      // it past the viewport edge, shift it back in by the overflow amount.
+      const margin = 8;
+      const tooltipRect = tooltip.getBoundingClientRect();
+      let shift = 0;
+      if (tooltipRect.left < margin) {
+        shift = margin - tooltipRect.left;
+      } else if (tooltipRect.right > window.innerWidth - margin) {
+        shift = (window.innerWidth - margin) - tooltipRect.right;
+      }
+      if (shift !== 0) {
+        tooltip.style.left = `${left + shift}px`;
+      }
     };
     const hideTooltip = (): void => tooltip.classList.add('hidden');
 
