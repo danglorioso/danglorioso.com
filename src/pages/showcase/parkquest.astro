@@ -84,6 +84,106 @@ const parkDots = Array.from({ length: 63 }, (_, i) =>
 );
 const bucketListSample = ["Glacier", "Big Bend", "North Cascades"];
 const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
+
+// Minimal line-icon set (24x24, stroke-based) for the "Inside the API" and
+// admin-tools card grids, so each category reads at a glance instead of
+// being just another row of text.
+const ROUTE_ICONS: Record<string, string> = {
+  map: `<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>`,
+  route: `<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>`,
+  message: `<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>`,
+  users: `<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
+  award: `<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>`,
+  bell: `<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>`,
+  lock: `<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+  grid: `<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>`,
+  flag: `<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>`,
+  image: `<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>`,
+  megaphone: `<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>`,
+  mail: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>`,
+};
+
+const apiRoutes = [
+  {
+    icon: "map",
+    label: "Parks & maps",
+    desc: "Proxies live NPS data, per-park weather, and who else has visited.",
+    endpoints: [
+      { method: "GET", path: "/api/parks" },
+      { method: "GET", path: "/api/parks/:id/weather" },
+      { method: "GET", path: "/api/parks/:id/visitors" },
+    ],
+  },
+  {
+    icon: "route",
+    label: "Visits & hikes",
+    desc: "Logs trips and bucket-list entries; parses GPX uploads into distance, elevation, and route.",
+    endpoints: [
+      { method: "POST", path: "/api/visits" },
+      { method: "POST", path: "/api/visits/:id/gpx" },
+      { method: "GET", path: "/api/bucket-list" },
+    ],
+  },
+  {
+    icon: "message",
+    label: "Social feed",
+    desc: "Posts, likes, comments, quote/reposts, and badge-share posts.",
+    endpoints: [
+      { method: "GET", path: "/api/feed" },
+      { method: "POST", path: "/api/posts" },
+      { method: "POST", path: "/api/posts/:id/like" },
+    ],
+  },
+  {
+    icon: "users",
+    label: "Friends",
+    desc: "Mutual request/accept model — not a one-way follow.",
+    endpoints: [
+      { method: "GET", path: "/api/friends" },
+      { method: "POST", path: "/api/friends/requests" },
+      { method: "POST", path: "/api/friends/requests/:id/accept" },
+    ],
+  },
+  {
+    icon: "award",
+    label: "Badges",
+    desc: "Awards and revokes badges through one shared condition engine.",
+    endpoints: [
+      { method: "GET", path: "/api/badges" },
+      { method: "POST", path: "/api/badges/evaluate" },
+      { method: "GET", path: "/api/users/:id/badges" },
+    ],
+  },
+  {
+    icon: "bell",
+    label: "Notifications",
+    desc: "One typed feed, fanned out to Web Push and Expo push in parallel.",
+    endpoints: [
+      { method: "GET", path: "/api/notifications" },
+      { method: "POST", path: "/api/push/register" },
+      { method: "POST", path: "/api/notifications/read" },
+    ],
+  },
+  {
+    icon: "lock",
+    label: "Auth & webhooks",
+    descHtml: `Clerk's <code>user.created</code> webhook backstops profile creation for SSO signups.`,
+    endpoints: [
+      { method: "POST", path: "/api/webhooks/clerk" },
+      { method: "GET", path: "/api/me" },
+      { method: "POST", path: "/api/auth/session" },
+    ],
+  },
+];
+
+const adminTools = [
+  { icon: "grid", label: "Dashboard", desc: "Signups, daily active users (DAU), likes, comments, storage quotas, and top parks by visits." },
+  { icon: "flag", label: "Moderation", desc: "A review queue for reported user-generated content, flagged accounts, and blocks." },
+  { icon: "award", label: "Badges", desc: "CRUD manager for building customized, conditionally-awarded badges." },
+  { icon: "image", label: "Parks", desc: "For uploading park-specific SVG glyphs for the passport stamps." },
+  { icon: "megaphone", label: "Broadcast", desc: "Send push notifications to user segments." },
+  { icon: "mail", label: "Email", desc: "Admin notification and email deliverability monitoring." },
+];
 ---
 
 <Showcase
@@ -707,42 +807,64 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
 
       <h3 class="pq-routes-heading">Inside the API</h3>
       <p class="pq-routes-sub">60 routes, grouped by what they actually do &mdash; moderation and admin routes are covered below.</p>
-      <div class="pq-routes-list">
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Parks &amp; maps</span>
-          <span class="pq-routes-desc">Proxies live NPS data, per-park weather, and who else has visited.</span>
+      <div class="pq-api-explorer">
+        <div class="pq-api-tabs" role="tablist" aria-label="API route categories">
+          {apiRoutes.map((route, i) => (
+            <button
+              type="button"
+              class="pq-api-tab"
+              role="tab"
+              aria-selected={i === 0 ? "true" : "false"}
+              aria-controls={`pq-api-pane-${i}`}
+              id={`pq-api-tab-${i}`}
+              data-api-tab={i}
+            >
+              <span class="pq-api-tab-icon" set:html={`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ROUTE_ICONS[route.icon]}</svg>`} />
+              {route.label}
+            </button>
+          ))}
         </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Visits &amp; hikes</span>
-          <span class="pq-routes-desc">Logs trips and bucket-list entries; parses GPX uploads into distance, elevation, and route.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Social feed</span>
-          <span class="pq-routes-desc">Posts, likes, comments, quote/reposts, and badge-share posts.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Friends</span>
-          <span class="pq-routes-desc">Mutual request/accept model &mdash; not a one-way follow.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Badges</span>
-          <span class="pq-routes-desc">Awards and revokes badges through one shared condition engine.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Notifications</span>
-          <span class="pq-routes-desc">One typed feed, fanned out to Web Push and Expo push in parallel.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Auth &amp; webhooks</span>
-          <span class="pq-routes-desc">Clerk's <code>user.created</code> webhook backstops profile creation for SSO signups.</span>
+
+        <div class="pq-api-panel">
+          <div class="pq-api-panel-bar">
+            <span class="pq-api-dot pq-api-dot-red"></span>
+            <span class="pq-api-dot pq-api-dot-yellow"></span>
+            <span class="pq-api-dot pq-api-dot-green"></span>
+            <span class="pq-api-panel-title">routes.ts</span>
+          </div>
+          <div class="pq-api-panel-body">
+            {apiRoutes.map((route, i) => (
+              <div
+                class:list={["pq-api-pane", { "is-active": i === 0 }]}
+                role="tabpanel"
+                id={`pq-api-pane-${i}`}
+                aria-labelledby={`pq-api-tab-${i}`}
+                data-api-pane={i}
+              >
+                {route.descHtml ? (
+                  <p class="pq-api-desc" set:html={route.descHtml} />
+                ) : (
+                  <p class="pq-api-desc">{route.desc}</p>
+                )}
+                <ul class="pq-api-endpoints">
+                  {route.endpoints.map((ep) => (
+                    <li>
+                      <span class={`pq-api-method pq-api-method-${ep.method.toLowerCase()}`}>{ep.method}</span>
+                      <code>{ep.path}</code>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <ul class="pq-notes">
+      <!-- <ul class="pq-notes">
         <li><code>@parkquest/types</code> is a shared domain-types package (parks, visits, social, moderation, badges) both apps import as the API contract.</li>
         <li>That package also ships shared SVG glyph geometry for the passport stamps (<code>parkGlyphs.ts</code>) &mdash; web's <code>Stamp</code> component and iOS's <code>ParkStamp</code> render pixel-identical stamp art from the same <code>glyphTransform()</code> function, not duplicated per platform.</li>
         <li>The web app renders its own MapLibre GL vector map; iOS uses react-native-maps with <code>PROVIDER_DEFAULT</code>, which resolves to Apple MapKit rather than Google Maps.</li>
-      </ul>
+      </ul> -->
 
     </section>
 
@@ -756,34 +878,19 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
 
       <div class="pq-admin-layout">
         <div class="pq-admin-text">
-          <div class="pq-routes-list pq-admin-list">
-            <div class="pq-routes-row">
-              <span class="pq-routes-label">Dashboard</span>
-              <span class="pq-routes-desc">Signups, daily active users (DAU), likes, comments, storage quotas, andtop parks by visits.</span>
-            </div>
-            <div class="pq-routes-row">
-              <span class="pq-routes-label">Moderation</span>
-              <span class="pq-routes-desc">A review queue for reported user-generated content, flagged accounts, and blocks.</span>
-            </div>
-            <div class="pq-routes-row">
-              <span class="pq-routes-label">Badges</span>
-              <span class="pq-routes-desc">CRUD manager for building customized, conditionally-awarded badges.</span>
-            </div>
-            <div class="pq-routes-row">
-              <span class="pq-routes-label">Parks</span>
-              <span class="pq-routes-desc">For uploading park-specific SVG glyphs for the passport stamps.</span>
-            </div>
-            <div class="pq-routes-row">
-              <span class="pq-routes-label">Broadcast</span>
-              <span class="pq-routes-desc">Center for centering push notifications to groups of users.</span>
-            </div>
-            <div class="pq-routes-row">
-              <span class="pq-routes-label">Email</span>
-              <span class="pq-routes-desc">Admin notification and email deliverability monitoring.</span>
-            </div>
+          <div class="pq-route-grid pq-route-grid-admin">
+            {adminTools.map((tool) => (
+              <div class="pq-route-card">
+                <span class="pq-route-icon" set:html={`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ROUTE_ICONS[tool.icon]}</svg>`} />
+                <div class="pq-route-body">
+                  <h4 class="pq-route-label">{tool.label}</h4>
+                  <p class="pq-route-desc">{tool.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
-          <p class="pq-admin-other">Why it exists: many aspects of the app are easiler to manage from a web dashboard than from within the app. Per Apple's App Store Review Guidelines 1.2 (user-genertaed content), this dashbaord serves as the moderation surface for user-generated content, and additionally allows for customizing the user experience and analyzing trends for optimal marketing strategy.</p>
+          <p class="pq-admin-other">Why it exists: many aspects of the app are easier to manage from a web dashboard than from within the app. Per Apple's App Store Review Guidelines 1.2 (user-generated content), this dashboard serves as the moderation surface for user-generated content, and additionally allows for customizing the user experience and analyzing trends for optimal marketing strategy.</p>
         </div>
 
         <div class="pq-laptop-stage">
@@ -1075,6 +1182,11 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     max-width: 72rem;
     margin: 0 auto;
     padding: 6rem 2rem;
+  }
+  @media (max-width: 640px) {
+    .pq-section {
+      padding: 3.5rem 1.25rem;
+    }
   }
 
   .pq-section h2 {
@@ -1404,6 +1516,10 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
   .pq-avs {
     display: flex;
     flex: none;
+    /* Scope the negative z-index below to this stack's own stacking
+       context — otherwise it escapes to the card's background instead of
+       just tucking behind the neighboring avatar. */
+    isolation: isolate;
   }
   .pq-avs i {
     width: 1.9rem;
@@ -1424,6 +1540,7 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
   .pq-avs-more {
     background: color-mix(in oklab, var(--text-tertiary) 20%, transparent);
     color: var(--text-tertiary) !important;
+    z-index: -1;
   }
   .pq-frow-note {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
@@ -1446,6 +1563,12 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     grid-template-columns: 1fr;
     gap: 3rem;
   }
+  @media (max-width: 640px) {
+    .pq-feature-grid {
+      padding: 3rem 1.25rem;
+      gap: 2.5rem;
+    }
+  }
   @media (min-width: 900px) {
     .pq-feature-grid {
       grid-template-columns: 0.9fr 1.1fr;
@@ -1466,13 +1589,28 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
 
   .pq-phone {
     position: relative;
-    width: 300px;
+    /* min() instead of a flat 300px — on narrow viewports (~360px and
+       below), 300px plus the section's 2rem side padding no longer fits
+       and pushed the page into horizontal scroll. */
+    width: min(300px, 100%);
     /* Kept at the trace SVG's native ratio on purpose — stretching this
        non-uniformly (with preserveAspectRatio="none") turns the bezel's
        circular corners into ellipses that a plain CSS border-radius can't
        match, leaving a visible gap at the top corners. Not worth it. */
     aspect-ratio: 1350 / 2760;
     filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+  }
+  /* Below 900px the phone and captions stack and pin as one block (see the
+     script) instead of sitting pinned side by side — so the phone also has
+     to leave room for the caption underneath it within a single screen's
+     height. Capping width by vh (not just px/vw) scales the phone — and so
+     its height, via the fixed aspect-ratio — down on shorter viewports and
+     up on taller ones, instead of one fixed size that fits some phones and
+     not others. */
+  @media (max-width: 899px) {
+    .pq-phone {
+      width: min(300px, 100%, 24vh);
+    }
   }
   /* Nudge that this is a pinned, scroll-scrubbed section, not a stuck page —
      shows up if the user pauses mid-sequence (JS toggles .is-visible) and
@@ -1625,9 +1763,12 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
 
   /* Captions overlap and crossfade in place (like the phone's own screens)
      instead of stacking in normal flow — that's what lets the active one
-     stay centered regardless of how much text it holds, and it's pinned
-     alongside the phone (JS sets this to match .pq-phone's real height so
-     both stages sit at the same top offset and land centered together). */
+     stay centered regardless of how much text it holds. At 900px+ this
+     sits beside the phone and is pinned separately (JS sets this box's
+     height to match .pq-phone's real height so both land at the same
+     pinned top offset and land centered together); below 900px it stacks
+     under the phone and rides along in the same single pinned block
+     instead (see the script). */
   .pq-captions-stage {
     position: relative;
     width: 100%;
@@ -1642,6 +1783,14 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     width: 100%;
     height: 100%;
     min-height: 20rem;
+  }
+  /* Shorter fixed floor below 900px — this box isn't matched to the
+     phone's height here (see the script), and the full 20rem desktop
+     value would blow out the combined pinned block's height on its own. */
+  @media (max-width: 899px) {
+    .pq-captions {
+      min-height: 13rem;
+    }
   }
   .pq-caption {
     position: absolute;
@@ -1886,48 +2035,261 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
   }
-  /* Single card, not a grid of nine — this section is a supporting detail
-     for whoever wants to dig in, not the page's main draw, so it should
-     read as one scannable list rather than compete for attention. */
-  .pq-routes-list {
-    border: 1px solid var(--border-primary);
-    border-radius: 0.9rem;
-    background: var(--bg-card);
+  /* Route/tool card grid — used for both "Inside the API" and the admin
+     tools list. Each category gets an icon chip so the grid reads at a
+     glance instead of as a wall of label/description rows. */
+  .pq-route-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
     margin-bottom: 2.5rem;
-    overflow: hidden;
-  }
-  .pq-routes-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid var(--border-primary);
-  }
-  .pq-routes-row:last-child {
-    border-bottom: none;
   }
   @media (min-width: 640px) {
-    .pq-routes-row {
-      flex-direction: row;
-      align-items: baseline;
-      gap: 1.5rem;
+    .pq-route-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
-  .pq-routes-label {
-    flex: 0 0 9rem;
-    font-size: 0.9rem;
-    font-weight: 700;
+  @media (min-width: 900px) {
+    .pq-route-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .pq-route-grid-admin {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  /* 7 cards over 2 or 3 columns always leaves one orphaned on its own row
+     — center and cap its width instead of letting it stretch full-bleed
+     or sit flush left. */
+  @media (min-width: 640px) {
+    .pq-route-grid:not(.pq-route-grid-admin) > :last-child {
+      grid-column: 1 / -1;
+      max-width: 360px;
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+  .pq-route-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 0.75rem;
+    background: var(--bg-card);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .pq-route-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklab, var(--pq-gold) 45%, var(--border-primary));
+    box-shadow: 0 10px 24px -16px rgba(0, 0, 0, 0.45);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-route-card {
+      transition: none;
+    }
+    .pq-route-card:hover {
+      transform: none;
+    }
+  }
+  .pq-route-icon {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.6rem;
+    background: color-mix(in oklab, var(--pq-gold) 12%, transparent);
     color: var(--pq-gold);
   }
-  .pq-routes-desc {
-    font-size: 0.88rem;
+  .pq-route-body {
+    min-width: 0;
+  }
+  .pq-route-label {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--pq-gold);
+    margin-bottom: 0.3rem;
+  }
+  .pq-route-desc {
+    font-size: 0.86rem;
     line-height: 1.55;
     color: var(--text-tertiary);
   }
-  .pq-routes-desc code {
+  .pq-route-desc code {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 0.9em;
     color: var(--text-secondary);
+  }
+
+  /* "Inside the API" as a tabbed code-editor mockup instead of a static
+     grid — click a category, the panel below swaps to its real-shaped
+     endpoints. More fun to poke at than a wall of cards, and the endpoint
+     paths are concrete detail a static list didn't have room for. */
+  .pq-api-explorer {
+    margin-bottom: 2.5rem;
+  }
+  .pq-api-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+  .pq-api-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-card);
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+  .pq-api-tab:hover {
+    border-color: color-mix(in oklab, var(--pq-gold) 45%, var(--border-primary));
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+  .pq-api-tab:focus-visible {
+    outline: 2px solid var(--pq-gold);
+    outline-offset: 2px;
+  }
+  .pq-api-tab[aria-selected="true"] {
+    background: var(--pq-gold);
+    border-color: var(--pq-gold);
+    color: #1a1408;
+  }
+  .pq-api-tab[aria-selected="true"] .pq-api-tab-icon {
+    color: #1a1408;
+  }
+  .pq-api-tab-icon {
+    display: inline-flex;
+    width: 1rem;
+    height: 1rem;
+    color: var(--pq-gold);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-api-tab {
+      transition: none;
+    }
+    .pq-api-tab:hover {
+      transform: none;
+    }
+  }
+
+  .pq-api-panel {
+    border: 1px solid var(--border-primary);
+    border-radius: 0.9rem;
+    background: var(--bg-card);
+    overflow: hidden;
+  }
+  .pq-api-panel-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border-primary);
+    background: color-mix(in oklab, black 12%, var(--bg-card));
+  }
+  .pq-api-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+  }
+  .pq-api-dot-red {
+    background: #ff5f56;
+    opacity: 0.55;
+  }
+  .pq-api-dot-yellow {
+    background: #ffbd2e;
+    opacity: 0.55;
+  }
+  .pq-api-dot-green {
+    background: #27c93f;
+    opacity: 0.55;
+  }
+  .pq-api-panel-title {
+    margin-left: 0.5rem;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+  }
+  .pq-api-panel-body {
+    padding: 1.5rem 1.5rem 1.75rem;
+    min-height: 12.5rem;
+  }
+  .pq-api-pane {
+    display: none;
+  }
+  .pq-api-pane.is-active {
+    display: block;
+    animation: pq-api-fade 0.25s ease;
+  }
+  @keyframes pq-api-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-api-pane.is-active {
+      animation: none;
+    }
+  }
+  .pq-api-desc {
+    color: var(--text-tertiary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.1rem;
+  }
+  .pq-api-desc code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
+    color: var(--text-secondary);
+  }
+  .pq-api-endpoints {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .pq-api-endpoints li {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .pq-api-endpoints code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+  }
+  .pq-api-method {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.5rem;
+    padding: 0.18rem 0.5rem;
+    border-radius: 0.35rem;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .pq-api-method-get {
+    background: color-mix(in oklab, #6fb3e0 20%, transparent);
+    color: #8fc7ec;
+  }
+  .pq-api-method-post {
+    background: color-mix(in oklab, var(--pq-gold) 20%, transparent);
+    color: var(--pq-gold);
   }
 
   .pq-stack {
@@ -1995,13 +2357,12 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     }
   }
 
-  /* Admin dashboard — the App Store Connect pipeline gets a visually
-     distinct callout (gold border, not just another gray card) since
-     it's the standout technical story in this section, not one item
-     among equals. */
+  /* Reconciling App Store Connect reporting is a supporting detail, not a
+     standout feature — a plain card like the rest of the section, not a
+     gold-bordered callout competing for attention right before the CTA. */
   .pq-admin-feature {
     padding: 1.5rem 1.75rem;
-    border: 1px solid color-mix(in oklab, var(--pq-gold) 40%, var(--border-primary));
+    border: 1px solid var(--border-primary);
     border-radius: 0.9rem;
     background: var(--bg-card);
     margin-top: 2.5rem;
@@ -2009,7 +2370,7 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
   .pq-admin-feature h4 {
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--pq-gold);
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
   }
   .pq-admin-feature > p {
@@ -2156,6 +2517,11 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     margin: 0 auto;
     padding: 10rem 2rem 6rem;
   }
+  @media (max-width: 640px) {
+    .pq-cta-inner {
+      padding: 6rem 1.25rem 3.5rem;
+    }
+  }
   .pq-app-icon-small {
     width: 3.5rem;
     height: 3.5rem;
@@ -2264,6 +2630,19 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     vector-effect: non-scaling-stroke;
     opacity: 1;
   }
+
+  /* Route/tool card icons are also raw-injected via set:html, so their
+     sizing has to be global too. */
+  .pq-route-icon svg {
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .pq-api-tab-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 </style>
 
 <script>
@@ -2315,20 +2694,40 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     // at 900px+), so it works fine full-width on mobile too.
     mm.add("(min-width: 0px)", () => {
       const section = document.getElementById("pq-feature-section");
+      const grid = document.querySelector<HTMLElement>(".pq-feature-grid");
       const stage = document.querySelector<HTMLElement>(".pq-phone-stage");
       const captionsStage = document.querySelector<HTMLElement>(".pq-captions-stage");
       const phone = document.querySelector<HTMLElement>(".pq-phone");
       const screens = gsap.utils.toArray<HTMLElement>(".pq-screen");
       const captions = gsap.utils.toArray<HTMLElement>(".pq-caption");
-      if (!section || !stage || !captionsStage || !phone || screens.length < 3 || captions.length !== screens.length) return;
+      if (!section || !grid || !stage || !captionsStage || !phone || screens.length < 3 || captions.length !== screens.length) return;
+
+      // Below 900px the grid is a single stacked column (phone above
+      // captions), not side-by-side — pinning the phone and captions as
+      // two independent elements (as below) freezes each wherever it
+      // naturally sits, and the captions column's natural spot is a full
+      // phone-height below the phone, well outside the viewport. That left
+      // mobile scrolling through a pinned phone with nothing but empty
+      // background beneath it, then dumping all the caption text into view
+      // at once only once the pin released. Below 900px, pin the *grid*
+      // itself instead — one element, phone and captions both riding along
+      // inside it — so the caption is always on-screen with the phone.
+      const isSideBySide = window.matchMedia("(min-width: 900px)").matches;
+      const pinTarget = isSideBySide ? stage : grid;
 
       // Captions now overlap and crossfade in place (like the phone's own
       // screens) instead of stacking in normal flow with a scroll-position-
       // dependent reveal — so the active one can always be centered
-      // regardless of how much text it holds. Match its stage's height to
-      // the phone's real rendered height so both land at the same pinned
-      // top offset and end up centered together, not just independently.
-      captionsStage.style.height = phone.offsetHeight + "px";
+      // regardless of how much text it holds. Side-by-side, match its
+      // stage's height to the phone's real rendered height so both land at
+      // the same pinned top offset and end up centered together, not just
+      // independently. Stacked on mobile, the captions box keeps its own
+      // (much shorter) CSS height instead — matching the phone's full
+      // height here would make the combined pinned block far taller than
+      // the viewport.
+      if (isSideBySide) {
+        captionsStage.style.height = phone.offsetHeight + "px";
+      }
 
       gsap.set(screens, { autoAlpha: 0 });
       gsap.set(screens[0], { autoAlpha: 1 });
@@ -2338,21 +2737,24 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
       // GSAP's pin captures the element wherever it naturally sits in the
       // layout the instant the trigger fires (position:fixed with that
       // measured top baked in) — it ignores CSS sticky/top entirely. To
-      // center the phone in the viewport while pinned, solve for the
-      // section-scroll offset that makes the *stage* land at vertical
+      // center the pinned block in the viewport, solve for the
+      // section-scroll offset that makes *pinTarget* land at vertical
       // center, rather than an arbitrary fixed value.
       const computeStart = () => {
-        const stageRect = stage.getBoundingClientRect();
+        const targetRect = pinTarget.getBoundingClientRect();
         const sectionRect = section.getBoundingClientRect();
-        const offsetWithinSection = stageRect.top - sectionRect.top;
+        const offsetWithinSection = targetRect.top - sectionRect.top;
         // Center within the space below the site header (it goes fixed on
         // scroll-up), not the raw viewport, so the pinned phone never sits
         // underneath/behind it. No extra buffer here — adding one on top
         // of headerH would make the gap above the phone bigger than the
         // gap below it; centering against the header's true edge is what
-        // keeps both gaps equal.
+        // keeps both gaps equal. Clamped at 0: the stacked mobile block
+        // (phone + gap + captions) can be taller than the viewport, where
+        // the unclamped math goes negative and pushes the top of the pin
+        // up behind the header instead of just running off the bottom.
         const headerH = document.getElementById("main-header")?.offsetHeight ?? 0;
-        const desiredViewportTop = headerH + (window.innerHeight - headerH - stageRect.height) / 2;
+        const desiredViewportTop = headerH + Math.max(0, (window.innerHeight - headerH - targetRect.height) / 2);
         return "top top+=" + (desiredViewportTop - offsetWithinSection);
       };
       // Shorter now (was 700px/transition) — the full sequence was a long
@@ -2365,27 +2767,32 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
           start: computeStart,
           end,
           scrub: 0.6,
-          pin: stage,
+          pin: pinTarget,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      // ScrollTrigger's `pin` only reliably pins one target per instance —
-      // an array didn't do what it sounds like it should, so the captions
-      // stage gets its own pin. Reading `start` off the *already-resolved*
-      // value on the main trigger (instead of calling computeStart() a
-      // second time) guarantees byte-identical sync — two independent
-      // calls landing a pixel apart was the likely cause of the double-
-      // snap/jerk when this section first engages.
-      ScrollTrigger.create({
-        trigger: section,
-        start: () => tl.scrollTrigger?.start ?? computeStart(),
-        end,
-        pin: captionsStage,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      });
+      // Side-by-side (900px+) only: ScrollTrigger's `pin` only reliably
+      // pins one target per instance — an array didn't do what it sounds
+      // like it should, so the captions column gets its own pin alongside
+      // the phone's. Reading `start` off the *already-resolved* value on
+      // the main trigger (instead of calling computeStart() a second time)
+      // guarantees byte-identical sync — two independent calls landing a
+      // pixel apart was the likely cause of the double-snap/jerk when this
+      // section first engages. Stacked on mobile there's nothing to
+      // duplicate here — pinTarget (the whole grid) already carries the
+      // captions along with it.
+      if (isSideBySide) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: () => tl.scrollTrigger?.start ?? computeStart(),
+          end,
+          pin: captionsStage,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+      }
 
       // Videos play once and freeze on the last frame (no `loop`) — an
       // Apple-style "Replay" link surfaces below the mockup once the
@@ -2738,6 +3145,20 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     });
   }
 
+  function initParkQuestApiExplorer() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>(".pq-api-tab");
+    if (!tabs.length) return;
+    const panes = document.querySelectorAll<HTMLElement>(".pq-api-pane");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const id = tab.dataset.apiTab;
+        tabs.forEach((t) => t.setAttribute("aria-selected", t === tab ? "true" : "false"));
+        panes.forEach((pane) => pane.classList.toggle("is-active", pane.dataset.apiPane === id));
+      });
+    });
+  }
+
   function initParkQuest() {
     initParkQuestHero();
     initParkQuestScroll();
@@ -2746,6 +3167,7 @@ const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
     initParkQuestScrollRefresh();
     initParkQuestCarousel();
     initParkQuestDiagram();
+    initParkQuestApiExplorer();
   }
 
   if (document.readyState === "loading") {
