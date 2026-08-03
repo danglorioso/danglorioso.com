@@ -72,6 +72,18 @@ const carouselSlidesOrdered: { src: string; alt: string; video?: boolean }[] = [
   { src: "/showcase/parkquest/web/carousel/img-9725.jpg", alt: "Search parks on the map" },
 ];
 const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
+
+// Illustrative park-progress data for the "What's inside" bento — not a
+// real user's log, just plausible enough to make the 63-park dot grid,
+// step list, and other mini-visuals read as real UI instead of empty
+// placeholders.
+const visitedParks = [0, 2, 3, 7, 11, 14, 15, 19, 22, 26, 29, 33, 36, 38, 41, 45, 49, 52, 57, 60];
+const bucketParks = [5, 9, 17, 24, 31, 44, 55];
+const parkDots = Array.from({ length: 63 }, (_, i) =>
+  visitedParks.includes(i) ? "v" : bucketParks.includes(i) ? "b" : ""
+);
+const bucketListSample = ["Glacier", "Big Bend", "North Cascades"];
+const badgeTierColors = ["#8A5A2B", "#8A857B", "#B8860B", "#3F6573", "#5A368C"];
 ---
 
 <Showcase
@@ -231,68 +243,85 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     <section class="pq-section pq-inside">
       <h2>What's inside</h2>
       <div class="pq-inside-grid">
-        <div class="pq-inside-card pq-inside-card-wide">
-          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <path d="M20 6 C13 6 8 11.5 8 18 C8 27 20 36 20 36 C20 36 32 27 32 18 C32 11.5 27 6 20 6 Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6" />
-            <circle cx="20" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.9" />
+        <div class="pq-inside-card pq-area-hero pq-topo">
+          <svg class="pq-ridge" viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
+            <polygon points="0,120 110,58 200,110 300,42 420,104 520,64 600,96 600,200 0,200" fill="rgba(11,20,14,.45)"></polygon>
+            <polygon points="0,160 90,108 190,152 300,96 400,146 500,112 600,142 600,200 0,200" fill="rgba(7,14,10,.75)"></polygon>
           </svg>
+          <h3 class="pq-hero-title">Every park.<br />One journal.</h3>
+          <p>Capture your adventures how you'd like.</p>
+        </div>
+
+        <div class="pq-inside-card pq-area-parks">
           <h3>Track all 63 parks</h3>
           <p>Every U.S. national park on one map or list, filtered by status, location, activities, or topics &mdash; backed by live NPS data and per-park weather.</p>
-          <span class="pq-inside-stat">63 parks &middot; live NPS data</span>
+          <div class="pq-dotgrid" role="img" aria-label="Grid of 63 national parks, some visited, some bucket-listed">
+            {parkDots.map((k) => <i class:list={["pq-dot", k === "v" && "pq-dot-visited", k === "b" && "pq-dot-bucket"]}></i>)}
+          </div>
         </div>
-        <div class="pq-inside-card pq-inside-card-wide">
-          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <rect x="9" y="6" width="22" height="28" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <path d="M15 6 h10 v3 a1.5 1.5 0 0 1 -1.5 1.5 h-7 a1.5 1.5 0 0 1 -1.5 -1.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.6" />
-            <path d="M14 20 l3.5 3.5 L27 14" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.9" />
-            <line x1="14" y1="28" x2="26" y2="28" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-          </svg>
+
+        <div class="pq-inside-card pq-area-log">
           <h3>Log a real visit</h3>
-          <p>A guided flow through trip dates, weather conditions, activities and topics, and a 5-star rating &mdash; not just a checkbox.</p>
-          <span class="pq-inside-stat">multi-step log flow</span>
+          <p>A wizard walks you through questions to remember your trip by: dates, weather, who joined, hikes, highlights, and more.</p>
+          <div class="pq-steps">
+            <div class="pq-step pq-step-on"><em>1</em>Trip dates</div>
+            <div class="pq-step pq-step-on"><em>2</em>Weather</div>
+            <div class="pq-step pq-step-on"><em>3</em>Activities &amp; topics</div>
+            <div class="pq-step"><em>4</em>Rating <span class="pq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+          </div>
         </div>
-        <div class="pq-inside-card pq-inside-card-wide">
-          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <path d="M5 30 L13 16 L19 24 L24 14 L35 30" stroke="currentColor" stroke-width="1.6" fill="none" opacity="0.8" />
-            <path d="M5 30 L35 30" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
-            <circle cx="24" cy="14" r="2" fill="currentColor" opacity="0.8" />
-          </svg>
+
+        <div class="pq-inside-card pq-area-gpx">
           <h3>GPX-powered hike stats</h3>
           <p>Upload a GPX file and it's parsed automatically into distance, elevation gain, and the route drawn on the map.</p>
-          <span class="pq-inside-stat">distance &middot; elevation &middot; route</span>
+          <div class="pq-gpxrow">
+            <div class="pq-gpxstat"><b>8.4<small>mi</small></b><span>distance</span></div>
+            <div class="pq-gpxstat"><b>2,140<small>ft</small></b><span>elev gain</span></div>
+            <svg class="pq-gpxprofile" viewBox="0 0 200 54" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points="0,46 16,40 30,43 48,28 66,32 84,16 104,22 122,9 142,18 160,12 180,26 200,20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+              <polyline points="0,53 200,53" stroke="rgba(240,234,219,.15)" stroke-width="1" />
+            </svg>
+          </div>
         </div>
-        <div class="pq-inside-card">
-          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <rect x="7" y="9" width="26" height="22" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <line x1="12" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <line x1="12" y1="22" x2="24" y2="22" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
-            <path d="M29 20 v9 l-3 -2.2 l-3 2.2 v-9 Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.9" />
-          </svg>
+
+        <div class="pq-inside-card pq-area-stamp">
+          <h3>Stamps &amp; badges</h3>
+          <p>Every visit earns a real stamp. Badges are awarded the moment your log fills a condition. New badges are added all the time.</p>
+          <div class="pq-stamprow">
+            <div class="pq-seal">
+              <span>2026</span>
+            </div>
+            <div class="pq-badgedots">
+              {badgeTierColors.map((c) => <i style={`background:${c}`}></i>)}
+            </div>
+          </div>
+        </div>
+
+        <div class="pq-inside-card pq-area-buck">
           <h3>Bucket list</h3>
           <p>Queue up parks you want to see next and turn "someday" into an actual itinerary.</p>
-          <span class="pq-inside-stat">save for later</span>
+          <ul class="pq-qlist">
+            {bucketListSample.map((name) => (
+              <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4V3z" /></svg>
+                {name}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div class="pq-inside-card">
-          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" stroke-dasharray="2 3" />
-            <path d="M14 20 L18 24 L27 14" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.9" />
-          </svg>
-          <h3>Stamps &amp; badges</h3>
-          <p>Every visit earns a real stamp; badges are awarded the moment your log fills a condition &mdash; no hardcoded launch list.</p>
-          <span class="pq-inside-stat">condition-engine driven</span>
-        </div>
-        <div class="pq-inside-card pq-inside-card-full">
-          <svg class="pq-inside-icon" viewBox="0 0 40 40" aria-hidden="true">
-            <circle cx="14" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.6" />
-            <circle cx="27" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.4" />
-            <path d="M6 32 C6 25 11 22 14 22 C17 22 22 25 22 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.6" />
-            <path d="M19 32 C19 25 24 22 27 22 C30 22 35 25 35 32" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.4" />
-          </svg>
-          <div class="pq-inside-text">
-            <h3>Friends &amp; feed</h3>
-            <p>A mutual request/accept model, not a one-way follow &mdash; real photos and notes from friends actually out on the trail.</p>
+
+        <div class="pq-inside-card pq-area-frnds">
+          <h3>Friends &amp; feed</h3>
+          <p>Add friends and see which of them have already been &mdash; their photos and notes surface right on a park's page while you're planning your own trip.</p>
+          <div class="pq-frow">
+            <div class="pq-avs">
+              <i style="background:#8FBF9C">MR</i>
+              <i style="background:#D8B77A">JL</i>
+              <i style="background:#C08A6A">AK</i>
+              <i style="background:#9FB6C4">TS</i>
+              <i class="pq-avs-more">+9</i>
+            </div>
           </div>
-          <span class="pq-inside-stat">mutual friends model</span>
         </div>
       </div>
     </section>
@@ -505,8 +534,8 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
                it belongs to, so hovering a box highlights its own path
                instead of the whole diagram lighting up at once. -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.5">
-            <line data-group="ios" x1="210" y1="112" x2="210" y2="138" />
-            <line data-group="web" x1="790" y1="112" x2="790" y2="138" />
+            <line data-group="ios" x1="210" y1="121" x2="210" y2="138" />
+            <line data-group="web" x1="790" y1="121" x2="790" y2="138" />
             <line data-group="ios web" x1="210" y1="138" x2="790" y2="138" />
             <line data-group="ios web" x1="500" y1="138" x2="500" y2="204" />
             <line data-group="neon clerk r2 external" x1="500" y1="290" x2="500" y2="310" />
@@ -526,8 +555,8 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
 
           <!-- client layer -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
-            <rect data-group="ios" x="60" y="20" width="300" height="92" rx="6" />
-            <rect data-group="web" x="640" y="20" width="300" height="92" rx="6" />
+            <rect data-group="ios" x="60" y="20" width="300" height="101" rx="6" />
+            <rect data-group="web" x="640" y="20" width="300" height="101" rx="6" />
           </g>
           <!-- device glyphs — centered at the top of each client box, same
                placement as the service logos below. -->
@@ -551,37 +580,37 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
           </g>
           <!-- service layer -->
           <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
-            <rect data-group="neon" x="40" y="330" width="220" height="90" rx="6" />
-            <rect data-group="clerk" x="280" y="330" width="220" height="90" rx="6" />
-            <rect data-group="r2" x="520" y="330" width="220" height="90" rx="6" />
-            <rect data-group="external" x="760" y="330" width="220" height="90" rx="6" />
+            <rect data-group="neon" x="40" y="330" width="220" height="99" rx="6" />
+            <rect data-group="clerk" x="280" y="330" width="220" height="99" rx="6" />
+            <rect data-group="r2" x="520" y="330" width="220" height="99" rx="6" />
+            <rect data-group="external" x="760" y="330" width="220" height="99" rx="6" />
           </g>
 
           <g fill="currentColor" text-anchor="middle">
             <g data-group="ios">
               <text x="210" y="76" font-size="13" opacity="0.85">iOS App (Expo)</text>
               <text x="210" y="94" font-size="10.5" opacity="0.6">fetch() + Bearer JWT</text>
-              <text x="210" y="108" font-size="10" opacity="0.5">Expo Router &middot; React Native 0.81</text>
+              <text x="210" y="108" font-size="10" opacity="0.5">Expo Router &middot; React Native</text>
             </g>
 
             <g data-group="web">
               <text x="790" y="76" font-size="13" opacity="0.85">Web App (Next.js)</text>
               <text x="790" y="94" font-size="10.5" opacity="0.6">same-origin fetch</text>
-              <text x="790" y="108" font-size="10" opacity="0.5">App Router &middot; React 19</text>
+              <text x="790" y="108" font-size="10" opacity="0.5">App Router</text>
             </g>
 
             <text data-group="ios web" x="500" y="130" font-size="10" opacity="0.7">Shared TypeScript types</text>
 
             <g data-group="ios web neon clerk r2 external">
               <text x="500" y="234" font-size="13" opacity="0.9">Next.js API routes</text>
-              <text x="500" y="254" font-size="10.5" opacity="0.6">60 route.ts files &mdash; one backend for both clients</text>
-              <text x="500" y="272" font-size="10" opacity="0.5">deployed on Vercel</text>
+              <text x="500" y="254" font-size="10.5" opacity="0.6">60 API routes (one backend for both clients)</text>
+              <text x="500" y="272" font-size="10" opacity="0.5">Deployed on Vercel</text>
             </g>
 
             <g data-group="neon">
               <text x="150" y="386" font-size="13" opacity="0.85">Neon Postgres</text>
-              <text x="150" y="402" font-size="10" opacity="0.6">Drizzle ORM &middot; schema.ts</text>
-              <text x="150" y="416" font-size="10" opacity="0.5">serverless HTTP driver</text>
+              <text x="150" y="402" font-size="10" opacity="0.6">In conjunction with Drizzle ORM </text>
+              <text x="150" y="416" font-size="10" opacity="0.5">Serverless HTTP driver</text>
             </g>
 
             <g data-group="clerk">
@@ -592,8 +621,7 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
 
             <g data-group="r2">
               <text x="630" y="386" font-size="13" opacity="0.85">Cloudflare R2</text>
-              <text x="630" y="402" font-size="10" opacity="0.6">photo storage</text>
-              <text x="630" y="416" font-size="10" opacity="0.5">S3-compatible &middot; no egress fees</text>
+              <text x="630" y="402" font-size="10" opacity="0.6">Image storage</text>
             </g>
 
             <g data-group="external">
@@ -633,13 +661,13 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
                over a box's own label would hit the text element instead
                of the box underneath it, and never register as a hover. -->
           <g class="pq-diagram-hits" fill="transparent">
-            <rect data-node="ios" x="60" y="20" width="300" height="92" />
-            <rect data-node="web" x="640" y="20" width="300" height="92" />
+            <rect data-node="ios" x="60" y="20" width="300" height="101" />
+            <rect data-node="web" x="640" y="20" width="300" height="101" />
             <rect data-node="api" x="250" y="204" width="500" height="86" />
-            <rect data-node="neon" x="40" y="330" width="220" height="90" />
-            <rect data-node="clerk" x="280" y="330" width="220" height="90" />
-            <rect data-node="r2" x="520" y="330" width="220" height="90" />
-            <rect data-node="external" x="760" y="330" width="220" height="90" />
+            <rect data-node="neon" x="40" y="330" width="220" height="99" />
+            <rect data-node="clerk" x="280" y="330" width="220" height="99" />
+            <rect data-node="r2" x="520" y="330" width="220" height="99" />
+            <rect data-node="external" x="760" y="330" width="220" height="99" />
           </g>
         </svg>
       </div>
@@ -711,66 +739,74 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
       </div>
 
       <ul class="pq-notes">
-        <li>One Next.js backend serves both clients &mdash; 60 API routes shared by the iOS app and the web app, kept in sync by <code>@parkquest/types</code>, a package of shared domain types (parks, visits, social, moderation, badges) both apps import as the API contract.</li>
+        <li><code>@parkquest/types</code> is a shared domain-types package (parks, visits, social, moderation, badges) both apps import as the API contract.</li>
         <li>That package also ships shared SVG glyph geometry for the passport stamps (<code>parkGlyphs.ts</code>) &mdash; web's <code>Stamp</code> component and iOS's <code>ParkStamp</code> render pixel-identical stamp art from the same <code>glyphTransform()</code> function, not duplicated per platform.</li>
-        <li>Badges are entirely data-driven: every badge, including the launch set, is a database row evaluated by a condition engine, not a hardcoded list.</li>
-        <li>The web app renders its own MapLibre GL vector map; iOS uses react-native-maps with <code>PROVIDER_DEFAULT</code>, which resolves to Apple MapKit rather than Google Maps. GPX uploads power real hike stats (distance, elevation, route) without a third-party fitness integration.</li>
+        <li>The web app renders its own MapLibre GL vector map; iOS uses react-native-maps with <code>PROVIDER_DEFAULT</code>, which resolves to Apple MapKit rather than Google Maps.</li>
       </ul>
 
-      <h3 class="pq-routes-heading">Admin &amp; moderation</h3>
-      <p class="pq-routes-sub">A private dashboard, not linked anywhere else on this page &mdash; <code>/admin</code>, gated by <code>requireAdmin()</code>. Here's what's actually behind it.</p>
+    </section>
+
+    <!-- Admin dashboard — split into its own section, not a subsection of
+         Built With: it's a genuinely separate surface (private, admin-only,
+         not linked anywhere else on this page) and deserved its own
+         heading instead of living under an h3. -->
+    <section class="pq-section pq-admin-section">
+      <h2>Behind the curtain</h2>
+      <p class="pq-routes-sub">An admin-side dashboard allows for moderating the platform's content, creating new badges and challenges, and analyzing global trends and performance. Multiple tabs are available for different aspects of the admin experience.</p>
+
+      <div class="pq-admin-layout">
+        <div class="pq-admin-text">
+          <div class="pq-routes-list pq-admin-list">
+            <div class="pq-routes-row">
+              <span class="pq-routes-label">Dashboard</span>
+              <span class="pq-routes-desc">Signups, daily active users (DAU), likes, comments, storage quotas, andtop parks by visits.</span>
+            </div>
+            <div class="pq-routes-row">
+              <span class="pq-routes-label">Moderation</span>
+              <span class="pq-routes-desc">A review queue for reported user-generated content, flagged accounts, and blocks.</span>
+            </div>
+            <div class="pq-routes-row">
+              <span class="pq-routes-label">Badges</span>
+              <span class="pq-routes-desc">CRUD manager for building customized, conditionally-awarded badges.</span>
+            </div>
+            <div class="pq-routes-row">
+              <span class="pq-routes-label">Parks</span>
+              <span class="pq-routes-desc">For uploading park-specific SVG glyphs for the passport stamps.</span>
+            </div>
+            <div class="pq-routes-row">
+              <span class="pq-routes-label">Broadcast</span>
+              <span class="pq-routes-desc">Center for centering push notifications to groups of users.</span>
+            </div>
+            <div class="pq-routes-row">
+              <span class="pq-routes-label">Email</span>
+              <span class="pq-routes-desc">Admin notification and email deliverability monitoring.</span>
+            </div>
+          </div>
+
+          <p class="pq-admin-other">Why it exists: many aspects of the app are easiler to manage from a web dashboard than from within the app. Per Apple's App Store Review Guidelines 1.2 (user-genertaed content), this dashbaord serves as the moderation surface for user-generated content, and additionally allows for customizing the user experience and analyzing trends for optimal marketing strategy.</p>
+        </div>
+
+        <div class="pq-laptop-stage">
+          <div class="pq-laptop">
+            <div class="pq-laptop-screen-hole">
+              <img src="/showcase/parkquest/web/admin-dashboard.jpg" alt="ParkQuest admin dashboard" loading="lazy" />
+            </div>
+            <div class="pq-laptop-outline" set:html={macbookOutline} />
+            <svg class="pq-laptop-chrome" viewBox="0 0 3860 2540" preserveAspectRatio="none" aria-hidden="true">
+              <line class="pq-hinge-line" x1="364" y1="2371" x2="3494" y2="2371"></line>
+            </svg>
+          </div>
+          <p class="pq-laptop-caption">Figures shown are illustrative.</p>
+        </div>
+      </div>
 
       <div class="pq-admin-feature">
         <h4>Reconciling Apple's App Store Connect reporting</h4>
         <p>A daily Vercel Cron job merges Apple's two separate, laggy reporting pipelines into one metrics table.</p>
         <ul class="pq-notes">
-          <li>Pulls the Sales Reports API (units, proceeds) and the Analytics Reports API (impressions, page views, downloads vs. redownloads) &mdash; two report families, different formats, different lag.</li>
-          <li>Re-walks a trailing 7 days, not just yesterday, since Apple's reports land 24&ndash;48h late and inconsistently &mdash; one run both catches new days and repairs partial ones.</li>
+          <li>Pulls two separate Apple report APIs (Sales, Analytics) &mdash; different formats, different lag &mdash; and idempotently upserts them into one table, so partial or repeat runs can't clobber good data.</li>
           <li>Auth is hand-rolled: an ES256 JWT signed with Apple's <code>.p8</code> key via Node's <code>crypto</code> directly, no JWT library &mdash; App Store Connect tokens cap at 20 minutes.</li>
-          <li>Idempotent, per-column upserts &mdash; a sales-only run can't clobber an analytics-only run, and an unpublished day shows as a gap on the charts, not a fake zero.</li>
         </ul>
-      </div>
-
-      <div class="pq-routes-list pq-admin-list">
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Dashboard</span>
-          <span class="pq-routes-desc">Live signups, DAU, active-user windows, top parks by visits.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Moderation</span>
-          <span class="pq-routes-desc">Review queue for user reports and blocks.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Badges</span>
-          <span class="pq-routes-desc">CRUD manager for the condition-engine badges.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Parks</span>
-          <span class="pq-routes-desc">Upload the SVG stamp glyphs for the passport.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Broadcast</span>
-          <span class="pq-routes-desc">Push notifications to user segments.</span>
-        </div>
-        <div class="pq-routes-row">
-          <span class="pq-routes-label">Email</span>
-          <span class="pq-routes-desc">Deliverability monitoring.</span>
-        </div>
-      </div>
-
-      <p class="pq-admin-other">Why it exists: the report/block/EULA gating behind all of it is what satisfies Apple's App Store Review Guideline 1.2 (user-generated content) &mdash; a real external requirement, not one I invented.</p>
-
-      <div class="pq-laptop-stage">
-        <div class="pq-laptop">
-          <div class="pq-laptop-screen-hole">
-            <img src="/showcase/parkquest/web/admin-dashboard.jpg" alt="ParkQuest admin dashboard" loading="lazy" />
-          </div>
-          <div class="pq-laptop-outline" set:html={macbookOutline} />
-          <svg class="pq-laptop-chrome" viewBox="0 0 3860 2540" preserveAspectRatio="none" aria-hidden="true">
-            <line class="pq-hinge-line" x1="364" y1="2371" x2="3494" y2="2371"></line>
-          </svg>
-        </div>
-        <p class="pq-laptop-caption">Figures shown are illustrative, not real production numbers.</p>
       </div>
     </section>
 
@@ -1082,106 +1118,319 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     color: var(--text-secondary);
   }
 
-  /* What's inside — bento grid: one wide "hero" card (park tracking, the
-     core value prop) plus five even cards, each grounded in a concrete
-     detail instead of pure marketing copy. */
+  /* What's inside — matches the reference bento mockup's own dark-green
+     card backgrounds and box ordering (hero tile + parks up top, then
+     log/gpx/stamp, then bucket/friends), via named grid-areas so the
+     ordering is explicit rather than inferred from span/order tricks.
+     Full-bleed dark forest green section background — the page's navy
+     didn't read well behind the green cards, so this section gets its
+     own backdrop instead of inheriting the page's. */
+  .pq-inside {
+    position: relative;
+  }
+  .pq-inside::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, var(--pq-bg-1) 0%, var(--pq-bg-0) 100%);
+    z-index: -1;
+  }
   .pq-inside-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    grid-template-areas:
+      "hero"
+      "parks"
+      "log"
+      "gpx"
+      "stamp"
+      "buck"
+      "frnds";
+    gap: 1rem;
   }
   @media (min-width: 700px) {
     .pq-inside-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas:
+        "hero hero hero hero hero hero"
+        "parks parks parks log log log"
+        "gpx gpx gpx gpx stamp stamp"
+        "buck buck buck frnds frnds frnds";
     }
   }
   @media (min-width: 1100px) {
     .pq-inside-grid {
-      /* 4 columns so the sizes actually read as varied bento cells (2+2,
-         2+1+1, 4) instead of one card that's technically wider but close
-         enough to the others to barely register, with a leftover card
-         stranded alone in its own half-empty row. */
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .pq-inside-card-wide {
-      grid-column: span 2;
-    }
-    .pq-inside-card-full {
-      grid-column: span 4;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-areas:
+        "hero hero hero hero hero hero hero parks parks parks parks parks"
+        "log log log log gpx gpx gpx gpx stamp stamp stamp stamp"
+        "buck buck buck buck buck frnds frnds frnds frnds frnds frnds frnds";
     }
   }
+  .pq-area-hero { grid-area: hero; }
+  .pq-area-parks { grid-area: parks; }
+  .pq-area-log { grid-area: log; }
+  .pq-area-gpx { grid-area: gpx; }
+  .pq-area-stamp { grid-area: stamp; }
+  .pq-area-buck { grid-area: buck; }
+  .pq-area-frnds { grid-area: frnds; }
+
   .pq-inside-card {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    gap: 0.9rem;
     padding: 1.75rem;
-    border: 1px solid var(--border-primary);
-    border-radius: 1rem;
-    background: var(--bg-card);
+    border: 1px solid rgba(240, 234, 219, 0.1);
+    border-radius: 1.25rem;
+    background: linear-gradient(165deg, #182a1e, #0e1811);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 14px 34px rgba(0, 0, 0, 0.35);
     transition: border-color 0.2s ease, transform 0.2s ease;
   }
   .pq-inside-card:hover {
-    border-color: color-mix(in oklab, var(--pq-gold) 45%, var(--border-primary));
+    border-color: color-mix(in oklab, var(--pq-gold) 45%, rgba(240, 234, 219, 0.1));
     transform: translateY(-2px);
   }
-  @media (min-width: 1100px) {
-    /* The full-width closer has room to spare — lay it out sideways
-       (icon beside the text) instead of stacked, so it reads as a
-       deliberate wide card and not a normal card just stretched thin.
-       Must come after the base .pq-inside-card rule above: equal
-       specificity, so source order decides, and flex-direction: column
-       there was silently winning over row here when this block sat
-       first. */
-    .pq-inside-card-full {
-      flex-direction: row;
-      align-items: center;
-      gap: 1.75rem;
-    }
-    .pq-inside-card-full .pq-inside-icon {
-      flex: none;
-      margin-bottom: 0;
-    }
-    .pq-inside-card-full .pq-inside-text {
-      flex: 1;
-    }
-    .pq-inside-card-full .pq-inside-text p {
-      max-width: 46ch;
-    }
-    .pq-inside-card-full .pq-inside-stat {
-      margin-top: 0;
-      margin-left: auto;
-      align-self: center;
-      flex: none;
-    }
-  }
-  .pq-inside-icon {
-    width: 2.25rem;
-    height: 2.25rem;
-    color: var(--pq-gold);
-    margin-bottom: 1rem;
-  }
   .pq-inside-card h3 {
-    font-size: 1.15rem;
+    margin: 0;
+    font-size: 1.4rem;
     font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
     color: var(--text-primary);
-    margin-bottom: 0.5rem;
   }
   .pq-inside-card p {
+    margin: 0;
     color: var(--text-tertiary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    flex: 1;
+    font-size: 0.92rem;
+    line-height: 1.55;
   }
-  .pq-inside-stat {
-    display: inline-block;
-    align-self: flex-start;
-    margin-top: 1rem;
-    padding: 0.3rem 0.7rem;
-    border-radius: 0.4rem;
-    background: color-mix(in oklab, var(--pq-gold) 12%, transparent);
-    color: var(--pq-gold-soft);
+
+  .pq-area-hero {
+    justify-content: flex-end;
+    padding: 2rem;
+    background-image:
+      radial-gradient(120% 130% at 82% 8%, color-mix(in oklab, var(--pq-gold) 22%, transparent) 0%, transparent 52%),
+      linear-gradient(165deg, #1f3d2e, #0c1811 70%);
+  }
+  .pq-area-hero > *:not(.pq-ridge) {
+    position: relative;
+    z-index: 1;
+  }
+  .pq-hero-title {
+    font-size: clamp(1.9rem, 3.6vw, 2.75rem) !important;
+    line-height: 1.03 !important;
+    letter-spacing: -0.03em !important;
+  }
+  .pq-area-hero p {
+    max-width: 34ch;
+  }
+  .pq-ridge {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 44%;
+    pointer-events: none;
+  }
+
+  /* What's inside — mini visuals per card, adapted from a bento mockup the
+     user supplied. */
+  .pq-dotgrid {
+    display: grid;
+    grid-template-columns: repeat(21, 1fr);
+    gap: 4px;
+    margin-top: 0.25rem;
+  }
+  .pq-dot {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: color-mix(in oklab, var(--text-tertiary) 25%, transparent);
+  }
+  .pq-dot-visited {
+    background: #6fae7c;
+  }
+  .pq-dot-bucket {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--pq-gold);
+  }
+
+  .pq-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .pq-step {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 0.72rem;
     letter-spacing: 0.02em;
+    color: var(--text-tertiary);
+  }
+  .pq-step em {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-style: normal;
+    font-size: 0.6rem;
+    background: color-mix(in oklab, var(--text-tertiary) 15%, transparent);
+    color: var(--text-tertiary);
+  }
+  .pq-step-on {
+    color: var(--text-primary);
+  }
+  .pq-step-on em {
+    background: var(--pq-gold);
+    color: #1a1408;
+  }
+  .pq-stars {
+    color: var(--pq-gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .pq-gpxrow {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+  .pq-gpxstat b {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .pq-gpxstat b small {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    margin-left: 0.15em;
+  }
+  .pq-gpxstat span {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .pq-gpxprofile {
+    flex: 1;
+    min-width: 5rem;
+    height: 2.75rem;
+    color: var(--pq-gold);
+  }
+
+  .pq-qlist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+  }
+  .pq-qlist li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .pq-qlist svg {
+    flex: none;
+    width: 0.8rem;
+    height: 0.9rem;
+    fill: color-mix(in oklab, var(--pq-gold) 20%, transparent);
+    stroke: var(--pq-gold);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+  }
+
+  .pq-stamprow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pq-seal {
+    flex: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--pq-gold);
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .pq-seal::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--pq-gold) 40%, transparent);
+  }
+  .pq-seal span {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    color: var(--pq-gold);
+  }
+  .pq-badgedots {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+  .pq-badgedots i {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .pq-frow {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  .pq-avs {
+    display: flex;
+    flex: none;
+  }
+  .pq-avs i {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    border: 2px solid #16281c;
+    margin-left: -0.6rem;
+    display: grid;
+    place-items: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.6rem;
+    font-style: normal;
+    color: #12210f;
+  }
+  .pq-avs i:first-child {
+    margin-left: 0;
+  }
+  .pq-avs-more {
+    background: color-mix(in oklab, var(--text-tertiary) 20%, transparent);
+    color: var(--text-tertiary) !important;
+  }
+  .pq-frow-note {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    line-height: 1.4;
+    margin: 0;
   }
 
   /* Pinned feature scroller */
@@ -1730,6 +1979,22 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     color: var(--text-secondary);
   }
 
+  /* Behind-the-curtain layout: text column (feature callout, tools list,
+     compliance note) beside the laptop mockup on wide screens, stacked
+     with the mockup below on narrow ones. */
+  .pq-admin-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 900px) {
+    .pq-admin-layout {
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 3rem;
+    }
+  }
+
   /* Admin dashboard — the App Store Connect pipeline gets a visually
      distinct callout (gold border, not just another gray card) since
      it's the standout technical story in this section, not one item
@@ -1739,7 +2004,7 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
     border: 1px solid color-mix(in oklab, var(--pq-gold) 40%, var(--border-primary));
     border-radius: 0.9rem;
     background: var(--bg-card);
-    margin-bottom: 1.5rem;
+    margin-top: 2.5rem;
   }
   .pq-admin-feature h4 {
     font-size: 1.05rem;
@@ -1773,7 +2038,6 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
      hole in the SVG via nonzero fill-rule), reused from the blog's
      DeviceShowcase, just recolored to this page's gold palette. */
   .pq-laptop-stage {
-    margin-top: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1781,8 +2045,13 @@ const carouselSlides = seededShuffle(carouselSlidesOrdered, 20260801);
   .pq-laptop {
     position: relative;
     width: 100%;
-    max-width: 780px;
+    max-width: 480px;
     aspect-ratio: 3860 / 2540;
+  }
+  @media (max-width: 899px) {
+    .pq-laptop {
+      max-width: 620px;
+    }
   }
   .pq-laptop-screen-hole {
     position: absolute;
