@@ -103,35 +103,59 @@ const ROUTE_ICONS: Record<string, string> = {
   mail: `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>`,
 };
 
-const apiRoutes = [
+type ApiEndpoint = {
+  method?: string;
+  methods?: string[];
+  desc?: string;
+  descHtml?: string;
+};
+type ApiRoute = {
+  icon: string;
+  label: string;
+  desc?: string;
+  descHtml?: string;
+  endpoints: ApiEndpoint[];
+};
+
+const apiRoutes: ApiRoute[] = [
   {
     icon: "map",
     label: "Parks & maps",
-    desc: "Proxies live NPS data, per-park weather, and who else has visited.",
+    desc: "Proxies and caches live NPS data at different TTLs depending on how often each piece changes.",
     endpoints: [
-      { method: "GET", path: "/api/parks" },
-      { method: "GET", path: "/api/parks/:id/weather" },
-      { method: "GET", path: "/api/parks/:id/visitors" },
+      { method: "GET", desc: "All parks with coordinates, cached 24h" },
+      { method: "GET", desc: "Single park, cached 1h" },
+      { method: "GET", desc: "NPS detail for one park — images, hours, fees, activities" },
+      { method: "GET", desc: "Same NPS payload for every park in one shot, for mobile's offline cache" },
+      { method: "GET", desc: "NWS weather forecast for a park" },
+      { method: "GET", desc: "Who else has visited a park — friends and public others" },
+      { method: "GET", desc: "Community posts feed for a park's detail page" },
     ],
   },
   {
     icon: "route",
     label: "Visits & hikes",
-    desc: "Logs trips and bucket-list entries; parses GPX uploads into distance, elevation, and route.",
+    desc: "Logs trips and bucket-list entries — a new visit ripples out to friends and badges.",
     endpoints: [
-      { method: "POST", path: "/api/visits" },
-      { method: "POST", path: "/api/visits/:id/gpx" },
-      { method: "GET", path: "/api/bucket-list" },
+      { method: "GET", desc: "List visits" },
+      { method: "POST", desc: "Create a visit — notifies friends, revokes stale badges" },
+      { method: "DELETE", desc: "Remove a visit" },
+      { method: "GET", desc: "Single visit detail" },
+      { method: "PATCH", desc: "Edit an existing visit" },
     ],
   },
   {
     icon: "message",
     label: "Social feed",
-    desc: "Posts, likes, comments, quote/reposts, and badge-share posts.",
+    desc: "Posts, comments, likes, and the two ranked feeds — visibility rules control who sees what.",
     endpoints: [
-      { method: "GET", path: "/api/feed" },
-      { method: "POST", path: "/api/posts" },
-      { method: "POST", path: "/api/posts/:id/like" },
+      { method: "GET", desc: "Feed query with visibility rules" },
+      { method: "POST", desc: "Create a post" },
+      { method: "PATCH", desc: "Edit own post" },
+      { method: "DELETE", desc: "Delete own post" },
+      { method: "GET", desc: "Trending parks — ranked by post count, this week or all-time" },
+      { method: "GET", desc: "Main authed home feed — friends + public, filterable by author or park" },
+      { methods: ["GET", "POST", "DELETE"], desc: "List and create comments on a post; delete your own" },
     ],
   },
   {
@@ -139,39 +163,46 @@ const apiRoutes = [
     label: "Friends",
     desc: "Mutual request/accept model — not a one-way follow.",
     endpoints: [
-      { method: "GET", path: "/api/friends" },
-      { method: "POST", path: "/api/friends/requests" },
-      { method: "POST", path: "/api/friends/requests/:id/accept" },
+      { method: "GET", desc: "Friend suggestions, scored by mutual friends and shared parks" },
+      { methods: ["GET", "POST", "PATCH", "DELETE"], desc: "List, request, accept/reject, or unfriend" },
+      { methods: ["GET", "POST", "DELETE"], desc: "List, block, or unblock a user" },
+      { methods: ["GET", "POST", "DELETE"], desc: "Likers list, like, or unlike a post" },
+      { methods: ["GET", "POST", "DELETE"], desc: "Own submitted reports; file or withdraw a report" },
     ],
   },
   {
     icon: "award",
     label: "Badges",
-    desc: "Awards and revokes badges through one shared condition engine.",
+    desc: "Every badge, launch set included, is a config row evaluated against user stats — not a hardcoded list.",
     endpoints: [
-      { method: "GET", path: "/api/badges" },
-      { method: "POST", path: "/api/badges/evaluate" },
-      { method: "GET", path: "/api/users/:id/badges" },
+      { method: "GET", desc: "Earned and in-progress badges — awards new ones, sends a push on unlock" },
+      { method: "GET", desc: "Public badge display definitions, cached 5 minutes" },
     ],
   },
   {
     icon: "bell",
     label: "Notifications",
-    desc: "One typed feed, fanned out to Web Push and Expo push in parallel.",
+    desc: "One feed for in-app notifications, fanned out to Web Push and Expo push separately.",
     endpoints: [
-      { method: "GET", path: "/api/notifications" },
-      { method: "POST", path: "/api/push/register" },
-      { method: "POST", path: "/api/notifications/read" },
+      { methods: ["GET", "PATCH"], desc: "List notifications (or just the unread count); mark all read" },
+      { methods: ["PATCH", "DELETE"], desc: "Mark one notification read, or delete it" },
+      { methods: ["POST", "DELETE"], desc: "Register or unregister an Expo push token" },
+      { methods: ["POST", "DELETE"], desc: "Register or unregister a Web Push subscription" },
     ],
   },
   {
     icon: "lock",
     label: "Auth & webhooks",
-    descHtml: `Clerk's <code>user.created</code> webhook backstops profile creation for SSO signups.`,
+    desc: "Clerk handles sign-in; these routes cover the account lifecycle Clerk doesn't.",
     endpoints: [
-      { method: "POST", path: "/api/webhooks/clerk" },
-      { method: "GET", path: "/api/me" },
-      { method: "POST", path: "/api/auth/session" },
+      { method: "GET", desc: "Own profile — backfilled from Clerk if stale" },
+      { method: "PUT", desc: "Update own profile" },
+      { method: "GET", desc: "Public profile by Clerk id, with badges" },
+      { method: "GET", desc: "Public profile by username" },
+      { method: "GET", desc: "Batch user lookup by ids, or search" },
+      { method: "DELETE", desc: "Delete own account — cascades to related rows" },
+      { method: "POST", descHtml: `Clerk's <code>user.created</code> webhook — creates the profile row` },
+      { method: "GET", desc: "iOS universal links config for deep linking" },
     ],
   },
 ];
@@ -806,7 +837,7 @@ const adminTools = [
       </div>
 
       <h3 class="pq-routes-heading">Inside the API</h3>
-      <p class="pq-routes-sub">60 routes, grouped by what they actually do &mdash; moderation and admin routes are covered below.</p>
+      <p class="pq-routes-sub">60 routes, grouped by their purpose.</p>
       <div class="pq-api-explorer">
         <div class="pq-api-tabs" role="tablist" aria-label="API route categories">
           {apiRoutes.map((route, i) => (
@@ -849,8 +880,16 @@ const adminTools = [
                 <ul class="pq-api-endpoints">
                   {route.endpoints.map((ep) => (
                     <li>
-                      <span class={`pq-api-method pq-api-method-${ep.method.toLowerCase()}`}>{ep.method}</span>
-                      <code>{ep.path}</code>
+                      <span class="pq-api-methods">
+                        {(ep.methods ?? [ep.method as string]).map((m: string) => (
+                          <span class={`pq-api-method pq-api-method-${m.toLowerCase()}`}>{m}</span>
+                        ))}
+                      </span>
+                      {ep.descHtml ? (
+                        <span class="pq-api-endpoint-desc" set:html={ep.descHtml} />
+                      ) : (
+                        <span class="pq-api-endpoint-desc">{ep.desc}</span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -889,8 +928,6 @@ const adminTools = [
               </div>
             ))}
           </div>
-
-          <p class="pq-admin-other">Why it exists: many aspects of the app are easier to manage from a web dashboard than from within the app. Per Apple's App Store Review Guidelines 1.2 (user-generated content), this dashboard serves as the moderation surface for user-generated content, and additionally allows for customizing the user experience and analyzing trends for optimal marketing strategy.</p>
         </div>
 
         <div class="pq-laptop-stage">
@@ -906,6 +943,8 @@ const adminTools = [
           <p class="pq-laptop-caption">Figures shown are illustrative.</p>
         </div>
       </div>
+
+      <p class="pq-admin-other">Why it exists: many aspects of the app are easier to manage from a web dashboard than from within the app. Per Apple's App Store Review Guidelines 1.2 (user-generated content), this dashboard serves as the moderation surface for user-generated content, and additionally allows for customizing the user experience and analyzing trends for optimal marketing strategy.</p>
 
       <div class="pq-admin-feature">
         <h4>Reconciling Apple's App Store Connect reporting</h4>
@@ -2258,16 +2297,29 @@ const adminTools = [
   .pq-api-endpoints {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.7rem;
   }
   .pq-api-endpoints li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.85rem;
   }
-  .pq-api-endpoints code {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  .pq-api-methods {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    max-width: 7.4rem;
+  }
+  .pq-api-endpoint-desc {
     font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    padding-top: 0.15rem;
+  }
+  .pq-api-endpoint-desc code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
     color: var(--text-secondary);
   }
   .pq-api-method {
@@ -2287,9 +2339,21 @@ const adminTools = [
     background: color-mix(in oklab, #6fb3e0 20%, transparent);
     color: #8fc7ec;
   }
+  .pq-api-method-patch {
+    background: color-mix(in oklab, #b39ddb 20%, transparent);
+    color: #c9b6ea;
+  }
+  .pq-api-method-delete {
+    background: color-mix(in oklab, #e08787 20%, transparent);
+    color: #eba3a3;
+  }
   .pq-api-method-post {
     background: color-mix(in oklab, var(--pq-gold) 20%, transparent);
     color: var(--pq-gold);
+  }
+  .pq-api-method-put {
+    background: color-mix(in oklab, #7fc9a3 20%, transparent);
+    color: #9edcbb;
   }
 
   .pq-stack {
@@ -2386,6 +2450,7 @@ const adminTools = [
     color: var(--text-tertiary);
     font-size: 1rem;
     line-height: 1.6;
+    margin-top: 2.5rem;
     margin-bottom: 0.75rem;
   }
   .pq-admin-other code {
@@ -2721,12 +2786,36 @@ const adminTools = [
       // regardless of how much text it holds. Side-by-side, match its
       // stage's height to the phone's real rendered height so both land at
       // the same pinned top offset and end up centered together, not just
-      // independently. Stacked on mobile, the captions box keeps its own
-      // (much shorter) CSS height instead — matching the phone's full
-      // height here would make the combined pinned block far taller than
-      // the viewport.
+      // independently.
       if (isSideBySide) {
         captionsStage.style.height = phone.offsetHeight + "px";
+      } else {
+        // Stacked on mobile, the phone and captions ride together inside
+        // one pinned block (pinTarget === grid) that can't be taller than
+        // the viewport below the header, or the captions half gets pushed
+        // out of view for the whole pin — the CSS `24vh`-capped width on
+        // .pq-phone is only a rough guess and isn't guaranteed to leave
+        // room for the captions box on every device. Measure the real
+        // numbers instead: give captions their natural (CSS min-height)
+        // size, then size the phone to exactly whatever's left, so the
+        // total always fits by construction rather than by estimate.
+        const headerH = document.getElementById("main-header")?.offsetHeight ?? 0;
+        const availableH = window.innerHeight - headerH;
+        const gridStyles = getComputedStyle(grid);
+        const paddingV = parseFloat(gridStyles.paddingTop) + parseFloat(gridStyles.paddingBottom);
+        const gapV = parseFloat(gridStyles.rowGap || gridStyles.gap) || 0;
+        const captionsH = captionsStage.getBoundingClientRect().height;
+        const naturalPhoneH = phone.getBoundingClientRect().height;
+        const maxPhoneH = availableH - paddingV - gapV - captionsH;
+        // Never shrink below a legible floor (~68px wide at this aspect
+        // ratio) — on a device short enough to hit that floor, the block
+        // will end up slightly taller than the viewport and the pin's
+        // top-clamped start (see computeStart below) will let the bottom
+        // run a little past the fold, which is still far better than the
+        // captions being pushed off entirely.
+        const phoneH = Math.max(140, Math.min(maxPhoneH, naturalPhoneH));
+        phone.style.height = phoneH + "px";
+        phone.style.width = "auto";
       }
 
       gsap.set(screens, { autoAlpha: 0 });
