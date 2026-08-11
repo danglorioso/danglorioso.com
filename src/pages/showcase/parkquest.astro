@@ -207,6 +207,210 @@ const apiRoutes: ApiRoute[] = [
   },
 ];
 
+const suggestionSteps = [
+  {
+    n: 1,
+    title: "Exclusion set",
+    desc: "One relationship query excludes self, existing friends, pending requests, and blocked users upfront. It checks both directions since friendships are undirected but stored as requester_id/recipient_id rows.",
+  },
+  {
+    n: 2,
+    title: "Signal A: friends-of-friends",
+    desc: "One query pulls every accepted friendship touching one of my friends, avoiding an N+1 lookup per friend. Whichever side isn't already my friend becomes a candidate and gains +1 mutual_friends.",
+  },
+  {
+    n: 3,
+    title: "Signal B: shared parks",
+    desc: "The algorithm matches every park I've actually visited (excluding bucket-list-only entries) against other visitors of those same parks, adding +1 shared_parks per overlap. This domain-specific signal is something a generic social graph wouldn't have.",
+  },
+  {
+    n: 4,
+    title: "Weighted scoring",
+    desc: "The formula weights mutual friends higher, since a real friendship predicts a real-world relationship better than “we both went to Yellowstone” does. It sorts candidates by score and returns the top N.",
+    formula: "score = mutual_friends × 3 + shared_parks × 2",
+  },
+  {
+    n: 5,
+    title: "Cold-start fallback",
+    desc: "When scored candidates don't fill the requested count, which often occurs for brand-new user with no friends or visits yet, the algorithm backfills with the most-active explorers overall—still excluding everyone already seen.",
+  },
+  {
+    n: 6,
+    title: "Enrichment",
+    desc: "A parallel Promise.all batch-fetches profiles and visit counts for the final candidate set; JS then joins them with Map lookups instead of one giant SQL join. Each query stays simple and indexable this way.",
+  },
+];
+
+// Node graph for the friend-suggestions visual: "you" at center, 14 people
+// laid out by an actual force-directed relaxation (repulsion between every
+// pair + spring pull along connections), the same family of algorithm real
+// graph-drawing tools use — not a hand-placed ring, which reads as too
+// symmetric (a wheel/logo) no matter how much per-node jitter gets added
+// on top. Excluded ones (friend/pending/blocked) drop out in the
+// "exclude" stage; the remaining candidates carry the mutual-friend and
+// shared-park counts the real scoring formula uses (score = mutual*3 +
+// shared*2), shown in the "signal" and "rank" stages.
+const SUGG_SIZE = 480;
+const SUGG_CENTER = SUGG_SIZE / 2;
+const SUGG_YOU_R = 22;
+const SUGG_NODE_R = 13;
+function makeSeededRand(seed: number) {
+  let state = seed;
+  return () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+}
+const suggRand = makeSeededRand(4111990);
+// Trims a line segment so it stops at each circle's edge instead of its
+// center — otherwise, when an edge fades in/out, it visibly pokes out
+// from under (or into) the node instead of meeting its border cleanly.
+function suggTrim(x1: number, y1: number, x2: number, y2: number, r1: number, r2: number) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const dist = Math.hypot(dx, dy) || 1;
+  const ux = dx / dist;
+  const uy = dy / dist;
+  return {
+    x1: Math.round((x1 + ux * r1) * 10) / 10,
+    y1: Math.round((y1 + uy * r1) * 10) / 10,
+    x2: Math.round((x2 - ux * r2) * 10) / 10,
+    y2: Math.round((y2 - uy * r2) * 10) / 10,
+  };
+}
+
+// Shuffled first, not just mapped in definition order — otherwise which
+// role lands where (and so which node ends up "highlighted" as a top
+// suggestion later) is fixed every time, and candidates/excluded nodes
+// end up clustered rather than mixed in among each other.
+const suggestionPeopleBase = seededShuffle(
+  [
+    { id: "f1", role: "friend" },
+    { id: "f2", role: "friend" },
+    { id: "f3", role: "friend" },
+    { id: "f4", role: "friend" },
+    { id: "pending1", role: "pending" },
+    { id: "pending2", role: "pending" },
+    { id: "blocked1", role: "blocked" },
+    { id: "blocked2", role: "blocked" },
+    { id: "c1", role: "candidate", mutual: 2, shared: 1 },
+    { id: "c2", role: "candidate", mutual: 1, shared: 2 },
+    { id: "c3", role: "candidate", mutual: 0, shared: 1 },
+    { id: "c4", role: "candidate", mutual: 1, shared: 0 },
+    { id: "c5", role: "candidate", mutual: 2, shared: 0 },
+    { id: "c6", role: "candidate", mutual: 0, shared: 2 },
+  ],
+  8072026
+).map((p, i) => {
+  const score = p.role === "candidate" ? (p.mutual ?? 0) * 3 + (p.shared ?? 0) * 2 : 0;
+  // Loose, unevenly-nudged starting ring — just a seed for the relaxation
+  // below, not the final layout.
+  const angle = (i / 14) * Math.PI * 2 - Math.PI / 2 + (suggRand() - 0.5) * 0.6;
+  const radius = 140 + (suggRand() - 0.5) * 70;
+  return {
+    ...p,
+    score,
+    x: SUGG_CENTER + radius * Math.cos(angle),
+    y: SUGG_CENTER + radius * Math.sin(angle),
+  };
+});
+
+// Connectivity: each node links to its next neighbor in shuffle order
+// (a cycle, so every node has 2 connections minimum) plus a "skip" chord
+// from every other node — since the shuffle already scrambled who's
+// adjacent, this doesn't trace a clean outline the way connecting
+// geometric ring-neighbors did.
+const N = suggestionPeopleBase.length;
+const suggestionPairs: [number, number][] = [];
+for (let i = 0; i < N; i++) {
+  suggestionPairs.push([i, (i + 1) % N]);
+  if (i % 2 === 0) suggestionPairs.push([i, (i + 5) % N]);
+}
+
+const REPEL = 42000;
+const REPEL_YOU = 60000;
+const SPRING_K = 0.05;
+const IDEAL_LEN = 95;
+const R_MIN = 65;
+const R_MAX = 205;
+let suggStep = 1.4;
+for (let iter = 0; iter < 260; iter++) {
+  const fx = new Array(N).fill(0);
+  const fy = new Array(N).fill(0);
+
+  for (let i = 0; i < N; i++) {
+    const a = suggestionPeopleBase[i];
+    for (let j = i + 1; j < N; j++) {
+      const b = suggestionPeopleBase[j];
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const d = Math.max(Math.hypot(dx, dy), 8);
+      const f = REPEL / (d * d);
+      fx[i] += (dx / d) * f;
+      fy[i] += (dy / d) * f;
+      fx[j] -= (dx / d) * f;
+      fy[j] -= (dy / d) * f;
+    }
+    const dcx = a.x - SUGG_CENTER;
+    const dcy = a.y - SUGG_CENTER;
+    const dc = Math.max(Math.hypot(dcx, dcy), 8);
+    const fc = REPEL_YOU / (dc * dc);
+    fx[i] += (dcx / dc) * fc;
+    fy[i] += (dcy / dc) * fc;
+  }
+
+  for (const [i, j] of suggestionPairs) {
+    const a = suggestionPeopleBase[i];
+    const b = suggestionPeopleBase[j];
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const d = Math.max(Math.hypot(dx, dy), 8);
+    const f = SPRING_K * (d - IDEAL_LEN);
+    fx[i] += (dx / d) * f;
+    fy[i] += (dy / d) * f;
+    fx[j] -= (dx / d) * f;
+    fy[j] -= (dy / d) * f;
+  }
+
+  for (let i = 0; i < N; i++) {
+    const a = suggestionPeopleBase[i];
+    a.x += fx[i] * suggStep;
+    a.y += fy[i] * suggStep;
+    const dx = a.x - SUGG_CENTER;
+    const dy = a.y - SUGG_CENTER;
+    const d = Math.hypot(dx, dy) || 1;
+    const clamped = Math.min(Math.max(d, R_MIN), R_MAX);
+    a.x = SUGG_CENTER + (dx / d) * clamped;
+    a.y = SUGG_CENTER + (dy / d) * clamped;
+  }
+  suggStep *= 0.99;
+}
+
+const suggestionPeople = suggestionPeopleBase.map((p) => ({
+  ...p,
+  x: Math.round(p.x * 10) / 10,
+  y: Math.round(p.y * 10) / 10,
+}));
+
+const suggestionCandidatesByScore = suggestionPeople
+  .filter((p) => p.role === "candidate")
+  .sort((a, b) => b.score - a.score);
+
+const suggestionSignalEdges = suggestionPeople
+  .filter((p) => p.role === "candidate" && (p.mutual ?? 0) > 0)
+  .map((p) => suggTrim(SUGG_CENTER, SUGG_CENTER, p.x, p.y, SUGG_YOU_R, SUGG_NODE_R));
+
+const suggestionPeerEdges = suggestionPairs.map(([i, j]) =>
+  suggTrim(
+    suggestionPeople[i].x,
+    suggestionPeople[i].y,
+    suggestionPeople[j].x,
+    suggestionPeople[j].y,
+    SUGG_NODE_R,
+    SUGG_NODE_R
+  )
+);
+
 const adminTools = [
   { icon: "grid", label: "Dashboard", desc: "Signups, daily active users (DAU), likes, comments, storage quotas, and top parks by visits." },
   { icon: "flag", label: "Moderation", desc: "A review queue for reported user-generated content, flagged accounts, and blocks." },
@@ -578,6 +782,18 @@ const adminTools = [
         </svg>
         </div>
       </div>
+
+      <!-- position:fixed, hugging the true viewport edge — not part of the
+           grid, so it isn't bounded by the grid's own max-width/padding.
+           JS toggles it visible only while the pinned scroller is active. -->
+      <div class="pq-slide-dots" id="pq-slide-dots" aria-hidden="true">
+        <span class="pq-slide-dot is-active" data-pq-dot="1"></span>
+        <span class="pq-slide-dot" data-pq-dot="2"></span>
+        <span class="pq-slide-dot" data-pq-dot="3"></span>
+        <span class="pq-slide-dot" data-pq-dot="4"></span>
+        <span class="pq-slide-dot" data-pq-dot="5"></span>
+        <span class="pq-slide-dot" data-pq-dot="6"></span>
+      </div>
     </section>
 
     <!-- Phone carousel — picks up where the pinned mockup left off, fanning
@@ -905,6 +1121,103 @@ const adminTools = [
         <li>The web app renders its own MapLibre GL vector map; iOS uses react-native-maps with <code>PROVIDER_DEFAULT</code>, which resolves to Apple MapKit rather than Google Maps.</li>
       </ul> -->
 
+    </section>
+
+    <!-- Friend-suggestions algorithm gets its own section rather than a row
+         in the API explorer — it's the one piece of real backend logic on
+         the page (not just CRUD over a table), and worth spelling out. -->
+    <section class="pq-section pq-algo-section">
+      <h2>How friend suggestions get ranked</h2>
+
+      <p class="pq-algo-intro">A hybrid graph and behavioral recommendation engine combines social-graph traversal (friends-of-friends) with a domain-specific signal (co-visited parks), weights the two, and falls back gracefully so new users always have suggestions, too.</p>
+
+      <div class="pq-algo-layout">
+        <div class="pq-algo-text">
+          <ol class="pq-algo-steps">
+            {suggestionSteps.map((step) => (
+              <li class="pq-algo-step">
+                <span class="pq-algo-step-num">{step.n}</span>
+                <div class="pq-algo-step-body">
+                  <h4 class="pq-algo-step-title">{step.title}</h4>
+                  <p class="pq-algo-step-desc">{step.desc}</p>
+                  {step.formula && <code class="pq-algo-formula">{step.formula}</code>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="pq-algo-visual" data-stage="all" aria-hidden="true">
+          <svg class="pq-sugg-graph" viewBox={`0 0 ${SUGG_SIZE} ${SUGG_SIZE}`}>
+            <g class="pq-sugg-peer-edges">
+              {suggestionPeerEdges.map((e) => (
+                <line class="pq-sugg-peer-edge" x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} />
+              ))}
+            </g>
+            <g class="pq-sugg-edges">
+              {suggestionSignalEdges.map((e) => (
+                <line class="pq-sugg-edge" x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} />
+              ))}
+            </g>
+            <g class="pq-sugg-people">
+              {suggestionPeople.map((p) => (
+                <g
+                  class="pq-sugg-node"
+                  data-role={p.role}
+                  data-top={p.id === suggestionCandidatesByScore[0]?.id ? "true" : undefined}
+                  transform={`translate(${p.x} ${p.y})`}
+                >
+                  <circle
+                    class="pq-sugg-dot"
+                    r={SUGG_NODE_R}
+                    style={p.role === "candidate" ? `--dot-r-rank:${SUGG_NODE_R + p.score}px` : undefined}
+                  />
+                  {p.role === "candidate" && (p.shared ?? 0) > 0 && <circle class="pq-sugg-badge" cx="10" cy="-10" r="4.5" />}
+                  {p.role === "candidate" && (
+                    <text class="pq-sugg-score" y="7" text-anchor="middle">{p.score}</text>
+                  )}
+                </g>
+              ))}
+            </g>
+            <g class="pq-sugg-you" transform={`translate(${SUGG_CENTER} ${SUGG_CENTER})`}>
+              <circle r={SUGG_YOU_R} />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Offline mode gets its own section for the same reason the friend-
+         suggestions algorithm does: it's a real design tradeoff driven by a
+         concrete usage constraint, not just another CRUD surface. -->
+    <section class="pq-section pq-offline-section">
+      <h2>Offline mode</h2>
+      <p class="pq-offline-intro">National parks are exactly where cell coverage is worst — deep canyons, mountain terrain, no towers for miles. A user who already used the app to plan a hike loses the whole point of it if they're standing at a trailhead with no bars and the app needs a live connection to show anything. Every decision below optimizes for one thing: works with zero connectivity, once downloaded.</p>
+
+      <div class="pq-tier-grid">
+        <div class="pq-tier-card">
+          <span class="pq-tier-eyebrow">Tier 1 &middot; automatic</span>
+          <p>Lightweight, silent, automatic. Every ordinary visit to the Parks or Map tab quietly re-saves the base park list &mdash; pins, name, About text, cover photo &mdash; to on-device storage. No user action, just a side effect of normal browsing.</p>
+        </div>
+        <div class="pq-tier-card">
+          <span class="pq-tier-eyebrow">Tier 2 &middot; explicit</span>
+          <p>Heavy, deliberate, user-triggered. A "Download for offline" button bulk-fetches full park detail for every park in one call &mdash; galleries, hours, fees, activities, topics, directions &mdash; and prefetches every image byte to disk. Caching a URL string isn't enough; nothing has actually fetched those bytes until something tries to render that exact URL, which doesn't happen offline.</p>
+        </div>
+      </div>
+
+      <div class="pq-offline-callout">
+        <h4>Why two separate caches, not one</h4>
+        <p>If the two tiers shared a cache, the silent background refresh &mdash; which only ever has the lightweight fields &mdash; would overwrite a user's deliberately-downloaded rich data with a partial blob the next time they opened the tab. Splitting the keys was a direct fix for that clobbering bug.</p>
+      </div>
+
+      <ul class="pq-notes">
+        <li>Tier 1 refreshes silently and automatically any time the network is up and that tab loads.</li>
+        <li>Tier 2 only updates on an explicit tap &mdash; it's an expensive bulk operation, not something to fire on every visit.</li>
+        <li>The bulk park-detail endpoint silently returns nothing if the upstream park-service key is missing or the request fails; the download handler checks for that and throws instead of caching an empty result over a good one.</li>
+        <li>Cache age surfaces in the UI &mdash; "Last updated 3 days ago" &mdash; so stale data reads as stale, not as live.</li>
+      </ul>
+
+      <p class="pq-offline-fallback">Network status wraps the OS-level connectivity check, treating the ambiguous state at startup as online so the app doesn't flash a false offline banner before the first real signal arrives. Screens try the live fetch first &mdash; on failure, or when auth hasn't finished loading yet (which looks identical to offline at startup), they fall through to the cached data and show an offline banner instead of an error or blank screen. The main feed gets the same treatment at a smaller scale &mdash; the last successfully-loaded page stays scrollable with no connection.</p>
     </section>
 
     <!-- Admin dashboard — split into its own section, not a subsection of
@@ -1822,6 +2135,10 @@ const adminTools = [
     width: 100%;
     height: 100%;
     min-height: 20rem;
+    /* Captions now slide in/out on the Y axis (reel/detent effect) instead
+       of crossfading in place — clip so the outgoing/incoming caption's
+       travel through the box never spills past its edges. */
+    overflow: hidden;
   }
   /* Shorter fixed floor below 900px — this box isn't matched to the
      phone's height here (see the script), and the full 20rem desktop
@@ -1865,6 +2182,50 @@ const adminTools = [
     font-size: 1.05rem;
     line-height: 1.6;
     max-width: 26rem;
+  }
+
+  /* Slide-position dots — hugs the true right edge of the viewport via
+     plain position:fixed (not tied to the grid's own max-width/centering,
+     which leaves a big variable gap on wide screens and almost none on
+     medium ones), shown only while the pinned scroller is actually active
+     (JS toggles .is-visible off tl's own ScrollTrigger.isActive). */
+  .pq-slide-dots {
+    position: fixed;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 20;
+  }
+  .pq-slide-dots.is-visible {
+    opacity: 1;
+  }
+  /* Below 900px the captions column runs nearly full viewport width with
+     centered text close to its own edges, and there's no side-by-side gap
+     to sit in — the dots only show once that layout is in play. */
+  @media (max-width: 899px) {
+    .pq-slide-dots {
+      display: none;
+    }
+  }
+  .pq-slide-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    opacity: 0.35;
+    transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  }
+  .pq-slide-dot.is-active {
+    background: var(--pq-gold);
+    opacity: 1;
+    transform: scale(1.4);
   }
 
   /* Phone carousel */
@@ -2301,15 +2662,21 @@ const adminTools = [
   }
   .pq-api-endpoints li {
     display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  @media (min-width: 480px) {
+    .pq-api-endpoints li {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
   }
   .pq-api-methods {
     display: flex;
     flex: 0 0 auto;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.3rem;
-    max-width: 7.4rem;
   }
   .pq-api-endpoint-desc {
     font-size: 0.86rem;
@@ -2354,6 +2721,219 @@ const adminTools = [
   .pq-api-method-put {
     background: color-mix(in oklab, #7fc9a3 20%, transparent);
     color: #9edcbb;
+  }
+
+  .pq-algo-intro {
+    color: var(--text-tertiary);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 52rem;
+    margin-bottom: 2.5rem;
+  }
+  .pq-algo-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-bottom: 2rem;
+  }
+  .pq-algo-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+  .pq-algo-step-num {
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--pq-gold) 15%, transparent);
+    border: 1px solid color-mix(in oklab, var(--pq-gold) 40%, transparent);
+    color: var(--pq-gold);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+  .pq-algo-step-body {
+    min-width: 0;
+  }
+  .pq-algo-step-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+  }
+  .pq-algo-step-desc {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+  }
+  .pq-algo-formula {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    background: color-mix(in oklab, var(--pq-gold) 10%, transparent);
+    border: 1px solid color-mix(in oklab, var(--pq-gold) 30%, transparent);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.88rem;
+    color: var(--pq-gold);
+  }
+  .pq-algo-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 1000px) {
+    .pq-algo-layout {
+      grid-template-columns: 1fr 20rem;
+      align-items: start;
+      gap: 3rem;
+    }
+    .pq-algo-visual {
+      position: sticky;
+      top: 2rem;
+    }
+  }
+
+  /* Friend-suggestion node graph — a small decorative visual next to the
+     step list, purely to accompany the text. Auto-cycles through four
+     stages (all-lit, exclude, signal, rank) driven off a single
+     data-stage attribute; every visual change is CSS, no per-node JS. */
+  .pq-algo-visual {
+    max-width: 20rem;
+    margin: 0 auto;
+  }
+  .pq-sugg-graph {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pq-sugg-dot {
+    fill: var(--bg-card);
+    stroke: var(--pq-gold);
+    stroke-width: 2;
+    transition: fill 0.3s ease, stroke 0.3s ease, opacity 0.3s ease, r 0.3s ease;
+  }
+  .pq-algo-visual:not([data-stage="all"]) [data-role="friend"] .pq-sugg-dot,
+  .pq-algo-visual:not([data-stage="all"]) [data-role="pending"] .pq-sugg-dot,
+  .pq-algo-visual:not([data-stage="all"]) [data-role="blocked"] .pq-sugg-dot {
+    stroke: var(--text-tertiary);
+    opacity: 0.3;
+  }
+  .pq-algo-visual[data-stage="rank"] [data-role="candidate"] .pq-sugg-dot {
+    r: var(--dot-r-rank, 13px);
+  }
+  .pq-algo-visual[data-stage="rank"] [data-top="true"] .pq-sugg-dot {
+    stroke-width: 3;
+    fill: color-mix(in oklab, var(--pq-gold) 22%, var(--bg-card));
+  }
+  .pq-sugg-peer-edge {
+    stroke: var(--text-tertiary);
+    stroke-width: 1;
+    opacity: 0.16;
+  }
+  .pq-sugg-edge {
+    stroke: var(--pq-gold);
+    stroke-width: 1.5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .pq-algo-visual[data-stage="signal"] .pq-sugg-edge,
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-edge {
+    opacity: 0.55;
+  }
+  .pq-sugg-badge {
+    fill: #6fb3e0;
+    stroke: var(--bg-card);
+    stroke-width: 1.5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .pq-algo-visual[data-stage="signal"] .pq-sugg-badge,
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-badge {
+    opacity: 1;
+  }
+  .pq-sugg-score {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    fill: var(--pq-gold);
+    text-anchor: middle;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-score {
+    opacity: 1;
+  }
+  .pq-sugg-you circle {
+    fill: var(--pq-gold);
+    stroke: var(--pq-gold);
+    stroke-width: 1;
+  }
+  .pq-offline-intro {
+    color: var(--text-tertiary);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 52rem;
+    margin-bottom: 2.5rem;
+  }
+  .pq-tier-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+  @media (min-width: 700px) {
+    .pq-tier-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .pq-tier-card {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 0.9rem;
+    background: var(--bg-card);
+  }
+  .pq-tier-eyebrow {
+    display: block;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pq-gold);
+    margin-bottom: 0.75rem;
+  }
+  .pq-tier-card p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+  }
+  .pq-offline-callout {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 0.9rem;
+    background: var(--bg-card);
+    margin-bottom: 1.75rem;
+  }
+  .pq-offline-callout h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  .pq-offline-callout p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+  }
+  .pq-offline-fallback {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-tertiary);
   }
 
   .pq-stack {
@@ -2762,6 +3342,7 @@ const adminTools = [
       const grid = document.querySelector<HTMLElement>(".pq-feature-grid");
       const stage = document.querySelector<HTMLElement>(".pq-phone-stage");
       const captionsStage = document.querySelector<HTMLElement>(".pq-captions-stage");
+      const dotsStage = document.querySelector<HTMLElement>(".pq-slide-dots");
       const phone = document.querySelector<HTMLElement>(".pq-phone");
       const screens = gsap.utils.toArray<HTMLElement>(".pq-screen");
       const captions = gsap.utils.toArray<HTMLElement>(".pq-caption");
@@ -2820,8 +3401,12 @@ const adminTools = [
 
       gsap.set(screens, { autoAlpha: 0 });
       gsap.set(screens[0], { autoAlpha: 1 });
-      gsap.set(captions, { autoAlpha: 0 });
-      gsap.set(captions[0], { autoAlpha: 1 });
+      // Captions stay fully opaque always — visibility is handled purely by
+      // vertical position plus .pq-captions' overflow:hidden clip below, so
+      // the transition is a physical slide with no opacity blend muddying
+      // where each caption actually is.
+      gsap.set(captions, { autoAlpha: 1, yPercent: 100 });
+      gsap.set(captions[0], { yPercent: 0 });
 
       // GSAP's pin captures the element wherever it naturally sits in the
       // layout the instant the trigger fires (position:fixed with that
@@ -2846,9 +3431,11 @@ const adminTools = [
         const desiredViewportTop = headerH + Math.max(0, (window.innerHeight - headerH - targetRect.height) / 2);
         return "top top+=" + (desiredViewportTop - offsetWithinSection);
       };
-      // Shorter now (was 700px/transition) — the full sequence was a long
-      // scroll to get through.
-      const end = "+=" + (screens.length - 1) * 400;
+      // Shorter now (was 700px, then 400px/transition) — each cut made the
+      // full sequence lighter to scroll through; paired with the wider
+      // caption blend window above, this makes the slide track the wheel
+      // almost immediately instead of needing a long haul per screen.
+      const end = "+=" + (screens.length - 1) * 280;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -2929,33 +3516,88 @@ const adminTools = [
       const hint = document.getElementById("pq-keep-scrolling");
       const positionHint = () => {
         if (!hint) return;
-        const activeCaption = captions.find(
-          (c) => getComputedStyle(c).visibility !== "hidden"
-        );
-        const p = activeCaption?.querySelector("p");
-        if (!p) return;
+        // Captions are always visibility:visible now (the slide/detent
+        // effect below is driven by position, not opacity), so "active"
+        // can't be read off computed visibility anymore — instead pick
+        // whichever caption's box currently sits flush with the stage's
+        // own top (yPercent 0), which is only ever true for the one
+        // that's fully settled in place.
         const stageRect = captionsStage.getBoundingClientRect();
+        let activeCaption = captions[0];
+        let minDist = Infinity;
+        for (const c of captions) {
+          const dist = Math.abs(c.getBoundingClientRect().top - stageRect.top);
+          if (dist < minDist) {
+            minDist = dist;
+            activeCaption = c;
+          }
+        }
+        const p = activeCaption.querySelector("p");
+        if (!p) return;
         const pRect = p.getBoundingClientRect();
         const gap = 48;
         hint.style.top = pRect.bottom - stageRect.top + gap + "px";
       };
       positionHint();
 
-      const blendDuration = 0.08;
+      // Screens still get a quick crossfade window; captions get a much
+      // wider one so the slide tracks the scroll wheel almost immediately
+      // instead of sitting through a long dead zone before it starts
+      // moving. blendDuration (the caption one) also drives the snap/dot/
+      // hint logic below, since it's the longer of the two — anything
+      // still mid-caption-slide is also, trivially, past the screen's
+      // already-finished crossfade.
+      const screenBlendDuration = 0.08;
+      const blendDuration = 0.15;
       const blendStarts: number[] = [];
       for (let i = 1; i < screens.length; i++) {
         const frac = i / (screens.length - 1);
         blendStarts.push(frac);
         // Linear on purpose: this timeline is scrubbed by scroll position,
         // not played back on its own clock, so an eased ease would make
-        // opacity cross 50% at some time other than the tween's own
-        // midpoint — throwing off the mid-blend snap logic below, which
-        // picks a side by comparing tl.time() to that midpoint.
-        tl.to(screens[i - 1], { autoAlpha: 0, duration: blendDuration, ease: "none" }, frac)
-          .to(screens[i], { autoAlpha: 1, duration: blendDuration, ease: "none", onStart: () => restartVideo(screens[i]) }, frac)
-          .to(captions[i - 1], { autoAlpha: 0, duration: blendDuration, ease: "none" }, frac)
-          .to(captions[i], { autoAlpha: 1, duration: blendDuration, ease: "none", onStart: positionHint }, frac);
+        // opacity/position cross the midpoint at some time other than the
+        // tween's own midpoint — throwing off the mid-blend snap logic
+        // below, which picks a side by comparing tl.time() to that
+        // midpoint.
+        //
+        // Captions slide instead of crossfading (a magic-8-ball reel: the
+        // outgoing caption rides up and off the top, the incoming one
+        // rides up from below into place) so scrubbing back and forth
+        // shows physical travel toward a detent, rather than an opacity
+        // blend that gives no sense of "how close" the next slide is.
+        tl.to(screens[i - 1], { autoAlpha: 0, duration: screenBlendDuration, ease: "none" }, frac)
+          .to(screens[i], { autoAlpha: 1, duration: screenBlendDuration, ease: "none", onStart: () => restartVideo(screens[i]) }, frac)
+          .to(captions[i - 1], { yPercent: -100, duration: blendDuration, ease: "none" }, frac)
+          .to(captions[i], { yPercent: 0, duration: blendDuration, ease: "none", onComplete: positionHint }, frac);
       }
+
+      // Vertical dot stack mirrors the active caption index — recomputed
+      // from the timeline's own scrubbed time on every update (not tied to
+      // individual tween callbacks) so it stays correct scrolling in
+      // either direction.
+      const dots = gsap.utils.toArray<HTMLElement>(".pq-slide-dot");
+      const updateActiveDot = () => {
+        // Fixed to the viewport edge rather than pinned inline (see the
+        // CSS), so it needs its own visibility toggle — only relevant
+        // while the phone/caption pin is actually engaged.
+        dotsStage?.classList.toggle("is-visible", !!tl.scrollTrigger?.isActive);
+        if (!dots.length) return;
+        const t = tl.time();
+        let idx = 0;
+        for (let i = 0; i < blendStarts.length; i++) {
+          if (t >= blendStarts[i] + blendDuration / 2) idx = i + 1;
+        }
+        dots.forEach((d, i) => d.classList.toggle("is-active", i === idx));
+      };
+      tl.eventCallback("onUpdate", updateActiveDot);
+      // ScrollTrigger.refresh() (see the video-metadata handling below)
+      // briefly rewinds every trigger's animation to time 0 to remeasure,
+      // firing this same onUpdate with a spurious t=0 — then restores the
+      // real position through a render that doesn't fire onUpdate again,
+      // leaving the dot stuck on index 0 until the next scroll. Resyncing
+      // once the refresh cycle actually finishes corrects it.
+      ScrollTrigger.addEventListener("refresh", updateActiveDot);
+      updateActiveDot();
 
       // Scrubbing ties the crossfade directly to scroll position, so a
       // user can stop scrolling mid-blend and be left looking at two
@@ -3248,12 +3890,30 @@ const adminTools = [
     });
   }
 
+  function initParkQuestSuggestionGraph() {
+    const visual = document.querySelector<HTMLElement>(".pq-algo-visual");
+    if (!visual) return;
+
+    const stages = ["all", "exclude", "signal", "rank"];
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      visual.dataset.stage = stages[stages.length - 1];
+      return;
+    }
+
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % stages.length;
+      visual.dataset.stage = stages[i];
+    }, 2200);
+  }
+
   function initParkQuest() {
     initParkQuestHero();
     initParkQuestScroll();
     initParkQuestScrollCue();
     initParkQuestMedia();
     initParkQuestScrollRefresh();
+    initParkQuestSuggestionGraph();
     initParkQuestCarousel();
     initParkQuestDiagram();
     initParkQuestApiExplorer();
