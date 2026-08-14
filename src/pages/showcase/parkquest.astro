@@ -411,6 +411,19 @@ const suggestionPeerEdges = suggestionPairs.map(([i, j]) =>
   )
 );
 
+// California map park labels.
+const caParkLabels: { text: string; x: number; y: number; anchor?: string }[] = [
+  { text: "Redwood", x: 29, y: 20 },
+  { text: "Lassen", x: 104, y: 48 },
+  { text: "Yosemite", x: 132, y: 138, anchor: "end" },
+  { text: "Kings Canyon", x: 177, y: 178 },
+  { text: "Sequoia", x: 152, y: 206, anchor: "end" },
+  { text: "Death Valley", x: 204, y: 211 },
+  { text: "Joshua Tree", x: 219, y: 282 },
+  { text: "Channel Islands", x: 95, y: 305, anchor: "middle" },
+  { text: "Pinnacles", x: 62, y: 190, anchor: "end" },
+];
+
 const adminTools = [
   { icon: "grid", label: "Dashboard", desc: "Signups, daily active users (DAU), likes, comments, storage quotas, and top parks by visits." },
   { icon: "flag", label: "Moderation", desc: "A review queue for reported user-generated content, flagged accounts, and blocks." },
@@ -543,7 +556,7 @@ const adminTools = [
             />
             <!-- The 9 California national parks, positioned by real latitude/longitude
                  against the state outline above (not a stylized approximation). -->
-            <g stroke="currentColor" stroke-width="1" opacity="0.5" fill="none">
+            <g stroke="#6fb3e0" stroke-width="1.25" opacity="0.7" fill="none">
               <path d="M 20,25 L 95,53 L 140,147 L 168,184 L 160,192 L 195,215 L 210,286 L 95,282 L 70,195 Z" stroke-dasharray="3 5" />
             </g>
             <g fill="currentColor">
@@ -557,16 +570,15 @@ const adminTools = [
               <circle cx="95" cy="282" r="3" />
               <circle cx="70" cy="195" r="3" />
             </g>
-            <g fill="currentColor" opacity="0.85" font-size="9.5" font-family="ui-monospace, SF Mono, Menlo, monospace">
-              <text x="26" y="22">Redwood</text>
-              <text x="101" y="50">Lassen</text>
-              <text x="134" y="140" text-anchor="end">Yosemite</text>
-              <text x="174" y="180">Kings Canyon</text>
-              <text x="154" y="203" text-anchor="end">Sequoia</text>
-              <text x="201" y="213">Death Valley</text>
-              <text x="216" y="284">Joshua Tree</text>
-              <text x="95" y="297" text-anchor="middle">Channel Islands</text>
-              <text x="64" y="192" text-anchor="end">Pinnacles</text>
+            <g class="pq-ca-chips">
+              {caParkLabels.map((_, i) => (
+                <rect class="pq-ca-chip" data-chip={i} rx="3" width="0" height="0" />
+              ))}
+            </g>
+            <g fill="#ffffff" opacity="0.9" font-size="11">
+              {caParkLabels.map((l, i) => (
+                <text data-chip={i} x={l.x} y={l.y} text-anchor={l.anchor}>{l.text}</text>
+              ))}
             </g>
           </svg>
           <p class="pq-map-caption">The tallest trees in the world, the lowest point in North America, and an active volcano &mdash; all in one state.</p>
@@ -614,7 +626,24 @@ const adminTools = [
             <div class="pq-gpxstat"><b>2,140<small>ft</small></b><span>elev gain</span></div>
             <svg class="pq-gpxprofile" viewBox="0 0 200 54" preserveAspectRatio="none" aria-hidden="true">
               <polyline points="0,46 16,40 30,43 48,28 66,32 84,16 104,22 122,9 142,18 160,12 180,26 200,20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
-              <polyline points="0,53 200,53" stroke="rgba(240,234,219,.15)" stroke-width="1" />
+              <polyline points="0,53 200,53" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="0" y1="0" x2="0" y2="53" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="0" y1="0" x2="4" y2="0" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="0" y1="17.67" x2="4" y2="17.67" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="0" y1="35.33" x2="4" y2="35.33" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="0" y1="53" x2="4" y2="53" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="0" y1="53" x2="0" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="16" y1="53" x2="16" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="30" y1="53" x2="30" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="48" y1="53" x2="48" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="66" y1="53" x2="66" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="84" y1="53" x2="84" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="104" y1="53" x2="104" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="122" y1="53" x2="122" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="142" y1="53" x2="142" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="160" y1="53" x2="160" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="180" y1="53" x2="180" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
+              <line x1="200" y1="53" x2="200" y2="49" stroke="rgba(240,234,219,.35)" stroke-width="1" />
             </svg>
           </div>
         </div>
@@ -624,7 +653,53 @@ const adminTools = [
           <p>Every visit earns a real stamp. Badges are awarded the moment your log fills a condition. New badges are added all the time.</p>
           <div class="pq-stamprow">
             <div class="pq-seal">
-              <span>2026</span>
+              <!-- A real park-passport-style cancellation stamp (ring +
+                   curved park name + a silhouette + ID stars), not just a
+                   year — matches what an actually-earned stamp looks like
+                   in the app far better than plain text did. -->
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <defs>
+                  <path id="top-yell" d="M 17 55 A 33 33 0 0 1 83 55"></path>
+                  <path id="bot-yell" d="M 17 50 A 33 33 0 0 0 83 50"></path>
+                  <radialGradient id="bleed-yell" cx="50%" cy="50%" r="50%"><stop offset="70%" stop-color="var(--pq-gold)" stop-opacity="0"></stop><stop offset="100%" stop-color="var(--pq-gold)" stop-opacity="0.16"></stop></radialGradient>
+                </defs>
+                <circle cx="50" cy="50" r="48" fill="url(#bleed-yell)"></circle>
+                <g transform="translate(0.6672000000000001 0.6673600000000001) rotate(2.5032 50 50)" opacity="0.14">
+                  <circle cx="50" cy="50" r="44" fill="none" stroke="var(--pq-gold)" stroke-width="3.5"></circle>
+                  <circle cx="50" cy="50" r="37" fill="none" stroke="var(--pq-gold)" stroke-width="1.1"></circle>
+                </g>
+                <circle cx="50" cy="50" r="44" fill="none" stroke="var(--pq-gold)" stroke-width="3.5" opacity="0.92"></circle>
+                <circle cx="50" cy="50" r="40.5" fill="none" stroke="var(--pq-gold)" stroke-width="1" opacity="0.75"></circle>
+                <circle cx="12.897077245363732" cy="44.338359528944466" r="0.6145799999999999" fill="var(--pq-gold)" opacity="0.19536799999999999"></circle>
+                <circle cx="12.90272772669713" cy="44.243778381574025" r="0.61482" fill="var(--pq-gold)" opacity="0.19545600000000002"></circle>
+                <circle cx="12.908619316933475" cy="44.1491898831154" r="0.309" fill="var(--pq-gold)" opacity="0.08332200000000001"></circle>
+                <circle cx="76.21658196936298" cy="52.5114397073536" r="0.30924" fill="var(--pq-gold)" opacity="0.08341"></circle>
+                <circle cx="76.218945001466" cy="52.57818233841232" r="0.30948" fill="var(--pq-gold)" opacity="0.083498"></circle>
+                <circle cx="76.22985881846549" cy="52.995934999857084" r="0.31098" fill="var(--pq-gold)" opacity="0.084048"></circle>
+                <circle cx="76.23098699582096" cy="53.06286889452882" r="0.31122" fill="var(--pq-gold)" opacity="0.084136"></circle>
+                <circle cx="76.23194435391329" cy="53.129827377539556" r="0.31272" fill="var(--pq-gold)" opacity="0.084686"></circle>
+                <circle cx="76.23405055366837" cy="53.54884777745847" r="0.31296" fill="var(--pq-gold)" opacity="0.084774"></circle>
+                <circle cx="76.23376605891721" cy="53.615971460894414" r="0.3132" fill="var(--pq-gold)" opacity="0.084862"></circle>
+                <circle cx="76.22809262827363" cy="54.035952343957845" r="0.3147" fill="var(--pq-gold)" opacity="0.085412"></circle>
+                <circle cx="76.22656058574961" cy="54.10321815189067" r="0.31494" fill="var(--pq-gold)" opacity="0.0855"></circle>
+                <circle cx="76.22485604472296" cy="54.17050174362246" r="0.31644" fill="var(--pq-gold)" opacity="0.08605"></circle>
+                <circle cx="76.21028841587815" cy="54.59139951610441" r="0.31667999999999996" fill="var(--pq-gold)" opacity="0.086138"></circle>
+                <circle cx="76.2073303693653" cy="54.658798788415695" r="0.31692" fill="var(--pq-gold)" opacity="0.086226"></circle>
+                <circle cx="76.1849131602638" cy="55.08034654619577" r="0.31842" fill="var(--pq-gold)" opacity="0.086776"></circle>
+                <line x1="88.5" y1="50" x2="93" y2="50" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.887315"></line>
+                <line x1="11.5" y1="50" x2="7" y2="50" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.8873499999999999"></line>
+                <line x1="50" y1="88.5" x2="50" y2="93" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.887385"></line>
+                <line x1="50" y1="11.5" x2="50" y2="7" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.88742"></line>
+                <line x1="77.2" y1="77.2" x2="80.4" y2="80.4" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.887455"></line>
+                <line x1="22.8" y1="77.2" x2="19.6" y2="80.4" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.8874899999999999"></line>
+                <line x1="22.8" y1="22.8" x2="19.6" y2="19.6" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.8875249999999999"></line>
+                <line x1="77.2" y1="22.8" x2="80.4" y2="19.6" stroke="var(--pq-gold)" stroke-width="1.4" opacity="0.8875599999999999"></line>
+                <text fill="var(--pq-gold)" font-weight="800" font-size="8" letter-spacing="1.5" opacity="0.92" text-anchor="middle"><textPath href="#top-yell" startOffset="50%" text-anchor="middle">YELLOWSTONE</textPath></text>
+                <text fill="var(--pq-gold)" font-weight="700" font-size="6.5" letter-spacing="1.8" opacity="0.88"><textPath href="#bot-yell" startOffset="28.78%" textLength="44" lengthAdjust="spacingAndGlyphs">★ ID ★</textPath></text>
+                <g transform="translate(30 30) scale(0.078125)">
+                  <path d="M351.75 124.14C353.13 124.67 354.51 125.21 355.89 125.75C356.51 124.89 357.13 124.02 357.75 123.16C361.58 124.25 363.29 128.69 367.75 129.36C368.58 128.81 369.42 128.25 370.25 127.69C373.23 128.14 373.6 131.81 376.25 132.96C377.42 132.14 378.58 131.32 379.75 130.5C382.93 131.57 381.82 134.84 383.78 136.96C384.72 137.98 385.52 137.57 386.66 138.06C386.87 138.15 392.44 142.86 392.61 143.13C393.44 144.47 392.88 145.99 393.33 147.41C394.05 149.67 396 151.89 397.25 153.91C398.42 153.58 399.58 153.26 400.75 152.94C402.71 156.2 403.18 159.9 406.03 162.71C410.75 167.36 417.57 166.08 423.15 163.85C424.57 163.28 425.68 162.21 427.25 161.97C429.48 161.64 430.76 162.57 432.75 163.11C442.21 159.35 436.82 163.42 441.79 164.96C443.17 165.39 444.57 164.52 445.89 165.38C450.14 168.16 447.15 172.66 456.25 175.36C456.75 176.86 457.25 178.36 457.75 179.86C458.92 179.52 460.08 179.19 461.25 178.86C463.62 180.98 465.77 188.71 468.49 189.73C469.81 190.21 471.05 189.38 472.38 189.75C473.17 193 473.95 196.25 474.74 199.51C475.7 199.51 476.66 199.51 477.62 199.51C481.06 202.66 478.97 211.67 479.31 215.75C480.35 216.58 481.39 217.42 482.43 218.25C482.14 221.11 479.69 223.06 480.25 225.98C481.54 226.74 482.83 227.49 484.12 228.25C483.39 232.24 477.77 234.85 475.9 238.68C474.89 240.74 476.7 241.41 476.88 243.26C477.01 244.66 476.24 245.89 476.32 247.25C477.14 247.92 477.95 248.58 478.77 249.25C478.62 252.29 476.57 254.66 476.75 257.99C477.06 263.68 480.6 269.03 478.78 274.75C475.71 273.74 475.45 272.18 471.31 273.25C470.76 275.49 471.03 277.78 472.22 279.75C475.2 280.32 475.8 277.57 477.99 277.25C476.63 283.18 469.75 283.63 465.15 285.39C461.37 286.83 459.97 291.19 456.87 293.61C455.1 294.99 452.14 295.82 450.79 297.56C449.24 299.58 452.24 304.24 451.71 306.92C450.72 311.94 447.06 316.25 445.29 321.03C444 324.53 443.66 328.58 441.75 331.79C439.92 331.85 439.26 330.94 437.75 330.01C434.13 332.63 433.73 332.34 429.75 330.39C428.58 330.8 427.42 331.21 426.25 331.62C423.33 329.69 420.57 325.53 419.7 322.25C412.27 320.93 416.97 317.52 415.48 312.75C414.44 312.15 413.44 312.34 412.35 311.89C410.14 310.98 410.28 307.13 409.75 305.24C407.81 305.24 405.86 305.24 403.92 305.24C403.92 303.9 403.92 302.56 403.92 301.23C402.04 301.92 401.53 303.24 399.25 302.95C397.08 300.49 398.8 295.8 398.97 292.75C399.36 285.66 401.28 278.2 403.2 271.38C404.22 267.76 406.66 263.28 405.75 259.51C404.53 259.09 403.3 258.67 402.08 258.25C402.08 255.99 402.08 253.73 402.08 251.46C399.47 250.7 396.99 251.18 394.56 249.69C389.07 246.32 389.82 236.62 387.25 233.01C385.3 233.82 385.25 238.21 385.46 240.25C386.44 250.17 390.06 251.35 396.81 256.75C397.92 263.09 393.46 259.83 399.25 265.81C399 270.67 396.41 276.14 395.22 280.91C392.64 291.35 396 302.82 383.75 306.92C383.08 306.37 382.42 305.82 381.75 305.27C379.91 306.47 374.34 313.37 372.38 311.9C371.9 311.53 371.62 310.4 371.25 309.9C369.75 311.24 368.25 312.58 366.75 313.92C365.75 312.88 364.75 311.85 363.75 310.82C361.27 314.56 362.51 316.17 357.75 318.9C356.92 318.62 356.08 318.33 355.25 318.05C352.37 320.59 348 323.28 344.25 324.06C343.58 323.61 342.92 323.16 342.25 322.7C339.28 323.89 336.09 327.48 334.75 322.55C332.91 323.45 331.06 324.35 329.22 325.25C328.56 324.55 327.91 323.85 327.25 323.15C324.56 324.86 323.69 328.07 320.01 326.77C320.01 325.53 320.01 324.28 320.01 323.04C317.43 324.64 316.58 328.26 313.44 329.68C308.97 331.69 309.1 329.01 305.72 328.62C304.27 328.46 302.87 328.92 301.41 328.75C302.93 323.58 304.45 318.42 305.98 313.25C307.01 313.21 308.11 313.71 309.09 313.33C311.08 312.56 310.95 308.89 311.09 307.25C311.48 302.82 311.75 298.68 310.9 294.27C310.53 292.37 309.61 290.68 309.41 288.75C311.4 286.65 318.99 286.82 317.79 282.39C317.06 279.73 304.22 275.31 304.18 280.75C306 281.42 307.83 282.08 309.65 282.75C307.52 283.59 305.38 284.42 303.25 285.26C302.03 291.15 309.48 296.62 306.75 303.82C304.59 303.17 303.63 302.01 301.29 303.25C300.75 305.46 301.5 307.52 301.57 309.75C301.68 313.22 300.9 316.87 299.82 320.13C295.25 333.98 285.88 346.11 285.91 361.25C285.92 367.75 287.52 374.18 291.15 379.62C292.69 381.93 297.7 386.08 296.75 389.04C295.96 391.49 292.9 391.81 290.75 391.84C285.23 391.91 277.16 393.24 272.13 390.61C269.64 389.31 270.32 386.35 269.4 384.27C268.18 384.27 266.97 384.27 265.75 384.27C263.41 383.35 264.04 379.63 264.01 377.25C263.93 371.32 267.56 361.12 265.75 356.03C262.27 355.88 261.32 358.69 258.25 359.01C256.41 357.52 256.94 355.35 256.37 353.25C253.23 352.58 247.56 357.06 246.09 353.25C247.63 349.89 251.72 348.83 252.25 344.46C250.35 344.89 248.45 345.32 246.55 345.75C244.63 342.35 248.86 339.86 248.75 336.57C247.25 336.57 245.75 336.57 244.25 336.57C242.71 332.69 246.65 330.44 246.6 326.75C246.56 323.89 243.61 323.46 242.59 321.25C243.09 320.16 244.24 319.54 244.7 318.46C245.74 316.01 242.79 313.87 242.15 311.75C244.49 310.08 246.83 308.42 249.17 306.75C246.79 306.08 244.41 305.42 242.02 304.75C242.16 301.47 245.98 302.57 248.07 300.75C245.76 299.75 243.44 298.75 241.13 297.75C244.08 293.1 256.63 298.81 259.15 291.25C257 283.53 255.65 274.68 259.25 266.96C261.69 261.73 270.69 252.22 268.83 246.36C267.72 242.86 262.62 244.97 260.25 244.95C259.88 236.83 275.83 229.97 270.6 220.25C267.28 219.42 265.64 221.66 262.64 221.75C259.38 218.98 263.73 208.66 263.72 204.25C263.71 200.48 261.31 196.45 261.35 193.25C261.38 190.36 263.81 188.75 262.77 185.43C261.75 182.19 258.48 179.64 258.03 176.25C257.03 168.7 262.5 164 254.65 157.09C253.31 155.92 251.67 155.31 250.03 154.7C236 149.5 237.67 165.57 230.19 168.91C222.97 172.14 223.69 166.36 217.71 165.16C212.55 164.12 206.72 166.76 201.91 164.75C202.99 161.1 202.62 160.25 201.5 156.75C203.23 154.25 206.59 153 206.89 149.75C204.96 146.87 199.99 146.44 196.75 145.94C191.41 145.11 186.13 144.17 180.75 143.55C178.12 143.25 175.18 143.69 172.7 142.75C174.51 139.95 178.95 138.7 182.03 137.75C191.08 134.94 201.36 134.49 210.71 132.84C220.39 131.13 230.21 128.69 239.57 125.77C247.68 123.24 255.79 120.21 264.29 119.19C279.86 117.34 295.65 122.16 311.25 122.16C320.98 122.16 330.64 122.32 340.23 124.11C344.6 124.92 348.25 127.42 351.75 124.14ZM194.68 154.75C194.79 156.58 192.63 157.33 192.67 159.24C192.7 160.88 194.42 161.81 194.92 163.25C194.19 164.55 192.63 165.63 192.58 167.26C192.51 170.15 195.91 170.62 198 171.27C200.71 172.1 204.31 172.91 207.18 172.76C210.26 172.61 213.56 171.51 216.65 172.19C221.26 173.2 220.73 178.81 226.2 177.84C230.61 177.06 234.91 174.5 237.7 170.96C242.28 165.11 243.83 157.12 252.91 164.36C257.85 168.29 252.19 174.24 253.02 179.25C253.66 183.08 258.47 184.78 258.97 188.75C259.3 191.3 257.21 192.53 257.19 194.75C257.18 196.25 258.42 197.92 258.81 199.37C260.07 204.01 259.77 208.98 258.81 213.65C257.9 218.04 254.81 224.61 259.95 227.78C262.06 229.08 264.15 227.43 266.25 227.25C266.69 231.96 262.11 233.18 259.39 236.15C256.46 239.34 252.37 249.7 253.87 253.75C257.45 256.55 260.14 252.12 263.75 252.14C262.98 256.25 254.97 264.94 253.2 270.88C252.14 274.41 253.61 281.74 252.72 283.49C251.11 286.61 241.78 283 243.29 288.47C244.16 291.65 249.13 290.12 251.07 291.75C249.31 294.46 244.2 291.74 241.22 292.91C238.47 293.99 237.12 297.28 234.45 298.69C229.4 301.38 222.87 301.53 217.25 302.07C198.39 303.92 179.48 307.62 160.87 301.82C153.23 299.44 146.74 295.44 139.97 291.29C135.94 288.82 123.21 280.85 121.84 276.75C122.69 273.35 126.74 270.45 128.79 267.57C134.18 259.99 137.25 251.55 137.93 242.25C138.15 239.15 139.21 236.01 137.75 233.1C135.89 234.71 135.51 238.71 134.83 241.15C133.2 247.03 131.71 252.62 128.71 257.99C124.27 265.95 116 270.78 111.22 278.44C107.38 284.59 105.95 293.2 103.78 300.08C99.61 313.3 90.72 333.69 93.1 347.23C94.56 355.52 100.21 364.75 106.19 370.57C110.74 375 118.46 380.26 116.75 387.81C114.06 389.14 101.24 390.76 98.46 389.75C95.87 388.81 95.3 386.06 93.25 384.59C91.72 384.91 89.53 386.13 88.3 384.47C86.32 381.81 85.75 373.42 84.81 369.88C82.24 360.29 78.48 350.77 74.64 341.62C70.78 332.4 65 320.5 66.12 310.26C66.92 302.97 72.82 295.88 71.81 288.31C70.91 281.63 65.75 274.78 63.2 268.6C58.88 258.1 54.97 247.52 52.28 236.46C50.29 228.26 50.05 218.35 51.26 210.02C51.87 205.84 54.1 200.6 53.75 196.51C49.47 199.09 47.05 205.56 45.83 210.15C43.24 219.88 44.85 241.53 48.12 251.19C49.29 254.64 53.21 256.99 53.96 260.25C53.17 260.75 52.37 261.25 51.58 261.75C52.01 265.33 55.13 268.21 55.25 270.86C53.75 270.34 52.25 269.83 50.75 269.31C50.14 273.09 54.28 273.9 54.94 277.14C54.05 277.14 53.15 277.14 52.25 277.14C52.23 279.13 53.38 280.96 52.2 282.75C49.29 284.16 48.71 281.17 46.25 280.55C46.37 283.62 46.38 286.38 43.25 287.89C42.58 287.48 41.92 287.06 41.25 286.64C40.07 288.68 38.89 290.71 37.71 292.75C36.89 292.42 36.07 292.1 35.25 291.77C33.36 293.8 31.43 298.26 28.75 298.43C26.65 295.45 31.96 290.72 31.25 287.24C29.94 287.91 28.62 288.58 27.31 289.25C25.74 286.74 31.58 280.11 30.75 276.06C28.81 276.76 28.27 278.52 26.04 277.75C26.12 275.19 28.13 274.29 27.85 271.5C26.98 271.5 26.12 271.5 25.25 271.5C25.19 267.59 31.4 267.1 31.29 261.25C29.94 261.89 28.6 262.53 27.25 263.17C25.19 260.69 29.18 257.98 30.62 255.89C34.73 249.96 36.07 242.88 35.92 235.75C35.64 221.72 34.38 204.86 44.08 193.34C52.06 183.86 62.88 180.84 74.1 176.8C94.9 169.32 116.82 163.02 138.09 156.78C144.04 155.04 150.17 153.65 156.06 151.76C158.75 150.9 160.74 148.95 163.75 149.06C166.96 149.19 168.53 152.52 171.5 153.25C173.96 153.86 176.3 152.69 178.75 152.61C182.52 152.48 191.45 153.13 194.68 154.75ZM428.75 175.14C425.12 175.26 422.98 182.6 421.86 185.66C418.33 195.36 414.97 206.52 419.75 216.47C421.01 219.08 424.48 223.95 427.75 223.95C431.41 223.95 436.54 217.74 436.64 214.25C436.74 210.9 432.77 209.74 431.99 206.75C430.26 200.02 428.95 192.71 428.9 185.75C428.88 182.69 430.58 177.67 428.75 175.14ZM456.75 239.08C461.5 238.57 460.54 230.55 458.76 227.46C453.61 218.54 434.76 221.37 435.21 231.25C437.88 231.98 440.95 228.51 443.74 227.89C448.93 226.74 454.31 229.68 455.8 234.88C456.24 236.42 455.83 237.8 456.75 239.08ZM452.3 240.25C453.74 237.19 448.86 231.42 446.41 235.16C444.4 238.22 449.85 241.81 452.3 240.25Z" fill="var(--pq-gold)" opacity="1"></path>
+                </g>
+              </svg>
             </div>
             <div class="pq-badgedots">
               {badgeTierColors.map((c) => <i style={`background:${c}`}></i>)}
@@ -745,7 +820,7 @@ const adminTools = [
               <svg class="pq-caption-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M368,415.86V72a24.07,24.07,0,0,0-24-24H72A24.07,24.07,0,0,0,48,72V424a40.12,40.12,0,0,0,40,40H416" style="fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:32px"/><path d="M416,464h0a48,48,0,0,1-48-48V128h72a24,24,0,0,1,24,24V416A48,48,0,0,1,416,464Z" style="fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:32px"/><line x1="240" y1="128" x2="304" y2="128" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="240" y1="192" x2="304" y2="192" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="112" y1="256" x2="304" y2="256" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="112" y1="320" x2="304" y2="320" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="112" y1="384" x2="304" y2="384" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><path d="M176,208H112a16,16,0,0,1-16-16V128a16,16,0,0,1,16-16h64a16,16,0,0,1,16,16v64A16,16,0,0,1,176,208Z" fill="currentColor"/></svg>
               Share the trip
             </h3>
-            <p>A real feed of first visits, photos, and notes from friends actually out on the trail.</p>
+            <p>A social feed of first visits, photos, and badges earned from your friends and other adventurers out on the trials. Like, comment, and interact with the community.</p>
           </div>
           <div class="pq-caption pq-caption-2" data-pq-caption="2">
             <h3>
@@ -1582,6 +1657,11 @@ const adminTools = [
     max-width: 270px;
     margin: 0 auto;
   }
+  .pq-ca-chip {
+    fill: var(--bg-card);
+    stroke: var(--border-primary);
+    stroke-width: 0.75;
+  }
   .pq-map-caption {
     margin-top: 1rem;
     font-size: 0.85rem;
@@ -1832,26 +1912,14 @@ const adminTools = [
   }
   .pq-seal {
     flex: none;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    border: 1.5px solid var(--pq-gold);
+    width: 4rem;
+    height: 4rem;
     display: grid;
     place-items: center;
-    position: relative;
   }
-  .pq-seal::before {
-    content: "";
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    border: 1px solid color-mix(in oklab, var(--pq-gold) 40%, transparent);
-  }
-  .pq-seal span {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.06em;
-    color: var(--pq-gold);
+  .pq-seal svg {
+    width: 100%;
+    height: 100%;
   }
   .pq-badgedots {
     display: flex;
@@ -3557,15 +3625,22 @@ const adminTools = [
       // off the same settled-index math as the dots.
       const hint = document.getElementById("pq-keep-scrolling");
 
-      // Screens still get a quick crossfade window; captions get a much
-      // wider one so the slide tracks the scroll wheel almost immediately
-      // instead of sitting through a long dead zone before it starts
-      // moving. blendDuration (the caption one) also drives the snap/dot/
-      // hint logic below, since it's the longer of the two — anything
-      // still mid-caption-slide is also, trivially, past the screen's
-      // already-finished crossfade.
-      const screenBlendDuration = 0.08;
-      const blendDuration = 0.15;
+      // Screens and captions share the same crossfade/slide window (also
+      // drives the snap/dot/hint logic below).
+      //
+      // This was briefly widened to 0.15 (75% of the 0.2 gap between
+      // segments) chasing a "make the slide track the wheel immediately"
+      // request, which left only 25% of each segment as a genuinely
+      // settled, no-snap zone — scrolling fast then landed inside the
+      // snap-triggering window almost every notch. The real bug that
+      // exposed (see animateScrollTo's cancellation below, which is the
+      // actual fix) was that each of those corrections kept forcing
+      // scrollTo() for its full duration regardless of the next notch's
+      // input, fighting it — observed as the scroll position trapped
+      // oscillating instead of progressing. Kept at the narrower,
+      // longer-proven ratio here too, since a bigger resting zone still
+      // means fewer corrections need cancelling in the first place.
+      const blendDuration = 0.08;
       const blendStarts: number[] = [];
       for (let i = 1; i < screens.length; i++) {
         const frac = i / (screens.length - 1);
@@ -3582,8 +3657,8 @@ const adminTools = [
         // rides up from below into place) so scrubbing back and forth
         // shows physical travel toward a detent, rather than an opacity
         // blend that gives no sense of "how close" the next slide is.
-        tl.to(screens[i - 1], { autoAlpha: 0, duration: screenBlendDuration, ease: "none" }, frac)
-          .to(screens[i], { autoAlpha: 1, duration: screenBlendDuration, ease: "none", onStart: () => restartVideo(screens[i]) }, frac)
+        tl.to(screens[i - 1], { autoAlpha: 0, duration: blendDuration, ease: "none" }, frac)
+          .to(screens[i], { autoAlpha: 1, duration: blendDuration, ease: "none", onStart: () => restartVideo(screens[i]) }, frac)
           .to(captions[i - 1], { y: -maxCaptionHeight, duration: blendDuration, ease: "none" }, frac)
           .to(captions[i], { y: 0, duration: blendDuration, ease: "none" }, frac);
       }
@@ -3655,13 +3730,26 @@ const adminTools = [
       // file). Driving it via rAF sidesteps whatever native scroll-
       // animation cancellation was doing that, and lets one duration cover
       // the whole suppression window precisely.
+      //
+      // Cancellable via scrollAnimId: a real wheel/touch tick bumps this
+      // counter (see the listeners below), and the running step() bails
+      // the instant its own id goes stale. Without this, a correction in
+      // flight kept forcing scrollTo() on every frame for its full 500ms
+      // regardless of fresh scroll input arriving mid-animation — on a
+      // fast scroll (a rapid run of wheel notches, each well under 500ms
+      // apart) that meant every notch fought the previous correction
+      // instead of just scrolling, which showed up as the position
+      // getting stuck oscillating back and forth instead of progressing.
+      let scrollAnimId = 0;
       const animateScrollTo = (target: number, duration = 500) => {
+        const myAnimId = ++scrollAnimId;
         const startY = window.scrollY;
         const delta = target - startY;
         if (Math.abs(delta) < 1) return;
         const startTime = performance.now();
         const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
         const step = (now: number) => {
+          if (myAnimId !== scrollAnimId) return;
           const t = Math.min(1, (now - startTime) / duration);
           window.scrollTo(0, startY + delta * easeOutCubic(t));
           if (t < 1) requestAnimationFrame(step);
@@ -3690,6 +3778,15 @@ const adminTools = [
         }
       };
       window.addEventListener("scrollend", trySnap);
+      // Real, device-originated scroll input only (never fires for our
+      // own programmatic window.scrollTo calls) — bumping scrollAnimId
+      // here is what lets a fresh wheel notch or touch drag interrupt a
+      // correction that's still mid-flight instead of fighting it.
+      const cancelSnapAnim = () => {
+        scrollAnimId++;
+      };
+      window.addEventListener("wheel", cancelSnapAnim, { passive: true });
+      window.addEventListener("touchmove", cancelSnapAnim, { passive: true });
 
       // The idle hint doubles as a "next" control — click it to advance
       // to the next screen's settled point, or (on the last screen) jump
@@ -3760,6 +3857,8 @@ const adminTools = [
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", updateActiveDot);
         window.removeEventListener("scrollend", trySnap);
+        window.removeEventListener("wheel", cancelSnapAnim);
+        window.removeEventListener("touchmove", cancelSnapAnim);
         clearTimeout(idleTimer);
         tl.scrollTrigger?.kill();
         tl.kill();
@@ -3780,12 +3879,29 @@ const adminTools = [
     // Browsers suppress the `autoplay` attribute on elements that are
     // visibility:hidden at load (our non-default pq-screen panels are), and
     // GSAP toggling visibility later doesn't retroactively trigger it — so
-    // kick off playback manually instead of relying on the attribute.
-    document
-      .querySelectorAll<HTMLVideoElement>("video.pq-screen-media, .pq-mini-phone-screen video")
-      .forEach((video) => {
-        video.play().catch(() => {});
-      });
+    // kick off playback manually instead of relying on the attribute. Gated
+    // behind IntersectionObserver rather than firing immediately, so the
+    // very first screen's video (which IS visible at load, unlike its
+    // siblings) doesn't start playing before the mockup has scrolled into
+    // view.
+    const videos = document.querySelectorAll<HTMLVideoElement>(
+      "video.pq-screen-media, .pq-mini-phone-screen video"
+    );
+    if (!("IntersectionObserver" in window)) {
+      videos.forEach((video) => video.play().catch(() => {}));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLVideoElement).play().catch(() => {});
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1 }
+    );
+    videos.forEach((video) => observer.observe(video));
   }
 
   function initParkQuestScrollRefresh() {
@@ -3937,10 +4053,33 @@ const adminTools = [
     }, 2200);
   }
 
+  function initParkQuestCaLabels() {
+    const svg = document.querySelector<SVGSVGElement>(".pq-origin-map svg");
+    if (!svg) return;
+    const padX = 3.5;
+    const padY = 2;
+
+    const fit = () => {
+      svg.querySelectorAll<SVGTextElement>("text[data-chip]").forEach((text) => {
+        const rect = svg.querySelector<SVGRectElement>(`.pq-ca-chip[data-chip="${text.dataset.chip}"]`);
+        if (!rect) return;
+        const box = text.getBBox();
+        rect.setAttribute("x", String(box.x - padX));
+        rect.setAttribute("y", String(box.y - padY));
+        rect.setAttribute("width", String(box.width + padX * 2));
+        rect.setAttribute("height", String(box.height + padY * 2));
+      });
+    };
+
+    fit();
+    if (document.fonts?.ready) document.fonts.ready.then(fit);
+  }
+
   function initParkQuest() {
     initParkQuestHero();
     initParkQuestScroll();
     initParkQuestScrollCue();
+    initParkQuestCaLabels();
     initParkQuestMedia();
     initParkQuestScrollRefresh();
     initParkQuestSuggestionGraph();
