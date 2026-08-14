@@ -820,7 +820,8 @@ const adminTools = [
               <svg class="pq-caption-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M368,415.86V72a24.07,24.07,0,0,0-24-24H72A24.07,24.07,0,0,0,48,72V424a40.12,40.12,0,0,0,40,40H416" style="fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:32px"/><path d="M416,464h0a48,48,0,0,1-48-48V128h72a24,24,0,0,1,24,24V416A48,48,0,0,1,416,464Z" style="fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:32px"/><line x1="240" y1="128" x2="304" y2="128" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="240" y1="192" x2="304" y2="192" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="112" y1="256" x2="304" y2="256" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="112" y1="320" x2="304" y2="320" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><line x1="112" y1="384" x2="304" y2="384" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"/><path d="M176,208H112a16,16,0,0,1-16-16V128a16,16,0,0,1,16-16h64a16,16,0,0,1,16,16v64A16,16,0,0,1,176,208Z" fill="currentColor"/></svg>
               Share the trip
             </h3>
-            <p>A social feed of first visits, photos, and badges earned from your friends and other adventurers out on the trials. Like, comment, and interact with the community.</p>
+            <p>A social feed of first visits, photos, and badges earned from your friends and other adventurers out on the trials.</p>
+            <p>Like, comment, and interact with the community.</p>
           </div>
           <div class="pq-caption pq-caption-2" data-pq-caption="2">
             <h3>
@@ -923,8 +924,14 @@ const adminTools = [
     </section>
 
     <!-- Built with -->
+    <!-- Engineering group: everything below is the deeper, technical half
+         of the page (stack, ranking algorithm, offline sync, admin
+         dashboard) — banded together with a shared backdrop and eyebrow so
+         it reads as one block rather than four unrelated sections. -->
+    <div class="pq-engineering-group">
     <section class="pq-section pq-bts">
-      <h2>Built with</h2>
+      <p class="pq-kicker">Engineering<span class="pq-kicker-line" aria-hidden="true"></span></p>
+      <h3 class="pq-engineering-subheading">Built with</h3>
       <div class="pq-bts-row">
       <div class="pq-bts-left">
       <div class="pq-stack">
@@ -956,8 +963,18 @@ const adminTools = [
           </ul>
         </div>
       </div>
-      <div class="pq-diagram">
+      <div class="pq-diagram" id="pq-architecture-diagram">
         <svg viewBox="0 0 1020 434" class="pq-diagram-svg" aria-hidden="true">
+          <defs>
+            <!-- Solid arrowheads on the flow-carrying segments (client
+                 trunk into the API box, API into each service) so the
+                 diagram reads as directional data flow, not just a wiring
+                 map. The merge/distribution bars stay plain lines — they're
+                 joins, not a hop into a box. -->
+            <marker id="pq-diagram-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 Z" style="fill: var(--pq-gold)" />
+            </marker>
+          </defs>
           <!-- connecting lines — data-group ties each line to the node(s)
                it belongs to, so hovering a box highlights its own path
                instead of the whole diagram lighting up at once. -->
@@ -965,13 +982,13 @@ const adminTools = [
             <line data-group="ios" x1="210" y1="121" x2="210" y2="138" />
             <line data-group="web" x1="790" y1="121" x2="790" y2="138" />
             <line data-group="ios web" x1="210" y1="138" x2="790" y2="138" />
-            <line data-group="ios web" x1="500" y1="138" x2="500" y2="204" />
+            <line data-group="ios web" x1="500" y1="138" x2="500" y2="202" marker-end="url(#pq-diagram-arrow)" />
             <line data-group="neon clerk r2 external" x1="500" y1="290" x2="500" y2="310" />
             <line data-group="neon clerk r2 external" x1="150" y1="310" x2="870" y2="310" />
-            <line data-group="neon" x1="150" y1="310" x2="150" y2="330" />
-            <line data-group="clerk" x1="390" y1="310" x2="390" y2="330" />
-            <line data-group="r2" x1="630" y1="310" x2="630" y2="330" />
-            <line data-group="external" x1="870" y1="310" x2="870" y2="330" />
+            <line data-group="neon" x1="150" y1="310" x2="150" y2="328" marker-end="url(#pq-diagram-arrow)" />
+            <line data-group="clerk" x1="390" y1="310" x2="390" y2="328" marker-end="url(#pq-diagram-arrow)" />
+            <line data-group="r2" x1="630" y1="310" x2="630" y2="328" marker-end="url(#pq-diagram-arrow)" />
+            <line data-group="external" x1="870" y1="310" x2="870" y2="328" marker-end="url(#pq-diagram-arrow)" />
           </g>
 
           <!-- Shared types sits right at the midpoint of the line joining
@@ -982,7 +999,7 @@ const adminTools = [
           <rect data-group="ios web" x="415" y="114" width="170" height="24" rx="6" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.5" stroke-dasharray="3 4" />
 
           <!-- client layer -->
-          <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
+          <g class="pq-diagram-node-client" stroke="currentColor" stroke-width="1.3">
             <rect data-group="ios" x="60" y="20" width="300" height="101" rx="6" />
             <rect data-group="web" x="640" y="20" width="300" height="101" rx="6" />
           </g>
@@ -1003,11 +1020,11 @@ const adminTools = [
             </g>
           </g>
           <!-- API layer -->
-          <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.65">
+          <g class="pq-diagram-node-api" stroke="currentColor" stroke-width="1.3">
             <rect data-group="ios web neon clerk r2 external" x="250" y="204" width="500" height="86" rx="6" />
           </g>
           <!-- service layer -->
-          <g fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55">
+          <g class="pq-diagram-node-service" stroke="currentColor" stroke-width="1.3">
             <rect data-group="neon" x="40" y="330" width="220" height="99" rx="6" />
             <rect data-group="clerk" x="280" y="330" width="220" height="99" rx="6" />
             <rect data-group="r2" x="520" y="330" width="220" height="99" rx="6" />
@@ -1208,7 +1225,7 @@ const adminTools = [
          in the API explorer — it's the one piece of real backend logic on
          the page (not just CRUD over a table), and worth spelling out. -->
     <section class="pq-section pq-algo-section">
-      <h2>How friend suggestions get ranked</h2>
+      <h3 class="pq-engineering-subheading">How friend suggestions get ranked</h3>
 
       <p class="pq-algo-intro">A hybrid graph and behavioral recommendation engine combines social-graph traversal (friends-of-friends) with a domain-specific signal (co-visited parks), weights the two, and falls back gracefully so new users always have suggestions, too.</p>
 
@@ -1272,7 +1289,7 @@ const adminTools = [
          suggestions algorithm does: it's a real design tradeoff driven by a
          concrete usage constraint, not just another CRUD surface. -->
     <section class="pq-section pq-offline-section">
-      <h2>Offline mode</h2>
+      <h3 class="pq-engineering-subheading">Offline mode</h3>
       <p class="pq-offline-intro">National parks are exactly where cell coverage is worst — deep canyons, mountain terrain, no towers for miles. A user who already used the app to plan a hike loses the whole point of it if they're standing at a trailhead with no bars and the app needs a live connection to show anything. Every decision below optimizes for one thing: works with zero connectivity, once downloaded.</p>
 
       <div class="pq-tier-grid">
@@ -1306,7 +1323,7 @@ const adminTools = [
          not linked anywhere else on this page) and deserved its own
          heading instead of living under an h3. -->
     <section class="pq-section pq-admin-section">
-      <h2>Behind the curtain</h2>
+      <h3 class="pq-engineering-subheading">Behind the curtain</h3>
       <p class="pq-routes-sub">An admin-side dashboard allows for moderating the platform's content, creating new badges and challenges, and analyzing global trends and performance. Multiple tabs are available for different aspects of the admin experience.</p>
 
       <div class="pq-admin-layout">
@@ -1349,6 +1366,7 @@ const adminTools = [
         </ul>
       </div>
     </section>
+    </div>
 
     <!-- CTA -->
     <section class="pq-section pq-cta">
@@ -1622,6 +1640,40 @@ const adminTools = [
     }
   }
 
+  /* Bands the stack/algorithm/offline/admin sections together as one
+     "engineering" block, distinct from the product-facing sections above
+     and the CTA below — a shared backdrop and one umbrella title, rather
+     than four sections that just happen to be adjacent. */
+  .pq-engineering-group {
+    background: color-mix(in oklab, var(--bg-card) 55%, transparent);
+  }
+  /* Reusable label that sits above a section's real h2 — a <p>, not a
+     heading, so it never competes with `.pq-section h2` on specificity or
+     in the document outline. Used above "Built with" (reads "Engineering",
+     marking the whole grouped block) and above "The idea" (reads
+     "Origin"). */
+  .pq-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--pq-gold-soft);
+    margin-bottom: 1.5rem;
+  }
+  .pq-kicker-line {
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--pq-gold);
+    flex-shrink: 0;
+  }
+  .pq-engineering-subheading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+  }
+
   .pq-section h2 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
@@ -1737,14 +1789,15 @@ const adminTools = [
     justify-content: center;
     gap: 0.9rem;
     padding: 1.75rem;
-    border: 1px solid rgba(240, 234, 219, 0.1);
+    outline: 1px solid rgba(240, 234, 219, 0.1);
+    outline-offset: 0;
     border-radius: 1.25rem;
     background: linear-gradient(165deg, #182a1e, #0e1811);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 14px 34px rgba(0, 0, 0, 0.35);
-    transition: border-color 0.2s ease;
+    transition: outline-color 0.2s ease;
   }
   .pq-inside-card:hover {
-    border-color: color-mix(in oklab, var(--pq-gold) 45%, rgba(240, 234, 219, 0.1));
+    outline-color: color-mix(in oklab, var(--pq-gold) 45%, rgba(240, 234, 219, 0.1));
   }
   .pq-inside-card h3 {
     margin: 0;
@@ -2270,6 +2323,9 @@ const adminTools = [
     line-height: 1.6;
     max-width: 26rem;
   }
+  .pq-caption p + p {
+    margin-top: 0.75rem;
+  }
 
   /* Slide-position dots — hugs the true right edge of the viewport via
      plain position:fixed (not tied to the grid's own max-width/centering,
@@ -2462,10 +2518,8 @@ const adminTools = [
   }
   .pq-types-label {
     display: block;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--pq-gold-soft);
     margin-bottom: 0.3rem;
   }
@@ -2509,6 +2563,22 @@ const adminTools = [
   .pq-diagram-svg {
     width: 100%;
     min-width: 760px;
+  }
+  /* Filled, layered boxes instead of plain outlines — same idea as a
+     classic system-architecture diagram (distinct fill per tier: client,
+     API hub, backing services) but in the page's own dark/gold palette
+     rather than the usual saturated yellow/green/orange. */
+  .pq-diagram-node-client rect {
+    fill: color-mix(in oklab, var(--pq-bg-2) 60%, transparent);
+    stroke-opacity: 0.6;
+  }
+  .pq-diagram-node-api rect {
+    fill: color-mix(in oklab, var(--pq-gold) 12%, var(--pq-bg-1));
+    stroke-opacity: 0.75;
+  }
+  .pq-diagram-node-service rect {
+    fill: color-mix(in oklab, var(--pq-bg-2) 38%, transparent);
+    stroke-opacity: 0.5;
   }
 
   .pq-routes-heading {
@@ -2613,9 +2683,6 @@ const adminTools = [
      grid — click a category, the panel below swaps to its real-shaped
      endpoints. More fun to poke at than a wall of cards, and the endpoint
      paths are concrete detail a static list didn't have room for. */
-  .pq-api-explorer {
-    margin-bottom: 2.5rem;
-  }
   .pq-api-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -3029,10 +3096,8 @@ const adminTools = [
     gap: 1.75rem 2.5rem;
   }
   .pq-stack-label {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--pq-gold-soft);
     opacity: 0.85;
     margin-bottom: 0.6rem;
@@ -3684,7 +3749,8 @@ const adminTools = [
 
         if (hint) {
           const activeCaption = captions[idx];
-          const p = activeCaption?.querySelector("p");
+          const pList = activeCaption?.querySelectorAll("p");
+          const p = pList?.[pList.length - 1];
           if (p) {
             const stageRect = captionsStage.getBoundingClientRect();
             const pRect = p.getBoundingClientRect();
