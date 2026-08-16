@@ -277,14 +277,14 @@ function suggTrim(x1: number, y1: number, x2: number, y2: number, r1: number, r2
 // First names only, each starting with a different letter — one-letter
 // avatar initials (M/J/A/T/S/R/C/D) stay unambiguous without a last name.
 const suggPeopleRaw: { id: string; name: string; initials: string; color: string; isFriend: boolean; mutual?: number; shared?: number }[] = [
-  { id: "p1", name: "Maya", initials: "M", color: "#8FBF9C", isFriend: true },
-  { id: "p2", name: "Jordan", initials: "J", color: "#D8B77A", isFriend: true },
-  { id: "p3", name: "Alex", initials: "A", color: "#C08A6A", isFriend: true },
-  { id: "p4", name: "Taylor", initials: "T", color: "#9FB6C4", isFriend: false, mutual: 2, shared: 1 },
   { id: "p5", name: "Sam", initials: "S", color: "#B48EAD", isFriend: false, mutual: 0, shared: 3 },
-  { id: "p6", name: "Riley", initials: "R", color: "#7FA8C9", isFriend: false, mutual: 1, shared: 1 },
-  { id: "p7", name: "Casey", initials: "C", color: "#E0A53F", isFriend: false, mutual: 1, shared: 0 },
+  { id: "p2", name: "Jordan", initials: "J", color: "#D8B77A", isFriend: true },
   { id: "p8", name: "Drew", initials: "D", color: "#8AAE8F", isFriend: false, mutual: 0, shared: 1 },
+  { id: "p1", name: "Maya", initials: "M", color: "#8FBF9C", isFriend: true },
+  { id: "p4", name: "Taylor", initials: "T", color: "#9FB6C4", isFriend: false, mutual: 2, shared: 1 },
+  { id: "p6", name: "Riley", initials: "R", color: "#7FA8C9", isFriend: false, mutual: 1, shared: 1 },
+  { id: "p3", name: "Alex", initials: "A", color: "#C08A6A", isFriend: true },
+  { id: "p7", name: "Casey", initials: "C", color: "#E0A53F", isFriend: false, mutual: 1, shared: 0 },
 ];
 const suggPeopleBase = suggPeopleRaw.map((p) => ({ ...p, score: (p.mutual ?? 0) * 3 + (p.shared ?? 0) * 2 }));
 
@@ -314,15 +314,34 @@ const suggEdges = suggPeople.map((p) =>
 );
 
 const suggPeopleById = new Map(suggPeople.map((p) => [p.id, p]));
+// Drawn as a curve, not a straight chord: two FoF'd people can land
+// diametrically opposite each other around the circle (e.g. Taylor at the
+// bottom, Maya at the top), which puts a straight line for that pair
+// exactly through the "You" hub — collinear with, and hidden behind, the
+// two solid gold spokes to each of them. Bowing every FoF edge out to the
+// same side by a fixed proportion of its own length keeps it clear of the
+// hub (and visually distinct from the spokes) no matter how the people end
+// up arranged.
 const suggFoFEdges = suggFoFPairs.map(([aId, bId]) => {
   const a = suggPeopleById.get(aId)!;
   const b = suggPeopleById.get(bId)!;
-  return suggTrim(a.x, a.y, b.x, b.y, SUGG_NODE_R, SUGG_NODE_R);
+  const trimmed = suggTrim(a.x, a.y, b.x, b.y, SUGG_NODE_R, SUGG_NODE_R);
+  const dx = trimmed.x2 - trimmed.x1;
+  const dy = trimmed.y2 - trimmed.y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const px = -dy / len;
+  const py = dx / len;
+  const bow = Math.min(Math.max(len * 0.18, 14), 46);
+  const mx = Math.round(((trimmed.x1 + trimmed.x2) / 2 + px * bow) * 10) / 10;
+  const my = Math.round(((trimmed.y1 + trimmed.y2) / 2 + py * bow) * 10) / 10;
+  return { ...trimmed, mx, my };
 });
 
-const suggTopCandidateId = suggPeople
+const suggCandidatesRanked = suggPeople
   .filter((p) => !p.isFriend)
-  .sort((a, b) => b.score - a.score)[0]?.id;
+  .sort((a, b) => b.score - a.score);
+const suggTopCandidateId = suggCandidatesRanked[0]?.id;
+const suggRankById = new Map(suggCandidatesRanked.map((p, i) => [p.id, i + 1]));
 
 // California map park labels.
 const caParkLabels: { text: string; x: number; y: number; anchor?: string }[] = [
@@ -1194,7 +1213,7 @@ const adminTools = [
                  spokes are still the primary structure. -->
             <g class="pq-sugg-fof-edges">
               {suggFoFEdges.map((e) => (
-                <line class="pq-sugg-fof-edge" x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} />
+                <path class="pq-sugg-fof-edge" d={`M ${e.x1},${e.y1} Q ${e.mx},${e.my} ${e.x2},${e.y2}`} fill="none" />
               ))}
             </g>
             <g class="pq-sugg-edges">
@@ -1234,31 +1253,44 @@ const adminTools = [
 
           <!-- Same graph, tabular form — the pairing a graph-theory text
                uses (visual + adjacency/attribute table), not either alone.
-               Status reveals at "exclude"; the real two signals the
-               algorithm scores on — mutual (friends-of-friends) and
-               shared (co-visited parks) — reveal at "score" along with
-               the formula's result; at "rank" the rows themselves
-               reorder by score, in place, instead of handing off to a
-               separate list. -->
+               Status reveals (friends struck through) at "exclude"; the
+               real two signals the algorithm scores on — mutual (friends-
+               of-friends) and shared (co-visited parks) — reveal one at a
+               time at "fof" and "parks", then the formula's result at
+               "score"; at "rank" the rows themselves reorder by score, in
+               place, instead of handing off to a separate list. -->
           <table class="pq-sugg-table">
             <thead>
-              <tr><th>Person</th><th>Status</th><th>FoF</th><th>Parks</th><th>Score</th></tr>
+              <tr><th>Person</th><th>Status</th><th>FoF</th><th>Parks</th><th class="pq-sugg-th-score">Score</th></tr>
             </thead>
             <tbody>
               {suggPeople.map((p) => (
                 <tr data-id={p.id} data-friend={p.isFriend ? "true" : undefined} data-top={p.id === suggTopCandidateId ? "true" : undefined} data-score={p.isFriend ? -1 : p.score}>
-                  <td>
+                  <td class="pq-sugg-row-person">
+                    <span class="pq-sugg-row-rank">{p.isFriend ? "" : suggRankById.get(p.id)}</span>
                     <span class="pq-sugg-row-avatar" style={`background:${p.color}`}>{p.initials}</span>
-                    {p.name}
+                    <span class="pq-sugg-row-name">{p.name}</span>
                   </td>
                   <td class="pq-sugg-row-status">{p.isFriend ? "Friend" : "Candidate"}</td>
-                  <td class="pq-sugg-row-signal">{p.isFriend ? "—" : p.mutual}</td>
-                  <td class="pq-sugg-row-signal">{p.isFriend ? "—" : p.shared}</td>
+                  <td class="pq-sugg-row-fof">{p.isFriend ? "—" : p.mutual}</td>
+                  <td class="pq-sugg-row-parks">{p.isFriend ? "—" : p.shared}</td>
                   <td class="pq-sugg-row-score">{p.isFriend ? "—" : p.score}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          <!-- Same Apple-style replay affordance as the phone mockup
+               (pq-replay): appears once the cycle settles on "rank" and
+               dwells there, restarting the whole thing on click instead of
+               waiting out the rest of the auto-replay timer. -->
+          <button type="button" id="pq-sugg-replay" class="pq-sugg-replay" aria-label="Replay">
+            <svg class="pq-replay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-3-6.7" />
+              <path d="M21 3v6h-6" />
+            </svg>
+            Replay
+          </button>
         </div>
       </div>
     </section>
@@ -2977,10 +3009,12 @@ const adminTools = [
   }
 
   /* Friend-suggestion visual: graph + table, the same data shown two
-     ways (a graph-theory-text pairing). Auto-cycles through four stages
-     (all-lit, exclude, score, rank) off one data-stage attribute — every
-     visual change is CSS (row reordering at "rank" is the one exception,
-     see initParkQuestSuggestionGraph). */
+     ways (a graph-theory-text pairing). Auto-cycles through seven stages
+     (all-lit, status, exclude, fof, parks, score, rank) off one
+     data-stage attribute — every visual change is CSS (row reordering at
+     "rank" is the one exception, see initParkQuestSuggestionGraph). Only
+     starts once the whole graphic has scrolled fully into view (see the
+     IntersectionObserver in initParkQuestSuggestionGraph). */
   .pq-algo-visual {
     max-width: 26rem;
     margin: 0 auto;
@@ -3001,7 +3035,7 @@ const adminTools = [
   }
   .pq-sugg-initials {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 700;
     fill: var(--text-primary);
     pointer-events: none;
@@ -3010,7 +3044,7 @@ const adminTools = [
   .pq-sugg-edge {
     stroke: var(--pq-gold);
     stroke-width: 1.3;
-    opacity: 0.4;
+    opacity: 0.8;
     transition: opacity 0.45s ease, stroke 0.45s ease;
   }
   .pq-sugg-fof-edge {
@@ -3018,15 +3052,27 @@ const adminTools = [
     stroke-width: 1;
     stroke-dasharray: 2 3;
     opacity: 0.25;
+    transition: opacity 0.45s ease, stroke 0.45s ease;
   }
-  /* Stage 2: already-friends drop out — dimmed, not deleted, so it still
-     reads as "excluded" rather than "never existed." */
-  .pq-algo-visual:not([data-stage="all"]) [data-friend="true"].pq-sugg-node .pq-sugg-dot,
-  .pq-algo-visual:not([data-stage="all"]) [data-friend="true"].pq-sugg-node .pq-sugg-initials {
+  /* Stage 3 ("exclude"): already-friends drop out — dimmed, not deleted, so it still
+     reads as "excluded" rather than "never existed." Gated to skip
+     "status" too, so status labels land as their own beat before anyone
+     gets dimmed/struck out. */
+  .pq-algo-visual:not([data-stage="all"]):not([data-stage="status"]) [data-friend="true"].pq-sugg-node .pq-sugg-dot,
+  .pq-algo-visual:not([data-stage="all"]):not([data-stage="status"]) [data-friend="true"].pq-sugg-node .pq-sugg-initials {
     opacity: 0.3;
   }
-  .pq-algo-visual:not([data-stage="all"]) line[data-friend="true"] {
+  .pq-algo-visual:not([data-stage="all"]):not([data-stage="status"]) line[data-friend="true"] {
     opacity: 0.1;
+  }
+  /* Stage 4 ("fof"): the friends-of-friends lines brighten once that signal is
+     the one being called out, staying lit through the later stages. */
+  .pq-algo-visual[data-stage="fof"] .pq-sugg-fof-edge,
+  .pq-algo-visual[data-stage="parks"] .pq-sugg-fof-edge,
+  .pq-algo-visual[data-stage="score"] .pq-sugg-fof-edge,
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-fof-edge {
+    stroke: var(--pq-gold);
+    opacity: 0.55;
   }
   .pq-sugg-score {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
@@ -3037,13 +3083,22 @@ const adminTools = [
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.45s ease;
+    /* Halo behind the digit in the page background color, painted before
+       the fill (paint-order) — wherever a node lands, a spoke or FoF line
+       can pass right behind its score label, and this keeps the number
+       legible over it instead of depending on node position avoiding
+       every line. */
+    paint-order: stroke;
+    stroke: var(--pq-bg-0);
+    stroke-width: 4px;
+    stroke-linejoin: round;
   }
   .pq-algo-visual[data-stage="score"] .pq-sugg-score,
   .pq-algo-visual[data-stage="rank"] .pq-sugg-score {
     opacity: 1;
   }
-  /* Stage 4: the top-scoring candidate gets a visible "winner" ring in
-     the graph, echoing the row that floats to the top of the table. */
+  /* Stage 7 ("rank"): the top-scoring candidate gets a visible "winner"
+     ring in the graph, echoing the row that floats to the top of the table. */
   .pq-algo-visual[data-stage="rank"] [data-top="true"] .pq-sugg-dot {
     stroke-width: 3;
     fill: color-mix(in oklab, var(--dot-color, var(--pq-gold)) 60%, var(--bg-card));
@@ -3063,15 +3118,23 @@ const adminTools = [
   }
 
   /* The table: same people as the graph, in the visual + attribute-table
-     pairing a graph-theory text uses. Status reveals at "exclude"; FoF
-     (friends-of-friends), Parks (shared parks), and the formula's Score
-     reveal together at "score" — the same two signals and the same
+     pairing a graph-theory text uses. Status reveals (friends struck
+     through) at "exclude"; FoF (friends-of-friends) and Parks (shared
+     parks) reveal one column at a time at "fof"/"parks", then the
+     formula's Score at "score" — the same two signals and the same
      weighting the real algorithm uses, not a stand-in number. At "rank"
      the rows reorder in place (JS, see initParkQuestSuggestionGraph) —
      this table doubles as the final ranked list, no separate one below it. */
   .pq-sugg-table {
     width: 100%;
-    border-collapse: collapse;
+    /* separate, not collapse: with collapsed borders the line between two
+       rows is shared/owned by whichever cell wins the collapse, so when a
+       row slides during the FLIP reorder its divider doesn't travel with
+       it — the text moves but the line stays put. Separate borders belong
+       to each row's own cells, so the whole row (text + its line) moves
+       together as one block. */
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.78rem;
     transition: opacity 0.45s ease;
   }
@@ -3082,6 +3145,13 @@ const adminTools = [
     font-weight: 600;
     color: var(--text-tertiary);
     border-bottom: 1px solid var(--border-primary);
+    transition: color 0.45s ease;
+  }
+  /* Score column header lights up gold once its number is calculated,
+     staying lit through the resort at "rank" that it caused. */
+  .pq-algo-visual[data-stage="score"] .pq-sugg-th-score,
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-th-score {
+    color: var(--pq-gold);
   }
   .pq-sugg-table th:nth-child(n+3),
   .pq-sugg-table td:nth-child(n+3) {
@@ -3096,11 +3166,47 @@ const adminTools = [
   .pq-sugg-table tbody tr {
     transition: opacity 0.45s ease;
   }
-  .pq-algo-visual:not([data-stage="all"]) .pq-sugg-table tr[data-friend="true"] {
+  .pq-algo-visual:not([data-stage="all"]):not([data-stage="status"]) .pq-sugg-table tr[data-friend="true"] {
     opacity: 0.4;
+  }
+  .pq-algo-visual:not([data-stage="all"]):not([data-stage="status"]) .pq-sugg-table tr[data-friend="true"] .pq-sugg-row-name,
+  .pq-algo-visual:not([data-stage="all"]):not([data-stage="status"]) .pq-sugg-table tr[data-friend="true"] .pq-sugg-row-status {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-tertiary);
   }
   .pq-algo-visual[data-stage="rank"] .pq-sugg-table tr[data-top="true"] td {
     color: var(--pq-gold);
+  }
+  /* Anchors the rank number so it can sit outside the table's left edge
+     (see .pq-sugg-row-rank) instead of taking up space in the cell —
+     avatars/names stay flush left with the "Person" header either way. */
+  .pq-sugg-row-person {
+    position: relative;
+  }
+  /* Positioned outside the table to the left of its own row (not inline
+     in the cell, so it doesn't push the name out of alignment with the
+     "Person" header). Lives inside the row's own <td> rather than a
+     separate element so it automatically travels with the row's FLIP
+     transform during the resort, no extra JS syncing needed. */
+  .pq-sugg-row-rank {
+    position: absolute;
+    left: -1.35rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.1rem;
+    text-align: right;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--pq-gold);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  /* Gated on .is-ranked (set via JS after the FLIP resort settles), not
+     [data-stage="rank"] directly — the numbers should land once sorting
+     has visibly finished, not the instant the rows start sliding. */
+  .pq-algo-visual.is-ranked .pq-sugg-row-rank {
+    opacity: 1;
   }
   .pq-sugg-row-avatar {
     display: inline-grid;
@@ -3116,7 +3222,8 @@ const adminTools = [
     vertical-align: middle;
   }
   .pq-sugg-row-status,
-  .pq-sugg-row-signal,
+  .pq-sugg-row-fof,
+  .pq-sugg-row-parks,
   .pq-sugg-row-score {
     color: var(--text-tertiary);
     opacity: 0;
@@ -3125,11 +3232,48 @@ const adminTools = [
   .pq-algo-visual:not([data-stage="all"]) .pq-sugg-row-status {
     opacity: 1;
   }
-  .pq-algo-visual[data-stage="score"] .pq-sugg-row-signal,
-  .pq-algo-visual[data-stage="rank"] .pq-sugg-row-signal,
+  .pq-algo-visual[data-stage="fof"] .pq-sugg-row-fof,
+  .pq-algo-visual[data-stage="parks"] .pq-sugg-row-fof,
+  .pq-algo-visual[data-stage="score"] .pq-sugg-row-fof,
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-row-fof {
+    opacity: 1;
+  }
+  .pq-algo-visual[data-stage="parks"] .pq-sugg-row-parks,
+  .pq-algo-visual[data-stage="score"] .pq-sugg-row-parks,
+  .pq-algo-visual[data-stage="rank"] .pq-sugg-row-parks {
+    opacity: 1;
+  }
   .pq-algo-visual[data-stage="score"] .pq-sugg-row-score,
   .pq-algo-visual[data-stage="rank"] .pq-sugg-row-score {
     opacity: 1;
+  }
+  /* Sits below the table (not an overlay like the phone mockup's version),
+     always in flow so its reserved row never shifts layout when it fades
+     in/out — just visible once the cycle settles on "rank". */
+  .pq-sugg-replay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0 auto;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--pq-gold-soft);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, color 0.2s ease;
+  }
+  .pq-sugg-replay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .pq-sugg-replay:hover {
+    color: var(--pq-gold);
   }
   .pq-offline-intro {
     color: var(--text-tertiary);
@@ -4221,12 +4365,37 @@ const adminTools = [
     // once so "all" can restore the original order exactly rather than
     // re-deriving it.
     const naturalOrder = Array.from(tbody.rows);
+    // Friends sink to the bottom as soon as they're excluded — before any
+    // score exists to sort by, so this is a stable friend/candidate split,
+    // not a score sort. Candidates keep their natural (deliberately
+    // un-sorted) relative order until "rank" resorts them for real.
+    const excludedOrder = [...naturalOrder].sort((a, b) => {
+      const aFriend = a.dataset.friend === "true" ? 1 : 0;
+      const bFriend = b.dataset.friend === "true" ? 1 : 0;
+      return aFriend - bFriend;
+    });
     const rankedOrder = [...naturalOrder].sort(
       (a, b) => Number(b.dataset.score) - Number(a.dataset.score)
     );
+    // "status" labels everyone in place first (Friend/Candidate), then
+    // "strikeout" dims/strikes the friends without moving them yet, and
+    // only "exclude" actually sinks them to the bottom — three separate
+    // beats instead of all of it landing at once.
+    const orderForStage = (stage: string) => {
+      if (stage === "rank") return rankedOrder;
+      if (stage === "all" || stage === "status" || stage === "strikeout") return naturalOrder;
+      return excludedOrder;
+    };
 
-    const stages = ["all", "exclude", "score", "rank"];
+    const stages = ["all", "status", "strikeout", "exclude", "fof", "parks", "score", "rank"];
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Same Apple-style "Replay" affordance as the phone mockup: surfaces
+    // once the cycle settles on "rank" and hides the moment it moves on.
+    const replayBtn = visual.querySelector<HTMLButtonElement>(".pq-sugg-replay");
+    const syncReplayVisibility = (stage: string) => {
+      replayBtn?.classList.toggle("is-visible", stage === "rank");
+    };
 
     // FLIP (First, Last, Invert, Play): reordering rows via appendChild
     // moves them instantly with no animation on its own, so each row's
@@ -4236,12 +4405,21 @@ const adminTools = [
     // as the row sliding into place. A brief opacity dip rides along so a
     // big jump (bottom row to top) fades through the move instead of just
     // sliding across everything in between.
+    // The 1/2/3 rank numbers land as their own beat *after* the resort has
+    // visibly finished, not at the same instant the rows start sliding —
+    // "is-ranked" is a separate class from data-stage="rank" specifically
+    // so it can trail the FLIP transition instead of firing with it.
+    let rankNumberTimer: ReturnType<typeof setTimeout>;
     const applyStage = (stage: string) => {
-      const order = stage === "rank" ? rankedOrder : naturalOrder;
+      const order = orderForStage(stage);
+      syncReplayVisibility(stage);
+      clearTimeout(rankNumberTimer);
+      visual.classList.remove("is-ranked");
 
       if (reduceMotion) {
         visual.dataset.stage = stage;
         order.forEach((row) => tbody.appendChild(row));
+        if (stage === "rank") visual.classList.add("is-ranked");
         return;
       }
 
@@ -4263,24 +4441,62 @@ const adminTools = [
           row.style.opacity = "";
         });
       });
+
+      if (stage === "rank") {
+        rankNumberTimer = setTimeout(() => visual.classList.add("is-ranked"), 550);
+      }
     };
 
-    if (reduceMotion) {
-      applyStage(stages[stages.length - 1]);
-    } else {
+    const startCycle = () => {
+      if (reduceMotion) {
+        applyStage(stages[stages.length - 1]);
+        return;
+      }
       // "rank" is the payoff (the table's already-sorted, "You" is
       // encircled by its top match) — it holds noticeably longer than the
-      // three build-up stages before looping back to "all" instead of
-      // cycling through on the same flat 2.2s beat as everything else.
-      const stageDwell: Record<string, number> = { all: 2200, exclude: 2200, score: 2200, rank: 5200 };
+      // build-up stages, long enough to read as a full stop rather than
+      // one more beat in the loop, before auto-replaying from "all". The
+      // Replay button that surfaces alongside it skips that wait.
+      const stageDwell: Record<string, number> = {
+        all: 2200,
+        status: 1800,
+        strikeout: 1600,
+        exclude: 2200,
+        fof: 2000,
+        parks: 2000,
+        score: 2200,
+        rank: 10000,
+      };
       let i = 0;
+      let timer: ReturnType<typeof setTimeout>;
       const advance = () => {
         i = (i + 1) % stages.length;
         applyStage(stages[i]);
-        setTimeout(advance, stageDwell[stages[i]]);
+        timer = setTimeout(advance, stageDwell[stages[i]]);
       };
-      setTimeout(advance, stageDwell[stages[i]]);
-    }
+      timer = setTimeout(advance, stageDwell[stages[i]]);
+
+      replayBtn?.addEventListener("click", () => {
+        clearTimeout(timer);
+        i = 0;
+        applyStage(stages[i]);
+        timer = setTimeout(advance, stageDwell[stages[i]]);
+      });
+    };
+
+    // Don't start the cycle the instant the page loads — wait until the
+    // whole graphic (graph + table) has actually scrolled fully into view,
+    // so it's not mid-animation (or already looping) before anyone sees it.
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          startCycle();
+          visibilityObserver.disconnect();
+        }
+      },
+      { threshold: 1 }
+    );
+    visibilityObserver.observe(visual);
 
     // .pq-algo-visual is `position: sticky` while it scrolls past the step
     // list (see the CSS) — Header.astro's own scroll handler flips
