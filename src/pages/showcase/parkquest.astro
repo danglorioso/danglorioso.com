@@ -211,33 +211,33 @@ const suggestionSteps = [
   {
     n: 1,
     title: "Exclusion set",
-    desc: "One relationship query excludes self, existing friends, pending requests, and blocked users upfront. It checks both directions since friendships are undirected but stored as requester_id/recipient_id rows.",
+    desc: "First, yourself, existing friends, pending requests, and blocked users are excluded. Friendships are undirected but stored as requester_id/recipient_id rows, so both directions are checked.",
   },
   {
     n: 2,
     title: "Signal A: friends-of-friends",
-    desc: "One query pulls every accepted friendship touching one of my friends, avoiding an N+1 lookup per friend. Whichever side isn't already my friend becomes a candidate and gains +1 mutual_friends.",
+    desc: "Next, one query pulls every accepted friendship touching one of my friends, avoiding an N+1 lookup per friend. Whichever side isn't already my friend becomes a candidate and gains +1 mutual_friends.",
   },
   {
     n: 3,
     title: "Signal B: shared parks",
-    desc: "The algorithm matches every park I've actually visited (excluding bucket-list-only entries) against other visitors of those same parks, adding +1 shared_parks per overlap. This domain-specific signal is something a generic social graph wouldn't have.",
+    desc: "The algorithm matches every park I've actually visited (excluding bucket-list-only entries) against other visitors of those same parks, adding +1 shared_parks per overlap.",
   },
   {
     n: 4,
     title: "Weighted scoring",
-    desc: "The formula weights mutual friends higher, since a real friendship predicts a real-world relationship better than “we both went to Yellowstone” does. It sorts candidates by score and returns the top N.",
+    desc: "The formula below calculates a score for each friend candidate. It weights mutual friends higher since real friendships are better predictors than mutual park visits. Candidates are finally sorted by score, and the top N are returned.",
     formula: "score = mutual_friends × 3 + shared_parks × 2",
   },
   {
     n: 5,
     title: "Cold-start fallback",
-    desc: "When scored candidates don't fill the requested count, which often occurs for brand-new user with no friends or visits yet, the algorithm backfills with the most-active explorers overall—still excluding everyone already seen.",
+    desc: "Sometimes, this algorithm doesn't return a ranking for users that have few or no friends or visits yet. As a fallback, the system backfills recommendations with the most-active explorers overall, still excluding anyone already seen.",
   },
   {
     n: 6,
-    title: "Enrichment",
-    desc: "A parallel Promise.all batch-fetches profiles and visit counts for the final candidate set; JS then joins them with Map lookups instead of one giant SQL join. Each query stays simple and indexable this way.",
+    title: "Profile fetching",
+    desc: "Last, once the final candidates are picked, their profile info and visit counts are fetched in parallel based on their candidate ID and then returned to the user.",
   },
 ];
 
@@ -1186,7 +1186,7 @@ const adminTools = [
     <section class="pq-section pq-algo-section">
       <h3 class="pq-engineering-subheading">How friend suggestions get ranked</h3>
 
-      <p class="pq-algo-intro">A hybrid graph and behavioral recommendation engine combines social-graph traversal (friends-of-friends) with a domain-specific signal (co-visited parks), weights the two, and falls back gracefully so new users always have suggestions, too.</p>
+      <p class="pq-algo-intro">A hybrid graph and behavioral recommendation algorithm suggested potential friend pairings by combining a social-graph traversal (friends-of-friends) and a domain-specific signal (mutually visited parks), weighting the two to produce a score. A fallback ensures that even new users always have suggestions.</p>
 
       <div class="pq-algo-layout">
         <div class="pq-algo-text">
